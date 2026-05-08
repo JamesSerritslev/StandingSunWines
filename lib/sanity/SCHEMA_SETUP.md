@@ -137,7 +137,7 @@ export default defineType({
 3. **Get your credentials** from the Sanity dashboard:
    - Project ID
    - Dataset name (usually "production")
-4. **Add environment variables** to your Vercel project:
+4. **Add environment variables** where you deploy the site:
    - `NEXT_PUBLIC_SANITY_PROJECT_ID` - Your Sanity project ID
    - `NEXT_PUBLIC_SANITY_DATASET` - Your dataset name (e.g., "production")
 

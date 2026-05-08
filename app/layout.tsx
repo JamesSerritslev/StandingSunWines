@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Special_Elite, Oswald, Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const specialElite = Special_Elite({
@@ -38,6 +37,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: '/icon.svg',
+  },
 }
 
 export default function RootLayout({
@@ -49,7 +51,6 @@ export default function RootLayout({
     <html lang="en" className={`${specialElite.variable} ${oswald.variable} ${inter.variable}`}>
       <body className="font-body antialiased bg-cream text-coal">
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )

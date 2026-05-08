@@ -98,9 +98,6 @@ importers:
       '@sanity/image-url':
         specifier: ^2.1.1
         version: 2.1.1
-      '@vercel/analytics':
-        specifier: 1.6.1
-        version: 1.6.1(next@16.2.4(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.24(postcss@8.5.6)
@@ -2700,17 +2697,13 @@ packages:
     resolution: {integrity: sha512-KqN9cowZwfZNCwCchRaz1B9WrZTThQxX/gfJhJO1uKJBuk/JcbYGBiSK9CSqocWoYDQ/QqANVXy1r7a8zognww==}
     engines: {node: '>=20'}
 
-  '@sanity/codegen@6.1.0':
-    resolution: {integrity: sha512-isrFJD6UtTqTCM9l7B8fm8l4kb4PPdet0+V/ldR7ghM0hKY6hdbVFD6qijauzwfUC6MSdA2UfgFCMXp/ogVXvg==}
+  '@sanity/codegen@6.0.3':
+    resolution: {integrity: sha512-KCGIWxJT37StjF624bbGGeOVzYwVThEhYoMysHOgOQ6dU9UtaWeFCwGUk59psp3X6LsvRTZ7wYD49QqFgcqNjw==}
     engines: {node: '>=20.19 <22 || >=22.12'}
     peerDependencies:
       '@oclif/core': ^4.8.0
       '@sanity/cli-core': ^1
       '@sanity/telemetry': ^0.9.0
-      oxfmt: '*'
-    peerDependenciesMeta:
-      oxfmt:
-        optional: true
 
   '@sanity/color@3.0.6':
     resolution: {integrity: sha512-2TjYEvOftD0v7ukx3Csdh9QIu44P2z7NDJtlC3qITJRYV36J7R6Vfd3trVhFnN77/7CZrGjqngrtohv8VqO5nw==}
@@ -2836,8 +2829,8 @@ packages:
       prismjs:
         optional: true
 
-  '@sanity/runtime-cli@15.0.4':
-    resolution: {integrity: sha512-ulKcW+rbTUcDAE/AXMcs5Qe5iZ9pkLaLmT2kZa4qbRCL8rglpYBtXSeDd0MNUBnCwApPsnDHIDzfIKwkVqsYUw==}
+  '@sanity/runtime-cli@15.0.3':
+    resolution: {integrity: sha512-4HkH2sLMBnBEsRTiJipBIc+qj0FouQXBtp2UGpYFsI6OGqyS3ZUU3cb74bV9vRsiRGWo9SCzguPnkc6J7OuxPw==}
     engines: {node: '>=20.19'}
     hasBin: true
 
@@ -3190,32 +3183,6 @@ packages:
   '@types/uuid@8.3.4':
     resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
 
-  '@vercel/analytics@1.6.1':
-    resolution: {integrity: sha512-oH9He/bEM+6oKlv3chWuOOcp8Y6fo6/PSro8hEkgCW3pu9/OiCXiUpRUogDh3Fs3LH2sosDrx8CxeOLBEE+afg==}
-    peerDependencies:
-      '@remix-run/react': ^2
-      '@sveltejs/kit': ^1 || ^2
-      next: '>= 13'
-      react: ^18 || ^19 || ^19.0.0-rc
-      svelte: '>= 4'
-      vue: ^3
-      vue-router: ^4
-    peerDependenciesMeta:
-      '@remix-run/react':
-        optional: true
-      '@sveltejs/kit':
-        optional: true
-      next:
-        optional: true
-      react:
-        optional: true
-      svelte:
-        optional: true
-      vue:
-        optional: true
-      vue-router:
-        optional: true
-
   '@vercel/edge@1.3.0':
     resolution: {integrity: sha512-uGTduh8jLCcshoZ23QNG3LZoLsKu09d78Vb04iQxuLbpND+edR7dKR/2p52hMwE8Lgk24JVqoxlf18aWC6X3ZQ==}
 
@@ -3429,8 +3396,8 @@ packages:
   brace-expansion@2.1.0:
     resolution: {integrity: sha512-TN1kCZAgdgweJhWWpgKYrQaMNHcDULHkWwQIspdtjV4Y5aurRdZpjAqn6yX3FPqTA9ngHCc4hJxMAMgGfve85w==}
 
-  brace-expansion@5.0.6:
-    resolution: {integrity: sha512-kLpxurY4Z4r9sgMsyG0Z9uzsBlgiU/EFKhj/h91/8yHu0edo7XuixOIH3VcJ8kkxs6/jPzoI6U9Vj3WqbMQ94g==}
+  brace-expansion@5.0.5:
+    resolution: {integrity: sha512-VZznLgtwhn+Mact9tfiwx64fA9erHH/MCXEUfB/0bX/6Fz6ny5EGTXYltMocqg4xFAQZtnO3DHWWXi8RiuN7cQ==}
     engines: {node: 18 || 20 || >=22}
 
   braces@3.0.3:
@@ -4015,8 +3982,8 @@ packages:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
 
-  get-east-asian-width@1.6.0:
-    resolution: {integrity: sha512-QRbvDIbx6YklUe6RxeTeleMR0yv3cYH6PsPZHcnVn7xv7zO1BHN8r0XETu8n6Ye3Q+ahtSarc3WgtNWmehIBfA==}
+  get-east-asian-width@1.5.0:
+    resolution: {integrity: sha512-CQ+bEO+Tva/qlmw24dCejulK5pMzVnUOFOijVogd3KQs07HnRIgp8TGipvCCRT06xeYEbpbgwaCxglFyiuIcmA==}
     engines: {node: '>=18'}
 
   get-intrinsic@1.3.0:
@@ -8506,14 +8473,14 @@ snapshots:
       '@oclif/plugin-not-found': 3.2.82(@types/node@22.19.11)
       '@sanity/cli-core': 1.3.2(@noble/hashes@2.2.0)(@types/node@22.19.11)(lightningcss@1.31.1)(yaml@2.8.4)
       '@sanity/client': 7.22.0
-      '@sanity/codegen': 6.1.0(@oclif/core@4.11.1)(@sanity/cli-core@1.3.2(@noble/hashes@2.2.0)(@types/node@22.19.11)(lightningcss@1.31.1)(yaml@2.8.4))(@sanity/telemetry@0.9.0(react@19.2.4))
+      '@sanity/codegen': 6.0.3(@oclif/core@4.11.1)(@sanity/cli-core@1.3.2(@noble/hashes@2.2.0)(@types/node@22.19.11)(lightningcss@1.31.1)(yaml@2.8.4))(@sanity/telemetry@0.9.0(react@19.2.4))
       '@sanity/descriptors': 1.3.0
       '@sanity/export': 6.1.0
       '@sanity/generate-help-url': 4.0.0
       '@sanity/id-utils': 1.0.0
       '@sanity/import': 6.0.1(@sanity/client@7.22.0)(@types/react@19.2.14)
       '@sanity/migrate': 6.1.2(@oclif/core@4.11.1)(@sanity/cli-core@1.3.2(@noble/hashes@2.2.0)(@types/node@22.19.11)(lightningcss@1.31.1)(yaml@2.8.4))(@types/react@19.2.14)(xstate@5.31.0)
-      '@sanity/runtime-cli': 15.0.4(@types/node@22.19.11)(lightningcss@1.31.1)(tsx@4.21.0)(typescript@5.7.3)(yaml@2.8.4)
+      '@sanity/runtime-cli': 15.0.3(@types/node@22.19.11)(lightningcss@1.31.1)(tsx@4.21.0)(typescript@5.7.3)(yaml@2.8.4)
       '@sanity/schema': 5.24.0(@types/react@19.2.14)
       '@sanity/telemetry': 0.9.0(react@19.2.4)
       '@sanity/template-validator': 3.1.0
@@ -8580,7 +8547,6 @@ snapshots:
       - jiti
       - less
       - lightningcss
-      - oxfmt
       - react-native-b4a
       - sass
       - sass-embedded
@@ -8600,7 +8566,7 @@ snapshots:
       nanoid: 3.3.11
       rxjs: 7.8.2
 
-  '@sanity/codegen@6.1.0(@oclif/core@4.11.1)(@sanity/cli-core@1.3.2(@noble/hashes@2.2.0)(@types/node@22.19.11)(lightningcss@1.31.1)(yaml@2.8.4))(@sanity/telemetry@0.9.0(react@19.2.4))':
+  '@sanity/codegen@6.0.3(@oclif/core@4.11.1)(@sanity/cli-core@1.3.2(@noble/hashes@2.2.0)(@types/node@22.19.11)(lightningcss@1.31.1)(yaml@2.8.4))(@sanity/telemetry@0.9.0(react@19.2.4))':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/generator': 7.29.1
@@ -8800,7 +8766,7 @@ snapshots:
 
   '@sanity/prism-groq@1.1.2': {}
 
-  '@sanity/runtime-cli@15.0.4(@types/node@22.19.11)(lightningcss@1.31.1)(tsx@4.21.0)(typescript@5.7.3)(yaml@2.8.4)':
+  '@sanity/runtime-cli@15.0.3(@types/node@22.19.11)(lightningcss@1.31.1)(tsx@4.21.0)(typescript@5.7.3)(yaml@2.8.4)':
     dependencies:
       '@architect/hydrate': 5.0.2
       '@architect/inventory': 5.0.0
@@ -9218,11 +9184,6 @@ snapshots:
 
   '@types/uuid@8.3.4': {}
 
-  '@vercel/analytics@1.6.1(next@16.2.4(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)':
-    optionalDependencies:
-      next: 16.2.4(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      react: 19.2.4
-
   '@vercel/edge@1.3.0': {}
 
   '@vercel/error-utils@2.0.3': {}
@@ -9418,7 +9379,7 @@ snapshots:
     dependencies:
       balanced-match: 1.0.2
 
-  brace-expansion@5.0.6:
+  brace-expansion@5.0.5:
     dependencies:
       balanced-match: 4.0.4
 
@@ -10000,7 +9961,7 @@ snapshots:
 
   gensync@1.0.0-beta.2: {}
 
-  get-east-asian-width@1.6.0: {}
+  get-east-asian-width@1.5.0: {}
 
   get-intrinsic@1.3.0:
     dependencies:
@@ -10595,7 +10556,7 @@ snapshots:
 
   minimatch@10.2.5:
     dependencies:
-      brace-expansion: 5.0.6
+      brace-expansion: 5.0.5
 
   minimatch@5.1.9:
     dependencies:
@@ -11351,7 +11312,6 @@ snapshots:
       - jiti
       - less
       - lightningcss
-      - oxfmt
       - prismjs
       - react-native
       - react-native-b4a
@@ -11501,12 +11461,12 @@ snapshots:
   string-width@7.2.0:
     dependencies:
       emoji-regex: 10.6.0
-      get-east-asian-width: 1.6.0
+      get-east-asian-width: 1.5.0
       strip-ansi: 7.2.0
 
   string-width@8.2.1:
     dependencies:
-      get-east-asian-width: 1.6.0
+      get-east-asian-width: 1.5.0
       strip-ansi: 7.2.0
 
   string_decoder@1.1.1:
