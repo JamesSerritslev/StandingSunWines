@@ -2,11 +2,16 @@ import type { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { InquiryForm } from "@/components/host-event/inquiry-form"
+import { INTERIOR_HERO_SRC } from "@/lib/interior-hero"
+import { resolveHostEventVenueStats } from "@/lib/host-event-venue-stats"
+import { getHostEventVenueStats } from "@/lib/sanity/queries"
 
 export const metadata: Metadata = {
   title: "Host Your Event | The Analogue Room",
   description: "Host your private event at The Analogue Room - birthdays, listening parties, corporate gatherings, and more in our curated vinyl lounge.",
 }
+
+export const revalidate = 60
 
 const features = [
   {
@@ -71,7 +76,10 @@ const features = [
   },
 ]
 
-export default function HostEventPage() {
+export default async function HostEventPage() {
+  const venueStatsDoc = await getHostEventVenueStats()
+  const venueStats = resolveHostEventVenueStats(venueStatsDoc)
+
   return (
     <>
       <Navigation />
@@ -79,10 +87,10 @@ export default function HostEventPage() {
         {/* Hero */}
         <section className="relative flex min-h-[50vh] items-end overflow-hidden px-4 pb-14 pt-page-hero sm:min-h-[55vh] sm:px-6 sm:pb-16 md:px-10 md:pb-[4.5rem] lg:px-12">
           <div
-            className="absolute inset-0 bg-cover bg-center z-0"
-            style={{ backgroundImage: `url('/images/interior.jpg')` }}
+            className="interior-hero-photo absolute inset-0 z-0"
+            style={{ backgroundImage: `url('${INTERIOR_HERO_SRC}')` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-coal/50 to-coal/85" />
+            <div className="interior-hero-scrim" aria-hidden />
           </div>
           <div className="relative z-2">
             <p className="font-label text-[11px] tracking-[0.5em] uppercase text-orange mb-4">
@@ -126,18 +134,13 @@ export default function HostEventPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-0.5">
-              {[
-                { num: "TBD", label: "Standing Capacity" },
-                { num: "TBD", label: "Seated Capacity" },
-                { num: "TBD", label: "Square Footage" },
-                { num: "4hr+", label: "Min Booking" },
-              ].map((stat) => (
+              {venueStats.map((stat, idx) => (
                 <div
-                  key={stat.label}
+                  key={`venue-stat-${idx}`}
                   className="bg-cream/4 border border-cream/8 px-6 py-8 text-center"
                 >
                   <p className="font-display text-[clamp(32px,4vw,48px)] text-orange leading-none mb-2">
-                    {stat.num}
+                    {stat.value}
                   </p>
                   <p className="font-label text-[9px] tracking-[0.35em] uppercase text-cream/70">
                     {stat.label}

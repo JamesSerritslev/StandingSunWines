@@ -12,8 +12,8 @@ export function VisitSection() {
   ]
 
   return (
-    <section className="relative z-2 bg-cream px-4 py-20 sm:px-6 sm:py-24 md:px-10 md:py-28 lg:px-12 lg:py-30">
-      <div className="mx-auto grid max-w-[1100px] grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
+    <section className="relative z-2 min-w-0 max-w-full bg-cream px-4 py-20 sm:px-6 sm:py-24 md:px-10 md:py-28 lg:px-12 lg:py-30">
+      <div className="mx-auto grid min-w-0 max-w-[1100px] grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
         {/* Hours */}
         <div className="py-12">
           <p className="font-label text-[10px] tracking-[0.5em] uppercase text-orange mb-4">

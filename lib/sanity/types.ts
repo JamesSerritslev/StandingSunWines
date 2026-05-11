@@ -1,5 +1,18 @@
 import type { PortableTextBlock } from "@portabletext/types"
 
+export interface VenueStatPair {
+  value?: string
+  label?: string
+}
+
+export interface HostEventVenueStats {
+  _id: string
+  standing?: VenueStatPair
+  seated?: VenueStatPair
+  squareFootage?: VenueStatPair
+  minBooking?: VenueStatPair
+}
+
 export interface Event {
   _id: string
   title: string

@@ -44,7 +44,7 @@ function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boo
 
   return (
     <div
-      className={`grid grid-cols-1 items-center gap-6 border-l-[3px] border-orange bg-coal/4 px-4 py-7 transition-all duration-300 hover:translate-x-1 hover:bg-orange/6 sm:px-6 sm:py-8 md:grid-cols-[180px_1fr_auto] md:gap-9 md:px-10 md:py-9 ${
+      className={`grid grid-cols-1 items-center gap-6 border-l-[3px] border-orange bg-coal/4 px-4 py-7 transition-colors duration-300 hover:bg-orange/6 sm:px-6 sm:py-8 md:grid-cols-[180px_1fr_auto] md:gap-9 md:px-10 md:py-9 md:hover:translate-x-1 ${
         isPlaceholder ? "opacity-55" : ""
       }`}
     >

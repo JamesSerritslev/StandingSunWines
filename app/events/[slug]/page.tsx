@@ -7,6 +7,7 @@ import { Navigation } from "@/components/navigation"
 import { EventBody } from "@/components/events/event-body"
 import { sanityImageUrl } from "@/lib/sanity/image-url"
 import { getEventBySlug } from "@/lib/sanity/queries"
+import { INTERIOR_HERO_SRC } from "@/lib/interior-hero"
 import { parseCalendarDate } from "@/lib/utils"
 
 export const revalidate = 60
@@ -44,12 +45,12 @@ export default async function EventDetailPage({ params }: PageProps) {
       <main>
         <section className="relative flex min-h-[36vh] flex-col justify-end overflow-hidden px-4 pb-10 pt-page-hero sm:min-h-[38vh] sm:px-6 sm:pb-12 md:px-10 lg:px-12">
           <div
-            className="absolute inset-0 z-0 bg-cover bg-center"
+            className="interior-hero-photo absolute inset-0 z-0"
             style={{
-              backgroundImage: `url('/images/interior.jpg')`,
+              backgroundImage: `url('${INTERIOR_HERO_SRC}')`,
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-coal/50 to-coal/88" />
+            <div className="interior-hero-scrim" aria-hidden />
           </div>
           <div className="relative z-2 max-w-[880px]">
             <Link

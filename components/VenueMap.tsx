@@ -85,7 +85,7 @@ export default function VenueMap() {
   return (
     <div
       ref={mapContainer}
-      className="h-[min(52dvh,420px)] w-full sm:h-[min(48dvh,460px)] md:h-[480px] lg:h-[500px]"
+      className="h-[min(52dvh,420px)] max-w-full min-w-0 overflow-hidden sm:h-[min(48dvh,460px)] md:h-[480px] lg:h-[500px]"
     />
   )
 }

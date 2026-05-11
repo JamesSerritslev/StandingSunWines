@@ -49,8 +49,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased bg-cream text-coal">
-        {children}
+      <body className="font-body min-h-dvh min-w-0 overflow-x-hidden bg-cream text-coal antialiased">
+        <div className="relative z-[1] min-h-dvh min-w-0 w-full max-w-full overflow-x-hidden">
+          {children}
+        </div>
       </body>
     </html>
   )

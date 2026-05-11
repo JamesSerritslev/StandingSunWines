@@ -20,6 +20,20 @@
   --hammock: #c3b398;
   --earth: #302725;
 
+  /* Full-bleed interior heroes: home ::after + inner-page .interior-hero-scrim */
+  --interior-hero-scrim-bg:
+    linear-gradient(
+      to bottom,
+      rgba(40, 43, 46, 0.45) 0%,
+      rgba(40, 43, 46, 0.65) 50%,
+      rgba(40, 43, 46, 0.85) 100%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(245, 130, 32, 0.12) 0%,
+      transparent 70%
+    );
+
   /* Web fonts (--font-display / --font-label / --font-body) load via link in app/layout.tsx; stacks work offline during build */
   --font-display: 'Special Elite', Georgia, 'Times New Roman', serif;
   --font-label: 'Oswald', Arial, Helvetica, sans-serif;
@@ -102,6 +116,8 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -111,8 +127,18 @@
   }
   
   body {
-    @apply bg-cream text-coal overflow-x-hidden;
+    @apply bg-cream text-coal;
     font-weight: 400;
+    position: relative;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  main {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   :where(a, button, input, select, textarea):focus-visible {
@@ -158,6 +184,49 @@
 
 .animate-spin-slow {
   animation: spin 30s linear infinite;
+}
+
+/* Home hero: same as analogueroom_index.html — CSS background + ::after scrim */
+.hero-bg-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  image-rendering: auto;
+  filter: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  will-change: auto;
+}
+
+.hero-bg-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--interior-hero-scrim-bg);
+}
+
+/* Inner-page heroes only — bias crop lower than home (.hero-bg-photo stays center) */
+.interior-hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center 25%;
+  image-rendering: auto;
+}
+
+/* Same scrim as home hero — about, events list, event detail, host-event */
+.interior-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--interior-hero-scrim-bg);
 }
 
 @layer utilities {
