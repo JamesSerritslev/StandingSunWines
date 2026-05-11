@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { EventsList } from "@/components/events/events-list"
+import { INTERIOR_HERO_SRC } from "@/lib/interior-hero"
 import { getEvents } from "@/lib/sanity/queries"
 
 export const metadata: Metadata = {
@@ -19,12 +20,12 @@ export default async function EventsPage() {
       <Navigation />
       <main>
         {/* Hero */}
-        <section className="min-h-[55vh] relative flex items-end px-6 md:px-12 pb-18 overflow-hidden pt-35">
+        <section className="relative flex min-h-[50vh] items-end overflow-hidden px-4 pb-14 pt-page-hero sm:min-h-[55vh] sm:px-6 sm:pb-16 md:px-10 md:pb-[4.5rem] lg:px-12">
           <div
-            className="absolute inset-0 bg-cover bg-center z-0"
-            style={{ backgroundImage: `url('/images/interior.jpg')` }}
+            className="interior-hero-photo absolute inset-0 z-0"
+            style={{ backgroundImage: `url('${INTERIOR_HERO_SRC}')` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-coal/50 to-coal/85" />
+            <div className="interior-hero-scrim" aria-hidden />
           </div>
           <div className="relative z-2">
             <p className="font-label text-[11px] tracking-[0.5em] uppercase text-orange mb-4">
@@ -38,7 +39,7 @@ export default async function EventsPage() {
         </section>
 
         {/* Intro */}
-        <section className="py-20 px-6 md:px-12 max-w-[920px] mx-auto text-center">
+        <section className="mx-auto max-w-[920px] px-4 py-16 text-center sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-12">
           <p className="font-label text-[10px] tracking-[0.5em] uppercase text-orange mb-4">
             {"What's Spinning"}
           </p>
@@ -52,12 +53,12 @@ export default async function EventsPage() {
         </section>
 
         {/* Events List */}
-        <section className="px-6 md:px-12 pb-25 max-w-[1100px] mx-auto">
+        <section className="mx-auto max-w-[1100px] px-4 pb-20 sm:px-6 sm:pb-24 md:px-10 md:pb-28 lg:px-12">
           <EventsList events={events} />
         </section>
 
         {/* CTA Section */}
-        <section className="bg-coal text-cream py-20 px-6 md:px-12 text-center">
+        <section className="bg-coal px-4 py-16 text-center text-cream sm:px-6 sm:py-20 md:px-10 md:py-22 lg:px-12">
           <p className="font-label text-[10px] tracking-[0.5em] uppercase text-orange mb-4">
             Stay in the Loop
           </p>
@@ -72,7 +73,7 @@ export default async function EventsPage() {
             href="https://www.instagram.com/analogueroomsyv"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block font-label text-[11px] tracking-[0.3em] uppercase border border-cream text-cream px-8 py-3.5 hover:bg-cream hover:text-coal transition-colors"
+            className="inline-flex min-h-11 items-center justify-center border border-cream px-6 py-3 font-label text-[11px] tracking-[0.28em] uppercase text-cream transition-colors hover:bg-cream hover:text-coal sm:min-h-0 sm:px-8 sm:py-3.5 sm:tracking-[0.3em]"
           >
             Follow on Instagram
           </a>

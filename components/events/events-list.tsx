@@ -1,31 +1,50 @@
+import Link from "next/link"
 import type { Event } from "@/lib/sanity/types"
+import { parseCalendarDate } from "@/lib/utils"
 
 interface EventsListProps {
   events: Event[]
 }
 
 export function EventsList({ events }: EventsListProps) {
-  // Show placeholder events if no events from Sanity
-  const displayEvents = events.length > 0 ? events : placeholderEvents
+  const hasLiveEvents = events.length > 0
+  const displayEvents = hasLiveEvents ? events : placeholderEvents
 
   return (
     <div className="flex flex-col gap-8">
+      {!hasLiveEvents && (
+        <p className="text-center font-body text-sm text-coal/60 max-w-xl mx-auto -mt-4 mb-2">
+          Showing sample placeholders. Published events with a&nbsp;
+          <strong className="text-coal font-medium">today or future</strong>
+          event date appear here.&nbsp;(Drafts and past dates are hidden.)
+        </p>
+      )}
       {displayEvents.map((event, index) => (
-        <EventCard key={event._id || index} event={event} isPlaceholder={events.length === 0} />
+        <EventCard key={event._id || index} event={event} isPlaceholder={!hasLiveEvents} />
       ))}
     </div>
   )
 }
 
+function detailsButtonClasses(link: boolean) {
+  return [
+    "inline-flex w-full min-h-11 items-center justify-center px-6 py-3 font-label text-[11px] tracking-[0.28em] uppercase transition-colors sm:min-h-0 sm:w-auto sm:px-8 sm:py-3.5 sm:tracking-[0.3em]",
+    link
+      ? "border border-coal text-coal hover:bg-coal hover:text-cream cursor-pointer"
+      : "border border-coal/30 text-coal/50 cursor-default",
+  ].join(" ")
+}
+
 function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boolean }) {
-  const date = event.date ? new Date(event.date) : null
+  const date = event.date ? parseCalendarDate(event.date) : null
   const month = date ? date.toLocaleDateString("en-US", { month: "short" }).toUpperCase() : "TBD"
   const day = date ? date.getDate().toString() : "––"
   const time = event.time || "Time TBD"
+  const slug = event.slug?.current?.trim()
 
   return (
     <div
-      className={`grid grid-cols-1 md:grid-cols-[180px_1fr_auto] gap-6 md:gap-9 bg-coal/4 border-l-[3px] border-orange px-6 md:px-10 py-9 items-center transition-all duration-300 hover:bg-orange/6 hover:translate-x-1 ${
+      className={`grid grid-cols-1 items-center gap-6 border-l-[3px] border-orange bg-coal/4 px-4 py-7 transition-colors duration-300 hover:bg-orange/6 sm:px-6 sm:py-8 md:grid-cols-[180px_1fr_auto] md:gap-9 md:px-10 md:py-9 md:hover:translate-x-1 ${
         isPlaceholder ? "opacity-55" : ""
       }`}
     >
@@ -53,18 +72,22 @@ function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boo
       </div>
 
       {/* CTA */}
-      <div className="text-center md:text-right">
-        {event.ticketUrl ? (
+      <div className="text-center md:text-right md:justify-self-end">
+        {slug ? (
+          <Link href={`/events/${encodeURIComponent(slug)}`} className={detailsButtonClasses(true)}>
+            Details
+          </Link>
+        ) : event.ticketUrl ? (
           <a
             href={event.ticketUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block font-label text-[11px] tracking-[0.3em] uppercase border border-coal text-coal px-8 py-3.5 hover:bg-coal hover:text-cream transition-colors"
+            className={detailsButtonClasses(true)}
           >
             Details
           </a>
         ) : (
-          <span className="inline-block font-label text-[11px] tracking-[0.3em] uppercase border border-coal/30 text-coal/50 px-8 py-3.5 cursor-default">
+          <span title="Add an event slug or ticket URL in Sanity" className={detailsButtonClasses(false)}>
             Details
           </span>
         )}

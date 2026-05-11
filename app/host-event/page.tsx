@@ -2,11 +2,16 @@ import type { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { InquiryForm } from "@/components/host-event/inquiry-form"
+import { INTERIOR_HERO_SRC } from "@/lib/interior-hero"
+import { resolveHostEventVenueStats } from "@/lib/host-event-venue-stats"
+import { getHostEventVenueStats } from "@/lib/sanity/queries"
 
 export const metadata: Metadata = {
   title: "Host Your Event | The Analogue Room",
   description: "Host your private event at The Analogue Room - birthdays, listening parties, corporate gatherings, and more in our curated vinyl lounge.",
 }
+
+export const revalidate = 60
 
 const features = [
   {
@@ -71,18 +76,21 @@ const features = [
   },
 ]
 
-export default function HostEventPage() {
+export default async function HostEventPage() {
+  const venueStatsDoc = await getHostEventVenueStats()
+  const venueStats = resolveHostEventVenueStats(venueStatsDoc)
+
   return (
     <>
       <Navigation />
       <main>
         {/* Hero */}
-        <section className="min-h-[55vh] relative flex items-end px-6 md:px-12 pb-18 overflow-hidden pt-35">
+        <section className="relative flex min-h-[50vh] items-end overflow-hidden px-4 pb-14 pt-page-hero sm:min-h-[55vh] sm:px-6 sm:pb-16 md:px-10 md:pb-[4.5rem] lg:px-12">
           <div
-            className="absolute inset-0 bg-cover bg-center z-0"
-            style={{ backgroundImage: `url('/images/interior.jpg')` }}
+            className="interior-hero-photo absolute inset-0 z-0"
+            style={{ backgroundImage: `url('${INTERIOR_HERO_SRC}')` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-coal/50 to-coal/85" />
+            <div className="interior-hero-scrim" aria-hidden />
           </div>
           <div className="relative z-2">
             <p className="font-label text-[11px] tracking-[0.5em] uppercase text-orange mb-4">
@@ -96,7 +104,7 @@ export default function HostEventPage() {
         </section>
 
         {/* Intro */}
-        <section className="py-25 px-6 md:px-12 max-w-[920px] mx-auto text-center">
+        <section className="mx-auto max-w-[920px] px-4 py-20 text-center sm:px-6 sm:py-24 md:px-10 md:py-28 lg:px-12">
           <p className="font-label text-[10px] tracking-[0.5em] uppercase text-orange mb-4">
             A Room Like No Other
           </p>
@@ -110,8 +118,8 @@ export default function HostEventPage() {
         </section>
 
         {/* Venue Stats */}
-        <section className="bg-coal text-cream py-25 px-6 md:px-12">
-          <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+        <section className="bg-coal px-4 py-20 text-cream sm:px-6 sm:py-24 md:px-10 md:py-28 lg:px-12">
+          <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
             <div>
               <p className="font-label text-[10px] tracking-[0.5em] uppercase text-orange mb-4">
                 The Venue
@@ -126,18 +134,13 @@ export default function HostEventPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-0.5">
-              {[
-                { num: "TBD", label: "Standing Capacity" },
-                { num: "TBD", label: "Seated Capacity" },
-                { num: "TBD", label: "Square Footage" },
-                { num: "4hr+", label: "Min Booking" },
-              ].map((stat) => (
+              {venueStats.map((stat, idx) => (
                 <div
-                  key={stat.label}
+                  key={`venue-stat-${idx}`}
                   className="bg-cream/4 border border-cream/8 px-6 py-8 text-center"
                 >
                   <p className="font-display text-[clamp(32px,4vw,48px)] text-orange leading-none mb-2">
-                    {stat.num}
+                    {stat.value}
                   </p>
                   <p className="font-label text-[9px] tracking-[0.35em] uppercase text-cream/70">
                     {stat.label}
@@ -149,8 +152,8 @@ export default function HostEventPage() {
         </section>
 
         {/* Features */}
-        <section className="py-25 px-6 md:px-12 max-w-[1100px] mx-auto">
-          <div className="text-center mb-15">
+        <section className="mx-auto max-w-[1100px] px-4 py-20 sm:px-6 sm:py-24 md:px-10 md:py-28 lg:px-12">
+          <div className="mb-12 text-center sm:mb-14 md:mb-16">
             <p className="font-label text-[10px] tracking-[0.5em] uppercase text-orange mb-4">
               {"What's Included"}
             </p>
@@ -163,11 +166,11 @@ export default function HostEventPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3">
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="bg-coal/4 px-7 py-9 border-t-2 border-orange hover:-translate-y-1 transition-transform duration-300"
+                className="border-t-2 border-orange bg-coal/4 px-5 py-8 transition-transform duration-300 hover:-translate-y-1 sm:px-7 sm:py-9"
               >
                 <div className="text-orange mb-5">{feature.icon}</div>
                 <h3 className="font-display text-xl text-coal mb-2.5">{feature.title}</h3>
@@ -181,8 +184,8 @@ export default function HostEventPage() {
         </section>
 
         {/* Inquiry Form */}
-        <section className="bg-earth py-25 px-6 md:px-12">
-          <div className="max-w-[760px] mx-auto bg-cream/4 border border-cream/10 px-6 md:px-12 py-14">
+        <section className="bg-earth px-4 py-20 sm:px-6 sm:py-24 md:px-10 md:py-28 lg:px-12">
+          <div className="mx-auto max-w-[760px] border border-cream/10 bg-cream/4 px-4 py-10 sm:px-8 sm:py-12 md:px-10 md:py-14 lg:px-12">
             <div className="text-center mb-8">
               <p className="font-label text-[10px] tracking-[0.5em] uppercase text-orange mb-4">
                 Begin Planning

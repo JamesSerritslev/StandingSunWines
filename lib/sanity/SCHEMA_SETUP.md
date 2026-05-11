@@ -130,10 +130,14 @@ export default defineType({
 })
 ```
 
+## Embedded Studio (this repo)
+
+Sanity Studio is mounted at **`/studio`** (see `sanity.config.ts` and `app/studio/`). Run the Next app locally or deploy it, open `/studio`, and sign in with your Sanity account. You still need **`NEXT_PUBLIC_SANITY_PROJECT_ID`** and **`NEXT_PUBLIC_SANITY_DATASET`** in `.env.local` (or your host’s env) so the studio can talk to your project.
+
 ## Setup Instructions
 
 1. **Create a Sanity project** at [sanity.io](https://www.sanity.io/)
-2. **Add the event schema** to your Sanity Studio
+2. **The event schema** is already defined in `sanity/schemaTypes/event.ts` for this embedded studio. If you use a separate Studio repo instead, add the same schema there.
 3. **Get your credentials** from the Sanity dashboard:
    - Project ID
    - Dataset name (usually "production")

@@ -1,3 +1,18 @@
+import type { PortableTextBlock } from "@portabletext/types"
+
+export interface VenueStatPair {
+  value?: string
+  label?: string
+}
+
+export interface HostEventVenueStats {
+  _id: string
+  standing?: VenueStatPair
+  seated?: VenueStatPair
+  squareFootage?: VenueStatPair
+  minBooking?: VenueStatPair
+}
+
 export interface Event {
   _id: string
   title: string
@@ -8,7 +23,7 @@ export interface Event {
   date: string
   time: string
   description: string
-  longDescription?: string
+  longDescription?: PortableTextBlock[]
   image?: {
     asset: {
       _ref: string
