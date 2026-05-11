@@ -106,12 +106,15 @@ export function InquiryForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+    <form
+      onSubmit={handleSubmit}
+      className="flex min-w-0 max-w-full flex-col gap-3.5"
+    >
       <input type="hidden" name="eventType" value={eventType} />
       <input type="hidden" name="guestCount" value={guestCount} />
       <input type="hidden" name="preferredTime" value={preferredTime} />
 
-      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-3.5 md:grid-cols-2 [&>*]:min-w-0">
         <div>
           <label className="mb-1.5 block font-label text-[9px] tracking-[0.3em] text-orange uppercase">
             First Name
@@ -138,7 +141,7 @@ export function InquiryForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-3.5 md:grid-cols-2 [&>*]:min-w-0">
         <div>
           <label className="mb-1.5 block font-label text-[9px] tracking-[0.3em] text-orange uppercase">
             Email
@@ -164,7 +167,7 @@ export function InquiryForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-3.5 md:grid-cols-2 [&>*]:min-w-0">
         <div>
           <label
             id="event-type-label"
@@ -203,7 +206,7 @@ export function InquiryForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-3.5 md:grid-cols-2 [&>*]:min-w-0">
         <div>
           <label className="mb-1.5 block font-label text-[9px] tracking-[0.3em] text-orange uppercase">
             Preferred Date
@@ -211,7 +214,7 @@ export function InquiryForm() {
           <input
             type="date"
             name="preferredDate"
-            className="min-h-11 w-full border border-cream/18 bg-cream/4 px-4 py-3 font-body text-base text-cream outline-none transition-colors focus:border-orange sm:text-[13px]"
+            className="min-h-11 min-w-0 max-w-full box-border w-full border border-cream/18 bg-cream/4 px-4 py-3 font-body text-base text-cream outline-none transition-colors focus:border-orange sm:text-[13px]"
           />
         </div>
         <div>
@@ -231,7 +234,7 @@ export function InquiryForm() {
         </div>
       </div>
 
-      <div>
+      <div className="min-w-0">
         <label className="mb-1.5 block font-label text-[9px] tracking-[0.3em] text-orange uppercase">
           Tell Us About Your Event
         </label>
