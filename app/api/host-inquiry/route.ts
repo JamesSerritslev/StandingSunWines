@@ -3,7 +3,7 @@
  *
  * Add to `.env.local` (and hosting):
  *   RESEND_API_KEY=re_...
- *   RESEND_FROM="The Analogue Room <onboarding@resend.dev>"   // or verified domain sender
+ *   RESEND_FROM="Standing Sun Wines <onboarding@resend.dev>"   // or verified domain sender
  *   HOST_INQUIRY_TO_EMAIL=jamesserritslev@gmail.com
  */
 
@@ -81,8 +81,8 @@ function buildInquiryEmailHtml(fields: {
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:580px;margin:0 auto;background-color:${BRAND.cream};border:1px solid rgba(40,43,46,0.12);">
     <tr>
       <td style="background-color:${BRAND.coal};padding:22px 28px 20px;border-bottom:3px solid ${BRAND.orange};">
-        <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.42em;text-transform:uppercase;color:${BRAND.orange};font-weight:600;">The Analogue Room</p>
-        <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:400;color:${BRAND.cream};line-height:1.15;">New host event inquiry</h1>
+        <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.42em;text-transform:uppercase;color:${BRAND.orange};font-weight:600;">Standing Sun Wines</p>
+        <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:400;color:${BRAND.cream};line-height:1.15;">New inquiry</h1>
       </td>
     </tr>
     <tr>
@@ -193,7 +193,7 @@ export async function POST(req: Request) {
   }
 
   const text = [
-    "THE ANALOGUE ROOM — Host event inquiry",
+    "STANDING SUN WINES — Host event inquiry",
     "═".repeat(42),
     "",
     `Name:        ${firstName} ${lastName}`,
@@ -228,7 +228,7 @@ export async function POST(req: Request) {
     from,
     to: [to],
     replyTo: email,
-    subject: `Host event inquiry — ${eventType} (${lastName})`,
+    subject: `Standing Sun Wines — inquiry (${eventType}, ${lastName})`,
     text,
     html,
   })

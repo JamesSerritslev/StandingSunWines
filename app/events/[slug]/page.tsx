@@ -2,8 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { Footer } from "@/components/footer"
-import { Navigation } from "@/components/navigation"
+import { SswChrome } from "@/components/ssw/SswChrome"
 import { EventBody } from "@/components/events/event-body"
 import { sanityImageUrl } from "@/lib/sanity/image-url"
 import { getEventBySlug } from "@/lib/sanity/queries"
@@ -18,10 +17,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params
   const event = await getEventBySlug(decodeURIComponent(slug))
   if (!event) {
-    return { title: "Event | The Analogue Room" }
+    return { title: "Event | Standing Sun Wines" }
   }
   return {
-    title: `${event.title} | The Analogue Room`,
+    title: `${event.title} | Standing Sun Live`,
     description: event.description,
   }
 }
@@ -36,12 +35,18 @@ export default async function EventDetailPage({ params }: PageProps) {
   }
 
   const cal = event.date ? parseCalendarDate(event.date) : null
-  const dateLine = cal ? cal.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }) : "Date TBD"
+  const dateLine = cal
+    ? cal.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "Date TBD"
   const imageUrl = sanityImageUrl(event.image, 1400)
 
   return (
-    <>
-      <Navigation />
+    <SswChrome>
       <main>
         <section className="relative flex min-h-[36vh] flex-col justify-end overflow-hidden px-4 pb-10 pt-page-hero sm:min-h-[38vh] sm:px-6 sm:pb-12 md:px-10 lg:px-12">
           <div
@@ -55,24 +60,30 @@ export default async function EventDetailPage({ params }: PageProps) {
           <div className="relative z-2 max-w-[880px]">
             <Link
               href="/events"
-              className="-mx-1 mb-6 inline-flex min-h-10 items-center px-1 font-label text-[10px] tracking-[0.3em] uppercase text-orange/90 transition-colors hover:text-cream sm:tracking-[0.35em]"
+              className="-mx-1 mb-6 inline-flex min-h-10 items-center px-1 font-label text-[10px] uppercase tracking-[0.3em] text-orange/90 transition-colors hover:text-cream sm:tracking-[0.35em]"
             >
               ← Back to events
             </Link>
-            <p className="font-label text-[11px] tracking-[0.4em] uppercase text-orange mb-3">{event.eventType}</p>
-            <h1 className="font-display text-[clamp(32px,5vw,52px)] text-cream leading-[1.05] mb-4">{event.title}</h1>
-            <p className="font-body text-cream/85 text-[15px]">
-              <span className="text-orange font-label tracking-[0.2em] uppercase text-[10px] mr-3">When</span>
+            <p className="font-label mb-3 text-[11px] uppercase tracking-[0.4em] text-orange">
+              {event.eventType}
+            </p>
+            <h1 className="font-display mb-4 text-[clamp(32px,5vw,52px)] leading-[1.05] text-cream">
+              {event.title}
+            </h1>
+            <p className="font-body text-[15px] text-cream/85">
+              <span className="font-label mr-3 text-[10px] uppercase tracking-[0.2em] text-orange">
+                When
+              </span>
               {dateLine}
               {event.time ? ` · ${event.time}` : null}
             </p>
-            <div className="w-15 h-0.5 bg-orange mt-6" />
+            <div className="mt-6 h-0.5 w-15 bg-orange" />
           </div>
         </section>
 
         <section className="mx-auto max-w-[720px] px-4 py-12 sm:px-6 sm:py-16 md:px-10 lg:px-12">
           {imageUrl ? (
-            <div className="relative aspect-[21/9] w-full mb-12 border border-coal/10 overflow-hidden rounded-sm bg-coal/5">
+            <div className="relative mb-12 aspect-[21/9] w-full overflow-hidden rounded-sm border border-coal/10 bg-coal/5">
               <Image
                 src={imageUrl}
                 alt={event.title ? `Image for ${event.title}` : "Event image"}
@@ -83,17 +94,21 @@ export default async function EventDetailPage({ params }: PageProps) {
             </div>
           ) : null}
 
-          <p className="font-body text-[16px] leading-relaxed text-coal/88 mb-8">{event.description}</p>
+          <p className="font-body mb-8 text-[16px] leading-relaxed text-coal/88">
+            {event.description}
+          </p>
 
-          {event.longDescription?.length ? <EventBody value={event.longDescription} /> : null}
+          {event.longDescription?.length ? (
+            <EventBody value={event.longDescription} />
+          ) : null}
 
           {event.ticketUrl ? (
-            <div className="mt-14 pt-10 border-t border-coal/10 text-center md:text-left">
+            <div className="mt-14 border-t border-coal/10 pt-10 text-center md:text-left">
               <a
                 href={event.ticketUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block font-label text-[11px] tracking-[0.3em] uppercase bg-orange text-cream px-10 py-4 hover:bg-spanish transition-colors"
+                className="inline-block bg-orange px-10 py-4 font-label text-[11px] uppercase tracking-[0.3em] text-cream transition-colors hover:bg-spanish"
               >
                 Tickets / RSVP
               </a>
@@ -101,7 +116,6 @@ export default async function EventDetailPage({ params }: PageProps) {
           ) : null}
         </section>
       </main>
-      <Footer />
-    </>
+    </SswChrome>
   )
 }

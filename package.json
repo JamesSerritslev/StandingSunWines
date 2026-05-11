@@ -1,12 +1,16 @@
 {
-  "name": "analogue-room",
+  "name": "standing-sun-wines",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "extract:ssw": "node scripts/extract-ssw-assets.mjs",
+    "prepare:ssw": "node scripts/prepare-ssw-for-next.mjs",
+    "merge:ssw-css": "node scripts/merge-ssw-css.mjs",
+    "extract:hero-hires": "node scripts/extract-hero-hires.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -72,6 +76,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "postcss": "^8.5",
+    "sharp": "^0.33.5",
     "tailwindcss": "^4.2.0",
     "tw-animate-css": "1.3.3",
     "typescript": "5.7.3"
