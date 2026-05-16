@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next"
+import { draftMode } from "next/headers"
+import { VisualEditing } from "next-sanity/visual-editing"
 import "./globals.css"
 import "./ssw/ssw-base.css"
+import { SanityLive } from "@/sanity/lib/live"
 
 const siteUrl =
   (process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
@@ -55,11 +58,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { isEnabled: isDraftMode } = await draftMode()
+
   return (
     <html lang="en">
       <head>
@@ -78,6 +83,12 @@ export default function RootLayout({
         <div className="relative z-[1] min-h-dvh min-w-0 w-full max-w-full overflow-x-hidden">
           {children}
         </div>
+
+        {/* Live Content API — keeps Presentation preview in sync with edits */}
+        <SanityLive />
+
+        {/* Visual Editing overlays — only active in Draft Mode (inside Presentation iframe) */}
+        {isDraftMode ? <VisualEditing /> : null}
       </body>
     </html>
   )

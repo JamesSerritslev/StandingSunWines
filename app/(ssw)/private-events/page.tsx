@@ -1,7 +1,11 @@
 import type { Metadata } from "next"
 import "@/app/ssw/ssw-private-events.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
+import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/privateEvents"
+import { getPage } from "@/lib/sanity/queries"
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: "Private Events",
@@ -16,6 +20,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/private-events" },
 }
 
-export default function PrivateEventsPage() {
+export default async function PrivateEventsPage() {
+  const page = await getPage("private-events")
+
+  if (page?.sections?.length) {
+    return <PageBuilder page={page} />
+  }
+
   return <SswPageBody html={html} pageSource="private-events" />
 }

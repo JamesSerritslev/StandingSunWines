@@ -19,6 +19,7 @@ export default async function EventsPage() {
   return (
     <SswChrome>
       <main>
+        {/* Interior hero */}
         <section className="relative flex min-h-[50vh] items-end overflow-hidden px-4 pb-14 pt-page-hero sm:min-h-[55vh] sm:px-6 sm:pb-16 md:px-10 md:pb-[4.5rem] lg:px-12">
           <div
             className="interior-hero-photo absolute inset-0 z-0"
@@ -37,6 +38,7 @@ export default async function EventsPage() {
           </div>
         </section>
 
+        {/* Intro copy */}
         <section className="mx-auto max-w-[920px] px-4 py-16 text-center sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-12">
           <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange">
             What&apos;s On
@@ -45,16 +47,21 @@ export default async function EventsPage() {
             Upcoming <em className="not-italic text-orange">Nights</em>
           </h2>
           <div className="mx-auto mb-6 h-0.5 w-12 bg-orange" />
-          <p className="font-body mx-auto max-w-[560px] text-[15px] font-normal leading-relaxed text-coal/85">
-            Intimate concerts and gatherings at our working winery — see what&apos;s scheduled below,
-            or browse all upcoming shows on Eventbrite.
+          <p
+            data-sanity="events-intro-body"
+            className="font-body mx-auto max-w-[560px] text-[15px] font-normal leading-relaxed text-coal/85"
+          >
+            Intimate concerts and gatherings at our working winery — see what&apos;s scheduled
+            below, or browse all upcoming shows on Eventbrite.
           </p>
         </section>
 
+        {/* Events list */}
         <section className="mx-auto max-w-[1100px] px-4 pb-20 sm:px-6 sm:pb-24 md:px-10 md:pb-28 lg:px-12">
           <EventsList events={events} />
         </section>
 
+        {/* Eventbrite CTA */}
         <section className="bg-coal px-4 py-16 text-center text-cream sm:px-6 sm:py-20 md:px-10 md:py-22 lg:px-12">
           <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange">
             Stay in the Loop

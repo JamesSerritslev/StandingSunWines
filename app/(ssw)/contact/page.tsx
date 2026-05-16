@@ -1,7 +1,11 @@
 import type { Metadata } from "next"
 import "@/app/ssw/ssw-contact.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
+import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/contact"
+import { getPage } from "@/lib/sanity/queries"
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -15,6 +19,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 }
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const page = await getPage("contact")
+
+  if (page?.sections?.length) {
+    return <PageBuilder page={page} />
+  }
+
   return <SswPageBody html={html} pageSource="contact" />
 }

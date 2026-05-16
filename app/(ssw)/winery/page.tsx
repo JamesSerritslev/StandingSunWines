@@ -1,7 +1,11 @@
 import type { Metadata } from "next"
 import "@/app/ssw/ssw-winery.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
+import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/winery"
+import { getPage } from "@/lib/sanity/queries"
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: "The Winery",
@@ -16,6 +20,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/winery" },
 }
 
-export default function WineryPage() {
+export default async function WineryPage() {
+  const page = await getPage("winery")
+
+  if (page?.sections?.length) {
+    return <PageBuilder page={page} />
+  }
+
   return <SswPageBody html={html} pageSource="winery" />
 }
