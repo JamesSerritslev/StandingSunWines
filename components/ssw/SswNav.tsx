@@ -5,53 +5,14 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
-type InternalNavItem = {
-  key: string
-  href: string
-  label: string
-  match: (pathname: string) => boolean
-  cta?: boolean
+import type { ResolvedNavItem, ResolvedLogo } from "@/lib/site-settings-resolve"
+
+type Props = {
+  logo: ResolvedLogo
+  items: ResolvedNavItem[]
 }
 
-type ExternalNavItem = {
-  key: string
-  href: string
-  label: string
-  external: true
-  analogue?: boolean
-}
-
-type NavItem = InternalNavItem | ExternalNavItem
-
-const navItems: NavItem[] = [
-  { key: "home", href: "/", label: "Home", match: (p) => p === "/" },
-  { key: "about", href: "/#about", label: "About", match: () => false },
-  { key: "winery", href: "/winery", label: "The Winery", match: (p) => p === "/winery" },
-  { key: "events", href: "/#events", label: "Live Events", match: () => false },
-  { key: "gallery", href: "/#gallery", label: "Gallery", match: () => false },
-  {
-    key: "private",
-    href: "/private-events",
-    label: "Private Events",
-    match: (p) => p === "/private-events",
-  },
-  {
-    key: "analogue",
-    href: "https://analogueroom.com",
-    label: "The Analogue Room",
-    external: true,
-    analogue: true,
-  },
-  {
-    key: "contact",
-    href: "/contact#contact-form",
-    label: "Contact",
-    match: (p) => p === "/contact",
-    cta: true,
-  },
-]
-
-export function SswNav() {
+export function SswNav({ logo, items }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -74,22 +35,24 @@ export function SswNav() {
         <Link href="/" className="nav-logo-wrap" onClick={() => setOpen(false)}>
           <Image
             className="nav-logo-mark"
-            src="/images/ssw/ssw-3a30683668704b66.png"
-            alt="Standing Sun Wines"
-            width={180}
-            height={72}
+            src={logo.src}
+            alt={logo.alt}
+            width={logo.width}
+            height={logo.height}
             priority
+            sizes="180px"
+            unoptimized
           />
         </Link>
         <div className="nav-end">
           <ul className={`nav-links ${open ? "nav-links-open" : ""}`}>
-            {navItems.map((item) => {
-              if ("external" in item && item.external) {
+            {items.map((item) => {
+              if (item.external) {
                 return (
                   <li key={item.key}>
                     <a
                       href={item.href}
-                      className={item.analogue ? "nav-analogue" : undefined}
+                      className={item.classNameHints.analogue ? "nav-analogue" : undefined}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setOpen(false)}
@@ -99,16 +62,15 @@ export function SswNav() {
                   </li>
                 )
               }
-              const { key, href, label, match, cta } = item as InternalNavItem
-              const active = match(pathname)
+              const active = item.activeExactPaths.some((p) => pathname === p)
               return (
-                <li key={key}>
+                <li key={item.key}>
                   <Link
-                    href={href}
-                    className={`${cta ? "nav-cta " : ""}${active ? "active " : ""}`.trim()}
+                    href={item.href}
+                    className={`${item.classNameHints.cta ? "nav-cta " : ""}${active ? "active " : ""}`.trim()}
                     onClick={() => setOpen(false)}
                   >
-                    {label}
+                    {item.label}
                   </Link>
                 </li>
               )

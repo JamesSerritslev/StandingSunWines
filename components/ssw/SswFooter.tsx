@@ -1,42 +1,69 @@
 import Image from "next/image"
 import Link from "next/link"
 
-export function SswFooter() {
+import type { ResolvedSiteSettings } from "@/lib/site-settings-resolve"
+
+export function SswFooter({
+  footerLogo,
+  footerColumnLeft,
+  footerColumnRight,
+  footerAddressTitle,
+  footerAddressLines,
+  copyrightSuffix,
+}: Pick<
+  ResolvedSiteSettings,
+  | "footerLogo"
+  | "footerColumnLeft"
+  | "footerColumnRight"
+  | "footerAddressTitle"
+  | "footerAddressLines"
+  | "copyrightSuffix"
+>) {
+  const year = new Date().getFullYear()
+
   return (
     <footer>
       <div className="footer-grid">
         <div>
           <Image
             className="footer-logo"
-            src="/images/ssw/ssw-d553bb7215e2dee2.png"
-            alt="Standing Sun Wines"
-            width={160}
-            height={80}
+            src={footerLogo.src}
+            alt={footerLogo.alt}
+            width={footerLogo.width}
+            height={footerLogo.height}
+            unoptimized
           />
         </div>
         <div className="footer-nav-group">
           <div className="footer-col">
-            <Link href="/">Home</Link>
-            <Link href="/#about">About</Link>
-            <Link href="/winery">The Winery</Link>
+            {footerColumnLeft.map((link) => (
+              <Link key={link.href + link.label} href={link.href}>
+                {link.label}
+              </Link>
+            ))}
           </div>
           <div className="footer-col">
-            <Link href="/#events">Live Events</Link>
-            <Link href="/private-events">Private Events</Link>
-            <Link href="/contact#contact-form">Contact</Link>
+            {footerColumnRight.map((link) => (
+              <Link key={link.href + link.label} href={link.href}>
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
         <div className="footer-addr">
-          <strong>Standing Sun Wines</strong>
+          <strong>{footerAddressTitle}</strong>
           <p>
-            92 2nd Street
-            <br />
-            Buellton, CA 93427
+            {footerAddressLines.map((line, i) => (
+              <span key={`${line}-${i}`}>
+                {line}
+                {i < footerAddressLines.length - 1 ? <br /> : null}
+              </span>
+            ))}
           </p>
         </div>
       </div>
       <p className="footer-copy">
-        © {new Date().getFullYear()} Standing Sun Wines · All Rights Reserved · Buellton, California
+        © {year} {copyrightSuffix}
       </p>
     </footer>
   )

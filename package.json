@@ -10,7 +10,8 @@
     "extract:ssw": "node scripts/extract-ssw-assets.mjs",
     "prepare:ssw": "node scripts/prepare-ssw-for-next.mjs",
     "merge:ssw-css": "node scripts/merge-ssw-css.mjs",
-    "extract:hero-hires": "node scripts/extract-hero-hires.mjs"
+    "extract:hero-hires": "node scripts/extract-hero-hires.mjs",
+    "seed:sanity": "node scripts/sanity-seed-content.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

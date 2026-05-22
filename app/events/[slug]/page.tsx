@@ -5,8 +5,7 @@ import { notFound } from "next/navigation"
 import { SswChrome } from "@/components/ssw/SswChrome"
 import { EventBody } from "@/components/events/event-body"
 import { sanityImageUrl } from "@/lib/sanity/image-url"
-import { getEventBySlug } from "@/lib/sanity/queries"
-import { INTERIOR_HERO_SRC } from "@/lib/interior-hero"
+import { getEventBySlug, getResolvedSiteSettings } from "@/lib/sanity/queries"
 import { parseCalendarDate } from "@/lib/utils"
 
 export const revalidate = 60
@@ -28,11 +27,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function EventDetailPage({ params }: PageProps) {
   const { slug: rawSlug } = await params
   const slug = decodeURIComponent(rawSlug)
-  const event = await getEventBySlug(slug)
+  const [eventData, settings] = await Promise.all([
+    getEventBySlug(slug),
+    getResolvedSiteSettings(),
+  ])
+  const event = eventData
 
   if (!event) {
     notFound()
   }
+
+  const heroBg = settings.interiorHeroUrl
 
   const cal = event.date ? parseCalendarDate(event.date) : null
   const dateLine = cal
@@ -52,7 +57,7 @@ export default async function EventDetailPage({ params }: PageProps) {
           <div
             className="interior-hero-photo absolute inset-0 z-0"
             style={{
-              backgroundImage: `url('${INTERIOR_HERO_SRC}')`,
+              backgroundImage: `url('${heroBg}')`,
             }}
           >
             <div className="interior-hero-scrim" aria-hidden />
@@ -62,7 +67,7 @@ export default async function EventDetailPage({ params }: PageProps) {
               href="/events"
               className="-mx-1 mb-6 inline-flex min-h-10 items-center px-1 font-label text-[10px] uppercase tracking-[0.3em] text-orange/90 transition-colors hover:text-cream sm:tracking-[0.35em]"
             >
-              ← Back to events
+              {settings.eventDetailBackLabel}
             </Link>
             <p className="font-label mb-3 text-[11px] uppercase tracking-[0.4em] text-orange">
               {event.eventType}
@@ -72,7 +77,7 @@ export default async function EventDetailPage({ params }: PageProps) {
             </h1>
             <p className="font-body text-[15px] text-cream/85">
               <span className="font-label mr-3 text-[10px] uppercase tracking-[0.2em] text-orange">
-                When
+                {settings.eventDetailWhenLabel}
               </span>
               {dateLine}
               {event.time ? ` · ${event.time}` : null}

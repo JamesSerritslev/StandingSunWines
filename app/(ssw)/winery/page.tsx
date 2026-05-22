@@ -3,7 +3,7 @@ import "@/app/ssw/ssw-winery.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
 import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/winery"
-import { getPage } from "@/lib/sanity/queries"
+import { getPage, getResolvedSiteSettings } from "@/lib/sanity/queries"
 
 export const revalidate = 60
 
@@ -21,10 +21,10 @@ export const metadata: Metadata = {
 }
 
 export default async function WineryPage() {
-  const page = await getPage("winery")
+  const [page, site] = await Promise.all([getPage("winery"), getResolvedSiteSettings()])
 
   if (page?.sections?.length) {
-    return <PageBuilder page={page} />
+    return <PageBuilder page={page} site={site} />
   }
 
   return <SswPageBody html={html} pageSource="winery" />

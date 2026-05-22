@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
 import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/home"
-import { getPage } from "@/lib/sanity/queries"
+import { getPage, getResolvedSiteSettings } from "@/lib/sanity/queries"
 
 export const revalidate = 60
 
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  const page = await getPage("home")
+  const [page, site] = await Promise.all([getPage("home"), getResolvedSiteSettings()])
 
   if (page?.sections?.length) {
-    return <PageBuilder page={page} />
+    return <PageBuilder page={page} site={site} />
   }
 
   // Fallback to prepared HTML until the "home" page document is created in Sanity

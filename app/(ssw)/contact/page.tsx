@@ -3,7 +3,7 @@ import "@/app/ssw/ssw-contact.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
 import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/contact"
-import { getPage } from "@/lib/sanity/queries"
+import { getPage, getResolvedSiteSettings } from "@/lib/sanity/queries"
 
 export const revalidate = 60
 
@@ -20,10 +20,10 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
-  const page = await getPage("contact")
+  const [page, site] = await Promise.all([getPage("contact"), getResolvedSiteSettings()])
 
   if (page?.sections?.length) {
-    return <PageBuilder page={page} />
+    return <PageBuilder page={page} site={site} />
   }
 
   return <SswPageBody html={html} pageSource="contact" />

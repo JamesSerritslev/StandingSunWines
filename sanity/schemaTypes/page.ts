@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity"
 
 /**
  * Page document — one per marketing route.
- * Fixed _id values: "home" | "winery" | "contact" | "private-events"
+ * Fixed _id values: "home" | "winery" | "contact" | "private-events" | "events"
  *
  * Sections are polymorphic blocks that map to individual React components.
  * Add / remove / reorder sections in Presentation to change the page layout.
@@ -37,10 +37,13 @@ export const pageType = defineType({
       type: "array",
       of: [
         { type: "sectionHero" },
+        { type: "sectionInteriorHero" },
+        { type: "sectionStandingSunBand" },
         { type: "sectionRichText" },
         { type: "sectionSplit" },
         { type: "sectionEventsFeature" },
         { type: "sectionPrivateEvents" },
+        { type: "sectionVenueStats" },
         { type: "sectionContactForm" },
         { type: "sectionCta" },
         { type: "sectionEventsList" },

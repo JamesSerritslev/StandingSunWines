@@ -5,8 +5,8 @@
 
 import { visionTool } from "@sanity/vision"
 import { defineConfig } from "sanity"
-import { structureTool } from "sanity/structure"
 import { presentationTool, defineDocuments, defineLocations } from "sanity/presentation"
+import { structureTool } from "sanity/structure"
 
 import { apiVersion, dataset, projectId } from "./sanity/env"
 import { schema } from "./sanity/schemaTypes"
@@ -18,6 +18,7 @@ const PAGE_ROUTES: Record<string, string> = {
   winery: "/winery",
   contact: "/contact",
   "private-events": "/private-events",
+  events: "/events",
 }
 
 export default defineConfig({
@@ -30,9 +31,6 @@ export default defineConfig({
 
     presentationTool({
       previewUrl: {
-        // In development the studio is hosted on the same Next.js origin.
-        // Set SANITY_STUDIO_PREVIEW_ORIGIN in .env.local to override for remote
-        // deployments (e.g. "https://www.standingsunwines.com").
         origin:
           typeof process !== "undefined"
             ? (process.env.SANITY_STUDIO_PREVIEW_ORIGIN ?? "http://localhost:3000")
@@ -42,7 +40,6 @@ export default defineConfig({
         },
       },
       resolve: {
-        // ── Which document to open when viewing a given route ─────────────
         mainDocuments: defineDocuments([
           {
             route: "/",
@@ -62,8 +59,7 @@ export default defineConfig({
           },
           {
             route: "/events",
-            // The events list has no single document — open first upcoming event
-            filter: `_type == "event"`,
+            filter: `_type == "page" && _id == "events"`,
           },
           {
             route: "/events/:slug",
@@ -71,19 +67,33 @@ export default defineConfig({
           },
         ]),
 
-        // ── Which URL(s) to open when a document is selected ─────────────
         locations: {
+          siteSettings: defineLocations({
+            select: { sid: "_id" },
+            resolve: () => ({
+              locations: [
+                { title: "Home (global chrome preview)", href: "/" },
+                { title: "Events list", href: "/events" },
+                { title: "Private Events", href: "/private-events" },
+                { title: "Contact", href: "/contact" },
+              ],
+            }),
+          }),
           page: defineLocations({
             select: { title: "title", id: "_id" },
             resolve: (doc) => {
               const id = doc?.id as string | undefined
               const href = id ? PAGE_ROUTES[id] : undefined
               return {
-                locations: href
-                  ? [{ title: (doc?.title as string) || "Page", href }]
-                  : [],
+                locations: href ? [{ title: (doc?.title as string) || "Page", href }] : [],
               }
             },
+          }),
+          hostEventVenueStats: defineLocations({
+            select: { sid: "_id" },
+            resolve: () => ({
+              locations: [{ title: "Private Events (preview)", href: "/private-events" }],
+            }),
           }),
           event: defineLocations({
             select: { title: "title", slug: "slug.current" },
@@ -94,7 +104,6 @@ export default defineConfig({
                       title: (doc.title as string) || "Event",
                       href: `/events/${doc.slug as string}`,
                     },
-                    // Also surface on the events list
                     { title: "Events list", href: "/events" },
                   ]
                 : [],
@@ -104,7 +113,6 @@ export default defineConfig({
       },
     }),
 
-    // GROQ playground
     visionTool({
       defaultApiVersion: apiVersion,
       defaultDataset: dataset,

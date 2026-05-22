@@ -42,6 +42,13 @@ export const sectionHeroType = defineType({
   type: "object",
   fields: [
     defineField({
+      name: "logo",
+      title: "Logo (optional)",
+      type: "image",
+      options: { hotspot: true },
+      description: "Defaults to Standing Sun Wines wordmark if empty.",
+    }),
+    defineField({
       name: "tagline",
       title: "Tagline",
       type: "string",
@@ -270,6 +277,86 @@ export const sectionCtaType = defineType({
   preview: {
     select: { title: "titleMain", subtitle: "titleEm" },
     prepare: (s) => ({ title: `CTA — ${s.title ?? ""}${s.subtitle ? ` ${s.subtitle}` : ""}` }),
+  },
+})
+
+// ─── STANDING SUN TAILWIND BAND — events page intro / footer bands ──────────
+export const sectionStandingSunBandType = defineType({
+  name: "sectionStandingSunBand",
+  title: "Content band (Standing Sun Live pages)",
+  type: "object",
+  fields: [
+    eyebrowField,
+    ...titleFields,
+    defineField({
+      name: "body",
+      title: "Body",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
+      name: "bandStyle",
+      title: "Layout",
+      type: "string",
+      options: {
+        list: [
+          { title: "Light intro (cream / coal text)", value: "intro" },
+          { title: "Dark footer strip (coal background)", value: "footerCta" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "intro",
+    }),
+    ...ctaFields,
+  ],
+  preview: {
+    select: { subtitle: "bandStyle", title: "titleMain" },
+    prepare: (s) => ({
+      title: `${s.subtitle === "footerCta" ? "Footer CTA" : "Intro"} — ${s.title ?? ""}`,
+    }),
+  },
+})
+
+// ─── INTERIOR HERO — Tailwind / events-style full-bleed header ─────────────────
+export const sectionInteriorHeroType = defineType({
+  name: "sectionInteriorHero",
+  title: "Interior Hero",
+  type: "object",
+  fields: [
+    eyebrowField,
+    ...titleFields,
+    defineField({
+      name: "backgroundImage",
+      title: "Background image override",
+      type: "image",
+      options: { hotspot: true },
+      description:
+        "If empty, the site-wide interior hero image from Site settings is used.",
+    }),
+  ],
+  preview: {
+    select: { title: "titleMain", subtitle: "eyebrow" },
+    prepare: (s) => ({ title: `Interior Hero — ${s.title ?? ""}`, subtitle: s.subtitle }),
+  },
+})
+
+// ─── VENUE STATS (private events) ────────────────────────────────────────────
+export const sectionVenueStatsType = defineType({
+  name: "sectionVenueStats",
+  title: "Venue Stats",
+  type: "object",
+  fields: [
+    eyebrowField,
+    defineField({
+      name: "title",
+      title: "Heading",
+      type: "string",
+      description: "Optional section heading above stat tiles.",
+    }),
+  ],
+  preview: {
+    select: { title: "title" },
+    prepare: (s) => ({ title: s.title ? `Venue stats — ${s.title}` : "Venue stats" }),
   },
 })
 

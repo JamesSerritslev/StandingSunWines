@@ -1,7 +1,14 @@
+"use client"
+
 import { sanityImageUrl } from "@/lib/sanity/image-url"
 import type { SectionEventsFeature } from "@/lib/sanity/types"
 
-export function SectionEventsFeature({ section }: { section: SectionEventsFeature }) {
+interface Props {
+  section: SectionEventsFeature
+  defaultEventbriteUrl?: string
+}
+
+export function SectionEventsFeature({ section, defaultEventbriteUrl }: Props) {
   const {
     eyebrow,
     titleMain,
@@ -45,9 +52,14 @@ export function SectionEventsFeature({ section }: { section: SectionEventsFeatur
         </div>
       </div>
 
-      {eventbriteUrl ? (
+      {eventbriteUrl || defaultEventbriteUrl ? (
         <div className="events-cta">
-          <a href={eventbriteUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+          <a
+            href={(eventbriteUrl || defaultEventbriteUrl)!}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+          >
             {eventbriteLabel ?? "See Upcoming Events on Eventbrite"}
           </a>
         </div>

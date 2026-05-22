@@ -3,7 +3,7 @@ import "@/app/ssw/ssw-private-events.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
 import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/privateEvents"
-import { getPage } from "@/lib/sanity/queries"
+import { getPage, getResolvedSiteSettings } from "@/lib/sanity/queries"
 
 export const revalidate = 60
 
@@ -21,10 +21,10 @@ export const metadata: Metadata = {
 }
 
 export default async function PrivateEventsPage() {
-  const page = await getPage("private-events")
+  const [page, site] = await Promise.all([getPage("private-events"), getResolvedSiteSettings()])
 
   if (page?.sections?.length) {
-    return <PageBuilder page={page} />
+    return <PageBuilder page={page} site={site} />
   }
 
   return <SswPageBody html={html} pageSource="private-events" />

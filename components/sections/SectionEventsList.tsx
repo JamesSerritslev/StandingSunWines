@@ -5,9 +5,11 @@ import { EventsList } from "@/components/events/events-list"
 interface Props {
   section: SectionEventsList
   events?: Event[]
+  emptyMessage?: string
+  detailsLabel?: string
 }
 
-export function SectionEventsList({ section, events = [] }: Props) {
+export function SectionEventsList({ section, events = [], emptyMessage, detailsLabel }: Props) {
   const { eyebrow, titleMain, titleEm, body } = section
 
   return (
@@ -43,7 +45,11 @@ export function SectionEventsList({ section, events = [] }: Props) {
       <section
         style={{ maxWidth: 1100, margin: "0 auto", padding: "0 48px 80px" }}
       >
-        <EventsList events={events} />
+        <EventsList
+          events={events}
+          emptyMessage={emptyMessage}
+          detailsLabel={detailsLabel}
+        />
       </section>
     </>
   )

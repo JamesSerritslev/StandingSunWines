@@ -1,5 +1,9 @@
+import { cache } from "react"
+
+import type { ResolvedSiteSettings, SiteSettingsDocument } from "@/lib/site-settings-resolve"
+import { SITE_SETTINGS_DOC_ID, resolveSiteSettings } from "@/lib/site-settings-resolve"
 import { sanityFetch } from "@/sanity/lib/live"
-import { client } from "./client"
+import { sanityImageUrl } from "./image-url"
 import type { Event, HostEventVenueStats, SanityPage } from "./types"
 
 export const HOST_EVENT_VENUE_STATS_DOC_ID = "hostEventVenueStats"
@@ -31,6 +35,29 @@ function getLosAngelesNowParts(): { todayInLA: string; currentTimeInLA: string }
   const currentTimeInLA = `${hour}:${minute}`
   return { todayInLA, currentTimeInLA }
 }
+
+// ─── SITE SETTINGS ───────────────────────────────────────────────────────────
+
+const SITE_SETTINGS_QUERY = `*[_type == "siteSettings" && _id == $id][0] {
+  ...,
+  navigation[]{...},
+}`
+
+/** Cached per-request — reused by layouts and events routes. */
+export const getResolvedSiteSettings = cache(async (): Promise<ResolvedSiteSettings> => {
+  try {
+    const { data } = await sanityFetch({
+      query: SITE_SETTINGS_QUERY,
+      params: { id: SITE_SETTINGS_DOC_ID },
+    })
+    return resolveSiteSettings(data as SiteSettingsDocument | null, (img, w) =>
+      sanityImageUrl(img === null ? undefined : img, w),
+    )
+  } catch (error) {
+    console.error("Error fetching site settings from Sanity:", error)
+    return resolveSiteSettings(null, (img, w) => sanityImageUrl(img === null ? undefined : img, w))
+  }
+})
 
 // ─── PAGE ────────────────────────────────────────────────────────────────────
 
@@ -123,28 +150,25 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
   }
 }
 
-/** Singleton: Host event venue stat tiles */
-export async function getHostEventVenueStats(): Promise<HostEventVenueStats | null> {
-  if (!client) {
-    return null
-  }
-
+/** Singleton: Host / event venue stat tiles */
+export const getHostEventVenueStats = cache(async (): Promise<HostEventVenueStats | null> => {
   try {
-    return await client.fetch<HostEventVenueStats | null>(
-      `*[_type == "hostEventVenueStats" && _id == $docId][0] {
+    const { data } = await sanityFetch({
+      query: `*[_type == "hostEventVenueStats" && _id == $docId][0] {
         _id,
         standing { value, label },
         seated { value, label },
         squareFootage { value, label },
         minBooking { value, label }
       }`,
-      { docId: HOST_EVENT_VENUE_STATS_DOC_ID },
-    )
+      params: { docId: HOST_EVENT_VENUE_STATS_DOC_ID },
+    })
+    return (data as HostEventVenueStats) ?? null
   } catch (error) {
     console.error("Error fetching host event venue stats from Sanity:", error)
     return null
   }
-}
+})
 
 const FEATURED_EVENTS_QUERY = `*[
   _type == "event" &&

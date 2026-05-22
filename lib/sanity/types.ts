@@ -17,6 +17,7 @@ export interface SectionCta {
 export interface SectionHero {
   _type: "sectionHero"
   _key: string
+  logo?: SanityImage
   tagline?: string
   ctas?: (SectionCta & { _key: string })[]
 }
@@ -98,12 +99,43 @@ export interface SectionEventsList {
   body?: string
 }
 
+export interface SectionStandingSunBand {
+  _type: "sectionStandingSunBand"
+  _key: string
+  eyebrow?: string
+  titleMain?: string
+  titleEm?: string
+  body?: string
+  bandStyle?: "intro" | "footerCta"
+  ctaLabel?: string
+  ctaHref?: string
+}
+
+export interface SectionInteriorHero {
+  _type: "sectionInteriorHero"
+  _key: string
+  eyebrow?: string
+  titleMain?: string
+  titleEm?: string
+  backgroundImage?: SanityImage
+}
+
+export interface SectionVenueStats {
+  _type: "sectionVenueStats"
+  _key: string
+  eyebrow?: string
+  title?: string
+}
+
 export type PageSection =
   | SectionHero
+  | SectionInteriorHero
+  | SectionStandingSunBand
   | SectionRichText
   | SectionSplit
   | SectionEventsFeature
   | SectionPrivateEvents
+  | SectionVenueStats
   | SectionContactForm
   | SectionCtaBanner
   | SectionEventsList

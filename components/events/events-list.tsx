@@ -4,23 +4,34 @@ import { parseCalendarDate } from "@/lib/utils"
 
 interface EventsListProps {
   events: Event[]
+  emptyMessage?: string
+  detailsLabel?: string
 }
 
-export function EventsList({ events }: EventsListProps) {
+export function EventsList({
+  events,
+  emptyMessage,
+  detailsLabel = "Details",
+}: EventsListProps) {
   const hasLiveEvents = events.length > 0
   const displayEvents = hasLiveEvents ? events : placeholderEvents
 
+  const emptyCopy =
+    emptyMessage ??
+    "Showing sample placeholders. Published events with a today or future event date appear here. Drafts and past dates are hidden."
+
   return (
     <div className="flex flex-col gap-8">
-      {!hasLiveEvents && (
-        <p className="text-center font-body text-sm text-coal/60 max-w-xl mx-auto -mt-4 mb-2">
-          Showing sample placeholders. Published events with a&nbsp;
-          <strong className="text-coal font-medium">today or future</strong>
-          event date appear here.&nbsp;(Drafts and past dates are hidden.)
-        </p>
-      )}
+      {!hasLiveEvents ? (
+        <p className="text-center font-body text-sm text-coal/60 max-w-xl mx-auto -mt-4 mb-2">{emptyCopy}</p>
+      ) : null}
       {displayEvents.map((event, index) => (
-        <EventCard key={event._id || index} event={event} isPlaceholder={!hasLiveEvents} />
+        <EventCard
+          key={event._id || index}
+          event={event}
+          isPlaceholder={!hasLiveEvents}
+          detailsLabel={detailsLabel}
+        />
       ))}
     </div>
   )
@@ -35,7 +46,15 @@ function detailsButtonClasses(link: boolean) {
   ].join(" ")
 }
 
-function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boolean }) {
+function EventCard({
+  event,
+  isPlaceholder,
+  detailsLabel,
+}: {
+  event: Event
+  isPlaceholder?: boolean
+  detailsLabel: string
+}) {
   const date = event.date ? parseCalendarDate(event.date) : null
   const month = date ? date.toLocaleDateString("en-US", { month: "short" }).toUpperCase() : "TBD"
   const day = date ? date.getDate().toString() : "––"
@@ -48,7 +67,6 @@ function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boo
         isPlaceholder ? "opacity-55" : ""
       }`}
     >
-      {/* Date Block */}
       <div className="text-center md:border-r border-coal/15 md:pr-9">
         <p className="font-label text-[11px] tracking-[0.4em] uppercase text-orange mb-1.5">
           {month}
@@ -57,7 +75,6 @@ function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boo
         <p className="font-body text-[11px] text-coal/60">{time}</p>
       </div>
 
-      {/* Info */}
       <div className="text-center md:text-left">
         <p className="font-label text-[9px] tracking-[0.35em] uppercase text-orange mb-2">
           {event.eventType || "Event Type"}
@@ -71,11 +88,10 @@ function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boo
         </p>
       </div>
 
-      {/* CTA */}
       <div className="text-center md:text-right md:justify-self-end">
         {slug ? (
           <Link href={`/events/${encodeURIComponent(slug)}`} className={detailsButtonClasses(true)}>
-            Details
+            {detailsLabel}
           </Link>
         ) : event.ticketUrl ? (
           <a
@@ -84,11 +100,11 @@ function EventCard({ event, isPlaceholder }: { event: Event; isPlaceholder?: boo
             rel="noopener noreferrer"
             className={detailsButtonClasses(true)}
           >
-            Details
+            {detailsLabel}
           </a>
         ) : (
           <span title="Add an event slug or ticket URL in Sanity" className={detailsButtonClasses(false)}>
-            Details
+            {detailsLabel}
           </span>
         )}
       </div>
@@ -103,7 +119,8 @@ const placeholderEvents: Event[] = [
     eventType: "Event Type",
     date: "",
     time: "Time TBD",
-    description: "Event details coming soon. Listening parties, album releases, special pours, and other curated nights will be listed here as they're scheduled.",
+    description:
+      "Event details coming soon. Listening parties, album releases, special pours, and other curated nights will be listed here as they're scheduled.",
     ticketUrl: "",
   },
   {
