@@ -1,4 +1,4 @@
-# Sanity Studio Schema for The Analogue Room Events
+# Sanity Studio Schema for Standing Sun Wines (Events)
 
 This file documents the Sanity schema that the client should create in their Sanity Studio project.
 
@@ -154,4 +154,4 @@ Once connected, the client can:
 4. Optionally add images and ticket URLs
 5. Publish the event
 
-Events will automatically appear on the website's Events page, ordered by date.
+Events will automatically appear on the website's `/events` page (Standing Sun Live), ordered by date.

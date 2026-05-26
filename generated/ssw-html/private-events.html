@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Private Events · Standing Sun Wines</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream:#f9f5e5; --coal:#282b2e; --hammock:#c3b398;
+    --gold:#f9af1b; --gold-dk:#a4762b; --spanish:#b65627;
+    --spanish-lt:#d4713a; --folder:#a19073; --void:#231f20;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--void);color:var(--cream);font-family:'Montserrat',sans-serif;overflow-x:hidden;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(35,31,32,0.97),transparent);backdrop-filter:blur(8px);}
+  .nav-links{display:flex;gap:32px;list-style:none;align-items:center;}
+  .nav-links a{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--hammock);text-decoration:none;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--cream);}
+  .nav-links a.active:not(.nav-cta){color:var(--cream);border-bottom:1px solid var(--spanish);padding-bottom:2px;}
+  .nav-cta{background:var(--spanish);color:var(--cream)!important;padding:9px 20px;}
+  .nav-cta:hover{background:var(--spanish-lt)!important;}
+  .nav-sister{border-bottom:1px solid rgba(182,86,39,0.5);padding-bottom:2px;color:var(--spanish)!important;}
+
+  .hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 80px 80px;}
+  .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.4);}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(35,31,32,0.95) 0%,transparent 60%);}
+  .hero-content{position:relative;z-index:2;max-width:720px;}
+  .hero-eyebrow{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--spanish);margin-bottom:14px;}
+  .hero-title{font-family:'Libre Baskerville',serif;font-size:clamp(44px,7vw,82px);font-weight:400;line-height:1.0;color:var(--cream);margin-bottom:20px;}
+  .hero-title em{font-style:italic;color:var(--hammock);}
+  .hero-body{font-size:13px;font-weight:300;line-height:1.85;color:var(--hammock);max-width:520px;margin-bottom:32px;}
+  .hero-rule{width:60px;height:1px;background:var(--spanish);margin-bottom:32px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+
+  .eyebrow{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--spanish);margin-bottom:14px;}
+  .section-title{font-family:'Libre Baskerville',serif;font-size:clamp(26px,3.8vw,44px);font-weight:400;line-height:1.15;margin-bottom:18px;color:var(--cream);}
+  .section-title em{font-style:italic;color:var(--hammock);}
+  .body-text{font-size:13px;font-weight:300;line-height:1.85;letter-spacing:0.03em;color:var(--hammock);}
+  .hr{width:38px;height:1px;background:var(--spanish);margin:20px 0;}
+  .btn{display:inline-block;padding:13px 30px;font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;text-decoration:none;transition:all 0.2s;cursor:pointer;border:none;}
+  .btn-primary{background:var(--spanish);color:var(--cream);}
+  .btn-primary:hover{background:var(--spanish-lt);}
+  .btn-outline{border:1px solid rgba(161,144,115,0.45);color:var(--hammock);background:transparent;}
+  .btn-outline:hover{border-color:var(--cream);color:var(--cream);}
+
+  /* EVENT TYPES */
+  .types{padding:100px 80px;max-width:1200px;margin:0 auto;}
+  .types-header{text-align:center;margin-bottom:64px;}
+  .types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+  .type-card{background:#1a1714;padding:48px 36px;border-top:2px solid var(--spanish);transition:transform 0.3s;}
+  .type-card:hover{transform:translateY(-4px);}
+  .type-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;color:var(--spanish);}
+  .type-title{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:12px;}
+  .type-rule{width:28px;height:1px;background:var(--spanish);margin-bottom:16px;}
+  .type-desc{font-size:12px;font-weight:300;line-height:1.8;color:var(--hammock);}
+
+  /* GALLERY STRIP */
+  .gallery-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+  .gallery-strip-img{overflow:hidden;aspect-ratio:1/1;}
+  .gallery-strip-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.85);transition:filter 0.4s,transform 0.5s;}
+  .gallery-strip-img:hover img{filter:brightness(1);transform:scale(1.05);}
+
+  /* THE SPACE */
+  .space-section{padding:100px 80px;background:#0e0d0c;}
+  .space-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  .space-img{overflow:hidden;}
+  .space-img img{width:100%;height:540px;object-fit:cover;display:block;}
+
+  /* INCLUDED */
+  .included-section{padding:100px 80px;max-width:1100px;margin:0 auto;}
+  .included-header{text-align:center;margin-bottom:48px;}
+  .included-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:800px;margin:0 auto;}
+  .included-item{display:flex;align-items:flex-start;gap:14px;padding:20px;background:#111010;}
+  .included-dot{width:6px;height:6px;border-radius:50%;background:var(--spanish);flex-shrink:0;margin-top:8px;}
+  .included-text{font-size:13px;font-weight:300;line-height:1.7;color:var(--hammock);}
+
+  /* QUOTE */
+  .quote-strip{background:#111010;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:80px 80px;text-align:center;}
+  .quote-text{font-family:'Libre Baskerville',serif;font-size:clamp(18px,2.5vw,26px);font-style:italic;color:var(--cream);max-width:760px;margin:0 auto;line-height:1.65;opacity:0.9;}
+  .quote-attr{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--folder);margin-top:24px;}
+
+  /* INQUIRY FORM */
+  .inquiry-section{padding:100px 80px;background:var(--void);}
+  .inquiry-wrap{max-width:760px;margin:0 auto;background:#111010;padding:64px 56px;}
+  .inquiry-header{text-align:center;margin-bottom:36px;}
+  .form-field{margin-bottom:14px;}
+  .form-field input,.form-field select,.form-field textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(161,144,115,0.18);padding:14px 18px;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:12px;outline:none;letter-spacing:0.04em;}
+  .form-field textarea{resize:vertical;}
+  .form-field select{color:var(--hammock);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  footer{background:#080706;padding:60px 48px 36px;border-top:1px solid rgba(255,255,255,0.04);}
+  .footer-grid{display:grid;grid-template-columns:180px 1fr auto;gap:48px;align-items:start;margin-bottom:44px;}
+  .footer-logo{width:160px;height:auto;opacity:0.75;}
+  .footer-nav-group{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;}
+  .footer-col{display:flex;flex-direction:column;gap:10px;}
+  .footer-col a{font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--folder);text-decoration:none;transition:color 0.2s;}
+  .footer-col a:hover{color:var(--cream);}
+  .footer-addr{text-align:right;}
+  .footer-addr strong{font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold-dk);display:block;margin-bottom:6px;}
+  .footer-addr p{font-size:11px;line-height:1.7;color:var(--folder);}
+  .footer-sister{margin-top:16px;}
+  .footer-sister a{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--spanish);text-decoration:none;border-bottom:1px solid rgba(182,86,39,0.35);padding-bottom:2px;}
+  .footer-copy{text-align:center;font-size:9px;letter-spacing:0.12em;color:rgba(161,144,115,0.28);border-top:1px solid rgba(255,255,255,0.04);padding-top:22px;}
+
+  @media(max-width:900px){
+    nav{padding:12px max(16px, env(safe-area-inset-left, 0px)) 12px max(16px, env(safe-area-inset-right, 0px));} .nav-links{gap:14px;}
+    .hero{padding:0 max(20px, env(safe-area-inset-left, 0px)) 56px max(20px, env(safe-area-inset-right, 0px));}
+    .types,.included-section{padding:60px max(20px, env(safe-area-inset-left, 0px)) 60px max(20px, env(safe-area-inset-right, 0px));}
+    .types-grid{grid-template-columns:1fr;}
+    .gallery-strip{grid-template-columns:1fr 1fr;}
+    .space-section{padding:60px max(20px, env(safe-area-inset-left, 0px)) 60px max(20px, env(safe-area-inset-right, 0px));}
+    .space-grid{grid-template-columns:1fr;gap:40px;}
+    .included-grid{grid-template-columns:1fr;}
+    .quote-strip{padding:56px max(20px, env(safe-area-inset-left, 0px)) 56px max(20px, env(safe-area-inset-right, 0px));}
+    .inquiry-section{padding:48px max(16px, env(safe-area-inset-left, 0px)) 48px max(16px, env(safe-area-inset-right, 0px));}
+    .inquiry-wrap{padding:36px max(20px, env(safe-area-inset-left, 0px)) 36px max(20px, env(safe-area-inset-right, 0px));}
+    .form-row{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;text-align:center;}
+    .footer-addr{text-align:center;}
+  }
+  @media(max-width:480px){
+    .gallery-strip{grid-template-columns:1fr;}
+    .space-img img{height:auto;min-height:240px;max-height:min(70vh,520px);}
+    .hero-title{font-size:clamp(34px,10vw,58px);}
+    .types,.space-section,.included-section,.quote-strip{padding-left:max(14px, env(safe-area-inset-left, 0px));padding-right:max(14px, env(safe-area-inset-right, 0px));}
+    .inquiry-section{padding-left:max(12px, env(safe-area-inset-left, 0px));padding-right:max(12px, env(safe-area-inset-right, 0px));}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;cursor:pointer;position:relative;z-index:200;">
+    <img src="/images/ssw/ssw-3a30683668704b66.png" style="height:72px;width:auto;" alt="Standing Sun Wines"/>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="winery.html">The Winery</a></li>
+    <li><a href="events.html">Live Events</a></li>
+    <li><a href="private-events.html" class="active">Private Events</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="https://www.analogueroom.com" class="nav-sister" target="_blank">The Analogue Room</a></li>
+    <li><a href="contact.html" class="nav-cta btn">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" style="background-image:url('/images/ssw/ssw-797653112b4abb9b.jpg');"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Private Events · Buellton, California</p>
+    <h1 class="hero-title">An Unforgettable<br><em>Setting</em></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-body">A 4,000 square foot industrial winery for weddings, corporate retreats, and private parties. Surrounded by barrels, tanks, and original art at the gateway to Santa Ynez Valley.</p>
+    <div class="hero-ctas">
+      <a href="#inquiry" class="btn btn-primary">Inquire About Booking</a>
+      <a href="#types" class="btn btn-outline">Event Types</a>
+    </div>
+  </div>
+</section>
+
+<!-- EVENT TYPES -->
+<section id="types" class="types">
+  <div class="types-header">
+    <p class="eyebrow">What We Host</p>
+    <h2 class="section-title" style="text-align:center;">Every <em>Occasion</em></h2>
+    <div class="hr" style="margin:18px auto;"></div>
+    <p class="body-text" style="text-align:center;max-width:560px;margin:0 auto;">From the most intimate gatherings to large celebrations, our space transforms to fit your vision.</p>
+  </div>
+
+  <div class="types-grid">
+
+    <div class="type-card">
+      <div class="type-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21s-7-4.5-7-11a7 7 0 0 1 14 0c0 6.5-7 11-7 11z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h3 class="type-title">Weddings</h3>
+      <div class="type-rule"></div>
+      <p class="type-desc">Say "I do" surrounded by barrels and string lights. Our industrial winery offers a one-of-a-kind backdrop for ceremonies, receptions, and rehearsal dinners.</p>
+    </div>
+
+    <div class="type-card">
+      <div class="type-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="7" width="18" height="13" rx="1"/>
+          <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          <line x1="3" y1="13" x2="21" y2="13"/>
+        </svg>
+      </div>
+      <h3 class="type-title">Corporate Retreats</h3>
+      <div class="type-rule"></div>
+      <p class="type-desc">Reset, reconnect, and reimagine in a setting that inspires. Perfect for offsites, team building, client dinners, and product launches.</p>
+    </div>
+
+    <div class="type-card">
+      <div class="type-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2 L18 2 L17 8 L7 8 Z"/>
+          <line x1="12" y1="8" x2="12" y2="14"/>
+          <path d="M8 14 L16 14 L16 22 L8 22 Z"/>
+        </svg>
+      </div>
+      <h3 class="type-title">Private Parties &amp; Events</h3>
+      <div class="type-rule"></div>
+      <p class="type-desc">Birthdays, anniversaries, retirement parties, album releases — whatever brings your people together, we'll help you make it unforgettable.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- GALLERY STRIP -->
+<div class="gallery-strip">
+  <div class="gallery-strip-img"><img src="/images/ssw/ssw-f761657ed601c52f.jpg" alt="Private dinner setting"/></div>
+  <div class="gallery-strip-img"><img src="/images/ssw/ssw-762bf2146f30e5a9.jpg" alt="Wedding setup"/></div>
+  <div class="gallery-strip-img"><img src="/images/ssw/ssw-b3797883eeb87b92.jpg" alt="Round table reception"/></div>
+  <div class="gallery-strip-img"><img src="/images/ssw/ssw-d14560398aa5afe3.jpg" alt="Event setup"/></div>
+</div>
+
+<!-- THE SPACE -->
+<section class="space-section">
+  <div class="space-grid">
+    <div class="space-img">
+      <img src="/images/ssw/ssw-6604082a65f673c1.jpg" alt="Standing Sun event setup"/>
+    </div>
+    <div>
+      <p class="eyebrow">The Space</p>
+      <h2 class="section-title">A Backdrop<br><em>Like No Other</em></h2>
+      <div class="hr"></div>
+      <p class="body-text">Steel tanks, oak barrels, original murals, string lights, and a working winery floor — Standing Sun is unlike any traditional event venue. The industrial character paired with thoughtful styling creates a setting that's at once dramatic and intimate.</p>
+      <br/>
+      <p class="body-text">Our team works closely with you and your planner to bring your vision to life — from quiet candlelit dinners to celebrations under the lights.</p>
+      <div class="hr"></div>
+      <a href="#inquiry" class="btn btn-primary">Start Planning</a>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="included-section">
+  <div class="included-header">
+    <p class="eyebrow">What's Included</p>
+    <h2 class="section-title" style="text-align:center;">Built-In <em>Essentials</em></h2>
+    <div class="hr" style="margin:18px auto;"></div>
+    <p class="body-text" style="text-align:center;max-width:520px;margin:0 auto;">Every private event at Standing Sun comes with the essentials. We work with trusted local vendors for everything else.</p>
+  </div>
+  <div class="included-grid">
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">Full use of 4,000 sq ft venue space</span></div>
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">Standing Sun house wines available</span></div>
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">String lighting throughout the venue</span></div>
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">Onsite event coordination support</span></div>
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">Stage area for live music or speeches</span></div>
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">Onsite parking for guests</span></div>
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">Trusted vendor network referrals</span></div>
+    <div class="included-item"><div class="included-dot"></div><span class="included-text">Flexible setup configurations</span></div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-strip">
+  <p class="quote-text">"This venue boasts a 4,000 square foot industrial winery — barrels, steel tanks, and original art as the perfect backdrop for your private event."</p>
+  <p class="quote-attr">— Standing Sun Wines</p>
+</div>
+
+<!-- INQUIRY FORM -->
+<section id="inquiry" class="inquiry-section">
+  <div class="inquiry-wrap">
+    <div class="inquiry-header">
+      <p class="eyebrow">Begin Planning</p>
+      <h2 class="section-title" style="text-align:center;">Inquire About <em>Your Event</em></h2>
+      <div class="hr" style="margin:18px auto;"></div>
+      <p class="body-text" style="text-align:center;max-width:480px;margin:0 auto;">Tell us about your event and we'll be in touch within 48 hours.</p>
+    </div>
+    <form class="ssw-inquiry-form" action="#" method="post">
+      <input type="hidden" name="access_key" value="d285445e-1bf2-424e-987a-e14eec9c02b6">
+      <input type="hidden" name="subject" value="🥂 Private Event Booking Inquiry — Standing Sun Wines">
+      <input type="hidden" name="from_name" value="Standing Sun — Private Events">
+      <input type="hidden" name="replyto" value="email">
+      <input type="checkbox" name="botcheck" style="display:none;">
+      
+      <div class="form-row">
+        <div class="form-field"><input type="text" name="first_name" placeholder="First Name"/></div>
+        <div class="form-field"><input type="text" name="last_name" placeholder="Last Name"/></div>
+      </div>
+      <div class="form-field"><input type="email" name="email" placeholder="Email Address"/></div>
+      <div class="form-field"><input type="tel" name="phone" placeholder="Phone Number"/></div>
+      <div class="form-field">
+        <select name="event_type">
+          <option value="">Type of event</option>
+          <option>Wedding</option>
+          <option>Corporate Retreat / Offsite</option>
+          <option>Private Party (birthday, anniversary, etc.)</option>
+          <option>Rehearsal Dinner</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><input type="text" name="estimated_date" placeholder="Estimated Date"/></div>
+        <div class="form-field"><input type="number" name="guest_count" placeholder="Estimated Guest Count"/></div>
+      </div>
+      <div class="form-field"><textarea name="event_details" placeholder="Tell us about your event — your vision, any specific requests, and anything else you'd like us to know..." rows="5"></textarea></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">Send Inquiry</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><a href="index.html" style="display:inline-block;cursor:pointer;"><img class="footer-logo" src="/images/ssw/ssw-d553bb7215e2dee2.png" alt="Standing Sun Wines"/></a></div>
+    <div class="footer-nav-group">
+      <div class="footer-col">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="winery.html">The Winery</a>
+      </div>
+      <div class="footer-col">
+        <a href="events.html">Live Events</a>
+        <a href="private-events.html">Private Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-addr">
+      <strong>Standing Sun Wines</strong>
+      <p>92 2nd Street<br/>Buellton, CA 93427</p>
+      <div class="footer-sister">
+        <a href="https://www.analogueroom.com" target="_blank">Visit The Analogue Room →</a>
+      </div>
+    </div>
+  </div>
+  <p class="footer-copy">© 2025 Standing Sun Wines · All Rights Reserved · Buellton, California</p>
+</footer>
+
+</body>
+</html>

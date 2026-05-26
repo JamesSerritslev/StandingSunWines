@@ -1,58 +1,94 @@
-import type { Metadata, Viewport } from 'next'
-import './globals.css'
+import type { Metadata, Viewport } from "next"
+import { draftMode } from "next/headers"
+import { VisualEditing } from "next-sanity/visual-editing"
+import "./globals.css"
+import "./ssw/ssw-base.css"
+import { SanityLive } from "@/sanity/lib/live"
+
+const siteUrl =
+  (process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    "https://www.standingsunwines.com") as string
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
-  viewportFit: 'cover',
-  themeColor: '#282b2e',
+  viewportFit: "cover",
+  themeColor: "#231f20",
 }
 
-/** Fonts load at runtime via <link> — avoids build failures when fonts.googleapis.com is unreachable (offline / firewall). */
+/** Fonts load at runtime via <link> — avoids build failures when fonts.googleapis.com is unreachable. */
 
 export const metadata: Metadata = {
-  title: 'The Analogue Room | Vinyl Bar & Listening Lounge | Solvang, CA',
-  description: 'A curated vinyl bar and listening lounge in Solvang, California. Experience hand-selected records, thoughtful drinks, and a space designed for listening.',
-  keywords: ['vinyl bar', 'listening lounge', 'Solvang', 'Santa Ynez Valley', 'wine bar', 'records', 'hi-fi'],
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Standing Sun Wines · Santa Barbara County",
+    template: "%s · Standing Sun Wines",
+  },
+  description:
+    "Standing Sun Wines — custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California.",
+  keywords: [
+    "Standing Sun Wines",
+    "Buellton winery",
+    "Santa Ynez Valley",
+    "Santa Barbara County wine",
+    "custom crush",
+    "private events",
+    "winery venue",
+  ],
   openGraph: {
-    title: 'The Analogue Room | Vinyl Bar & Listening Lounge',
-    description: 'A curated vinyl bar and listening lounge in Solvang, California.',
-    type: 'website',
-    locale: 'en_US',
+    type: "website",
+    locale: "en_US",
+    siteName: "Standing Sun Wines",
+    title: "Standing Sun Wines · Santa Barbara County",
+    description:
+      "Wine, music, and art — custom crush, live events, and private gatherings in Buellton, California.",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'The Analogue Room | Vinyl Bar & Listening Lounge',
-    description: 'A curated vinyl bar and listening lounge in Solvang, California.',
+    card: "summary_large_image",
+    title: "Standing Sun Wines",
+    description:
+      "Custom crush winery and event destination in Buellton, Santa Barbara County.",
   },
   robots: {
     index: true,
     follow: true,
   },
   icons: {
-    icon: '/icon.svg',
+    icon: "/icon.svg",
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { isEnabled: isDraftMode } = await draftMode()
+
   return (
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Oswald:wght@200..700&family=Special+Elite&display=swap"
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="font-body min-h-dvh min-w-0 overflow-x-hidden bg-cream text-coal antialiased">
+      <body className="min-h-dvh min-w-0 antialiased">
         <div className="relative z-[1] min-h-dvh min-w-0 w-full max-w-full overflow-x-hidden">
           {children}
         </div>
+
+        {/* Live Content API — keeps Presentation preview in sync with edits */}
+        <SanityLive />
+
+        {/* Visual Editing overlays — only active in Draft Mode (inside Presentation iframe) */}
+        {isDraftMode ? <VisualEditing /> : null}
       </body>
     </html>
   )
