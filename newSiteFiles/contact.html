@@ -172,7 +172,7 @@
       <p>Tell us a bit about what brings you here.</p>
     </div>
 
-    <form action="https://api.web3forms.com/submit" method="POST">
+    <form class="ssw-inquiry-form" action="#" method="post">
       <input type="hidden" name="access_key" value="d285445e-1bf2-424e-987a-e14eec9c02b6">
       <input type="hidden" name="subject" value="✉️ Contact Form — Standing Sun Wines">
       <input type="hidden" name="from_name" value="Standing Sun — Contact">
@@ -244,7 +244,7 @@
         <p class="conditional-fields-title">Event Details</p>
         <div class="form-field">
           <label>Type of event</label>
-          <select>
+          <select name="event_type">
             <option value="">Select one...</option>
             <option>Wedding</option>
             <option>Corporate Retreat / Offsite</option>
@@ -256,11 +256,11 @@
         <div class="form-row">
           <div class="form-field">
             <label>Estimated date</label>
-            <input type="text" placeholder="MM/YYYY"/>
+            <input type="text" name="estimated_date" placeholder="MM/YYYY"/>
           </div>
           <div class="form-field" style="margin-bottom:0;">
             <label>Guest count</label>
-            <input type="number" placeholder="Number"/>
+            <input type="number" name="guest_count" placeholder="Number"/>
           </div>
         </div>
       </div>

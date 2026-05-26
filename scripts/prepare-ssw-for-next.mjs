@@ -53,12 +53,20 @@ const map = {
   contact: "contact.html",
 }
 
+function fixForms(html) {
+  return html.replace(
+    /<form action="https:\/\/api\.web3forms\.com\/submit" method="POST">/gi,
+    '<form class="ssw-inquiry-form" action="#" method="post">',
+  )
+}
+
 for (const [key, file] of Object.entries(map)) {
   const raw = fs.readFileSync(path.join(srcDir, file), "utf8")
   let body = stripNavFooter(raw)
   const inner = body.match(/<body[^>]*>([\s\S]*)<\/body>/i)
   const content = inner ? inner[1].trim() : body
   let html = fixLinks(content)
+  html = fixForms(html)
   if (key === "home") html = fixHomeEvents(html)
   const escaped = JSON.stringify(html)
   fs.writeFileSync(

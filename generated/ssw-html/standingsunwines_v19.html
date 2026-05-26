@@ -330,24 +330,19 @@
   <p class="eyebrow" style="text-align:center;">Get in Touch</p>
   <h2 class="section-title" style="text-align:center; margin-bottom:14px;">Let's Make<br><em>Something Together</em></h2>
   <div class="hr" style="margin:18px auto 36px;"></div>
-  <form action="https://api.web3forms.com/submit" method="POST">
+  <form class="ssw-inquiry-form" action="#" method="post">
       <input type="hidden" name="access_key" value="d285445e-1bf2-424e-987a-e14eec9c02b6">
-      <input type="hidden" name="subject" value="🍇 Inquiry from Standing Sun Wines — Homepage">
-      <input type="hidden" name="from_name" value="Standing Sun — Homepage">
+      <input type="hidden" name="subject" value="📬 Newsletter signup — Standing Sun Wines">
+      <input type="hidden" name="from_name" value="Standing Sun — Newsletter">
       <input type="hidden" name="replyto" value="email">
+      <input type="hidden" name="interest" value="Newsletter">
       <input type="checkbox" name="botcheck" style="display:none;">
-      
-    <input type="text" name="name" placeholder="Name"/>
-    <input type="email" name="email" placeholder="Email"/>
-    <select>
-      <option value="">I'm interested in...</option>
-      <option>Winemaker in Residence / Custom Crush</option>
-      <option>Private Event Inquiry</option>
-      <option>Live Event / Concert</option>
-      <option>General Inquiry</option>
-    </select>
-    <textarea name="message" placeholder="Tell us about your project or event" rows="5"></textarea>
-    <button type="submit" class="btn btn-primary">Send Inquiry</button>
+
+    <input type="text" name="first_name" placeholder="First Name" required/>
+    <input type="text" name="last_name" placeholder="Last Name" required/>
+    <input type="email" name="email" placeholder="Email" required/>
+    <input type="tel" name="phone" placeholder="Phone (optional)"/>
+    <button type="submit" class="btn btn-primary">Subscribe</button>
   </form>
 </section>
 

@@ -17,7 +17,7 @@
   .nav-cta:hover{background:var(--spanish-lt)!important;}
   .nav-sister{border-bottom:1px solid rgba(182,86,39,0.5);padding-bottom:2px;color:var(--spanish)!important;}
 
-  .hero{height:50vh;min-height:380px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 80px 64px;}
+  .hero{height:50vh;min-height:380px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:var(--ssw-nav-offset, max(6.25rem, calc(4.75rem + env(safe-area-inset-top, 0px)))) 80px 64px;box-sizing:border-box;}
   .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.35);}
   .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(35,31,32,0.97) 0%,transparent 60%);}
   .hero-content{position:relative;z-index:2;}
@@ -26,7 +26,7 @@
   .hero-title em{font-style:italic;color:var(--hammock);}
   .hero-rule{width:60px;height:1px;background:var(--spanish);margin-top:22px;}
   .contact-hero-cta{margin-top:28px;width:auto!important;display:inline-block;text-align:center;}
-  #contact-form{scroll-margin-top:max(6.5rem,calc(4rem + env(safe-area-inset-top,0px)));}
+  #contact-form{scroll-margin-top:calc(var(--ssw-nav-offset, max(6.25rem, calc(4.75rem + env(safe-area-inset-top, 0px)))) + 1rem);}
 
   /* CONTACT LAYOUT */
   .contact-section{padding:100px 48px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start;}
@@ -52,10 +52,10 @@
   .form-header p{font-size:12px;color:var(--folder);font-weight:300;}
   .form-field{margin-bottom:14px;}
   .form-field label{display:block;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--spanish);margin-bottom:6px;}
-  .form-field input,.form-field select,.form-field textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(161,144,115,0.18);padding:14px 16px;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:12px;outline:none;letter-spacing:0.04em;}
+  .form-field input,.form-field textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(161,144,115,0.18);padding:14px 16px;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:12px;outline:none;letter-spacing:0.04em;}
+  .form-field select{width:100%;border:1px solid rgba(161,144,115,0.18);padding:14px 16px;font-family:'Montserrat',sans-serif;font-size:12px;outline:none;letter-spacing:0.04em;}
   .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--spanish);}
   .form-field textarea{resize:vertical;}
-  .form-field select{color:var(--hammock);cursor:pointer;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
   .conditional-fields{display:none;padding:24px;background:rgba(182,86,39,0.04);border-left:2px solid var(--spanish);margin-bottom:14px;}
   .conditional-fields.active{display:block;animation:slideDown 0.3s ease-out;}
@@ -82,7 +82,7 @@
 
   @media(max-width:900px){
     nav{padding:12px max(16px, env(safe-area-inset-left, 0px)) 12px max(16px, env(safe-area-inset-right, 0px));} .nav-links{gap:14px;}
-    .hero{padding:0 max(20px, env(safe-area-inset-left, 0px)) 48px max(20px, env(safe-area-inset-right, 0px));}
+    .hero{padding:var(--ssw-nav-offset, max(5.5rem, calc(4.25rem + env(safe-area-inset-top, 0px)))) max(20px, env(safe-area-inset-left, 0px)) 48px max(20px, env(safe-area-inset-right, 0px));}
     .contact-section{grid-template-columns:1fr;padding:60px max(20px, env(safe-area-inset-left, 0px)) 60px max(20px, env(safe-area-inset-right, 0px));gap:48px;}
     .form-wrap{padding:32px max(20px, env(safe-area-inset-left, 0px)) 32px max(20px, env(safe-area-inset-right, 0px));}
     .form-row{grid-template-columns:1fr;}

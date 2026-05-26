@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { FormStatusToast } from "@/components/forms/FormStatusToast"
+import { bindInquiryForms, type FormBindStatus } from "@/lib/forms/bind-inquiry-forms"
 
 type Props = {
   html: string
@@ -9,7 +11,7 @@ type Props = {
 
 export function SswPageBody({ html, pageSource }: Props) {
   const ref = useRef<HTMLDivElement>(null)
-  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err">("idle")
+  const [status, setStatus] = useState<FormBindStatus>("idle")
   const [msg, setMsg] = useState<string | null>(null)
 
   useEffect(() => {
@@ -25,46 +27,13 @@ export function SswPageBody({ html, pageSource }: Props) {
     const root = ref.current
     if (!root) return
 
-    const forms = root.querySelectorAll<HTMLFormElement>(
-      'form[action*="web3forms"], form[action*="api.web3forms"]',
-    )
-    const cleanups: Array<() => void> = []
-
-    forms.forEach((form) => {
-      const handler = async (e: Event) => {
-        e.preventDefault()
-        setStatus("sending")
-        setMsg(null)
-        const fd = new FormData(form)
-        const fields: Record<string, string> = {}
-        fd.forEach((v, k) => {
-          if (typeof v === "string") fields[k] = v
-        })
-        try {
-          const res = await fetch("/api/ssw-contact", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ page: pageSource, fields }),
-          })
-          const data = (await res.json().catch(() => ({}))) as { error?: string }
-          if (!res.ok) {
-            setStatus("err")
-            setMsg(data.error ?? "Something went wrong.")
-            return
-          }
-          setStatus("ok")
-          setMsg("Thanks — we received your message.")
-          form.reset()
-        } catch {
-          setStatus("err")
-          setMsg("Network error. Please try again.")
-        }
-      }
-      form.addEventListener("submit", handler)
-      cleanups.push(() => form.removeEventListener("submit", handler))
+    return bindInquiryForms(root, {
+      pageSource,
+      onStatus: (nextStatus, message) => {
+        setStatus(nextStatus)
+        setMsg(message)
+      },
     })
-
-    return () => cleanups.forEach((fn) => fn())
   }, [html, pageSource])
 
   useEffect(() => {
@@ -85,25 +54,7 @@ export function SswPageBody({ html, pageSource }: Props) {
 
   return (
     <>
-      {msg ? (
-        <p
-          className="ssw-form-status"
-          style={{
-            position: "fixed",
-            bottom: 24,
-            right: 24,
-            zIndex: 200,
-            padding: "12px 18px",
-            background: status === "ok" ? "#1a3d1a" : "#3d1a1a",
-            color: "#f9f5e5",
-            fontSize: 13,
-            maxWidth: 320,
-          }}
-          role="status"
-        >
-          {msg}
-        </p>
-      ) : null}
+      <FormStatusToast message={msg} status={status} />
       <div
         ref={ref}
         className="ssw-page-body"

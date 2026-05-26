@@ -160,7 +160,6 @@
     <div class="hero-ctas">
       <a href="#inquiry" class="btn btn-primary">Inquire About Booking</a>
       <a href="#types" class="btn btn-outline">Event Types</a>
-      <a href="#" class="btn btn-outline">Events Brochure</a>
     </div>
   </div>
 </section>
@@ -279,7 +278,7 @@
       <div class="hr" style="margin:18px auto;"></div>
       <p class="body-text" style="text-align:center;max-width:480px;margin:0 auto;">Tell us about your event and we'll be in touch within 48 hours.</p>
     </div>
-    <form action="https://api.web3forms.com/submit" method="POST">
+    <form class="ssw-inquiry-form" action="#" method="post">
       <input type="hidden" name="access_key" value="d285445e-1bf2-424e-987a-e14eec9c02b6">
       <input type="hidden" name="subject" value="🥂 Private Event Booking Inquiry — Standing Sun Wines">
       <input type="hidden" name="from_name" value="Standing Sun — Private Events">
@@ -293,7 +292,7 @@
       <div class="form-field"><input type="email" name="email" placeholder="Email Address"/></div>
       <div class="form-field"><input type="tel" name="phone" placeholder="Phone Number"/></div>
       <div class="form-field">
-        <select>
+        <select name="event_type">
           <option value="">Type of event</option>
           <option>Wedding</option>
           <option>Corporate Retreat / Offsite</option>
@@ -303,8 +302,8 @@
         </select>
       </div>
       <div class="form-row">
-        <div class="form-field"><input type="text" placeholder="Estimated Date"/></div>
-        <div class="form-field"><input type="number" placeholder="Estimated Guest Count"/></div>
+        <div class="form-field"><input type="text" name="estimated_date" placeholder="Estimated Date"/></div>
+        <div class="form-field"><input type="number" name="guest_count" placeholder="Estimated Guest Count"/></div>
       </div>
       <div class="form-field"><textarea name="event_details" placeholder="Tell us about your event — your vision, any specific requests, and anything else you'd like us to know..." rows="5"></textarea></div>
       <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">Send Inquiry</button>

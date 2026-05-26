@@ -19,7 +19,16 @@
     position:fixed; top:0; left:0; right:0; z-index:100;
     padding:14px 48px; display:flex; align-items:center; justify-content:space-between;
     background:linear-gradient(to bottom, rgba(35,31,32,0.97), transparent);
+  }
+  nav::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:linear-gradient(to bottom, rgba(35,31,32,0.97), transparent);
     backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
   }
   .nav-logo-wrap { display:flex; align-items:center; text-decoration:none; }
   .nav-logo-mark { height:72px; width:auto; }
@@ -34,6 +43,8 @@
   .hero {
     height:100vh; position:relative; overflow:hidden;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
+    box-sizing:border-box;
+    padding-top:var(--ssw-nav-offset, max(6.25rem, calc(4.75rem + env(safe-area-inset-top, 0px))));
   }
   .hero-bg {
     position:absolute; inset:0;
@@ -127,12 +138,16 @@
 /* CONTACT */
   .contact { background:#111010; padding:96px 48px; text-align:center; }
   .contact form { max-width:540px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
-  .contact input, .contact select, .contact textarea {
+  .contact input, .contact textarea {
     background:rgba(255,255,255,0.05); border:1px solid rgba(161,144,115,0.18);
     padding:14px 18px; color:var(--cream); font-family:'Montserrat',sans-serif;
     font-size:12px; outline:none; letter-spacing:0.04em; width:100%;
   }
-  .contact select { color:var(--hammock); }
+  .contact select {
+    border:1px solid rgba(161,144,115,0.18);
+    padding:14px 18px; font-family:'Montserrat',sans-serif;
+    font-size:12px; outline:none; letter-spacing:0.04em; width:100%;
+  }
   .contact textarea { resize:vertical; }
   .contact button { border:none; cursor:pointer; font-family:'Montserrat',sans-serif; }
 

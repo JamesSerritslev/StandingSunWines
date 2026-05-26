@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 
 import type { ResolvedNavItem, ResolvedLogo } from "@/lib/site-settings-resolve"
 
@@ -12,9 +13,66 @@ type Props = {
   items: ResolvedNavItem[]
 }
 
+function NavLinks({
+  items,
+  pathname,
+  open,
+  onNavigate,
+}: {
+  items: ResolvedNavItem[]
+  pathname: string
+  open: boolean
+  onNavigate: () => void
+}) {
+  return (
+    <ul className={`nav-links ${open ? "nav-links-open" : ""}`}>
+      {items.map((item) => {
+        if (item.external) {
+          return (
+            <li key={item.key}>
+              <a
+                href={item.href}
+                className={item.classNameHints.analogue ? "nav-analogue" : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onNavigate}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
+        }
+        const active = item.activeExactPaths.some((p) => pathname === p)
+        return (
+          <li key={item.key}>
+            <Link
+              href={item.href}
+              className={`${item.classNameHints.cta ? "nav-cta " : ""}${active ? "active " : ""}`.trim()}
+              onClick={onNavigate}
+            >
+              {item.label}
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
 export function SswNav({ logo, items }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [mobile, setMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    const mq = window.matchMedia("(max-width: 900px)")
+    const sync = () => setMobile(mq.matches)
+    sync()
+    mq.addEventListener("change", sync)
+    return () => mq.removeEventListener("change", sync)
+  }, [])
 
   useEffect(() => {
     setOpen(false)
@@ -29,10 +87,34 @@ export function SswNav({ logo, items }: Props) {
     }
   }, [open])
 
+  const close = () => setOpen(false)
+
+  const links = (
+    <NavLinks items={items} pathname={pathname} open={open} onNavigate={close} />
+  )
+
+  const mobileDrawer =
+    mounted && mobile
+      ? createPortal(
+          <>
+            {open ? (
+              <button
+                type="button"
+                className="ssw-nav-overlay"
+                aria-label="Close menu"
+                onClick={close}
+              />
+            ) : null}
+            {links}
+          </>,
+          document.body,
+        )
+      : null
+
   return (
     <>
       <nav>
-        <Link href="/" className="nav-logo-wrap" onClick={() => setOpen(false)}>
+        <Link href="/" className="nav-logo-wrap" onClick={close}>
           <Image
             className="nav-logo-mark"
             src={logo.src}
@@ -45,37 +127,7 @@ export function SswNav({ logo, items }: Props) {
           />
         </Link>
         <div className="nav-end">
-          <ul className={`nav-links ${open ? "nav-links-open" : ""}`}>
-            {items.map((item) => {
-              if (item.external) {
-                return (
-                  <li key={item.key}>
-                    <a
-                      href={item.href}
-                      className={item.classNameHints.analogue ? "nav-analogue" : undefined}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setOpen(false)}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                )
-              }
-              const active = item.activeExactPaths.some((p) => pathname === p)
-              return (
-                <li key={item.key}>
-                  <Link
-                    href={item.href}
-                    className={`${item.classNameHints.cta ? "nav-cta " : ""}${active ? "active " : ""}`.trim()}
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+          {!mobile ? links : null}
           <button
             type="button"
             className="ssw-nav-toggle"
@@ -89,14 +141,7 @@ export function SswNav({ logo, items }: Props) {
           </button>
         </div>
       </nav>
-      {open ? (
-        <button
-          type="button"
-          className="ssw-nav-overlay"
-          aria-label="Close menu"
-          onClick={() => setOpen(false)}
-        />
-      ) : null}
+      {mobileDrawer}
     </>
   )
 }

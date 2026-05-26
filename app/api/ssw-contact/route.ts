@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { upsertInquiryToMailchimp } from "@/lib/mailchimp/upsert-inquiry"
+import {
+  buildSswInquiryEmailHtml,
+  buildSswInquiryEmailText,
+  prepareEmailFields,
+} from "@/lib/email/inquiry-template"
+import { isNewsletterSignup } from "@/lib/forms/newsletter-signup"
 
 function readEnv(key: string): string | undefined {
   const raw = process.env[key]
@@ -15,13 +22,11 @@ function readEnv(key: string): string | undefined {
   return v || undefined
 }
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-}
+const RESEND_ENV_KEYS = [
+  "RESEND_API_KEY",
+  "RESEND_FROM",
+  "HOST_INQUIRY_TO_EMAIL",
+] as const
 
 export async function POST(req: Request) {
   let body: unknown
@@ -42,64 +47,61 @@ export async function POST(req: Request) {
       ? (o.fields as Record<string, unknown>)
       : {}
 
-  const rows = Object.entries(fields)
-    .filter(([k]) => !["access_key", "botcheck", "from_name", "subject"].includes(k))
-    .map(([k, v]) => `${k}: ${typeof v === "string" ? v : JSON.stringify(v)}`)
-    .join("\n")
-
-  const replyEmail =
+  const email =
     (typeof fields.email === "string" && fields.email.trim()) ||
-    (typeof fields.replyto === "string" && fields.replyto.trim()) ||
-    undefined
+    (typeof fields.replyto === "string" && fields.replyto.includes("@")
+      ? fields.replyto.trim()
+      : "")
 
-  const apiKey = readEnv("RESEND_API_KEY")
-  const from = readEnv("RESEND_FROM")
-  const to = readEnv("HOST_INQUIRY_TO_EMAIL")
-
-  if (!apiKey || !from || !to) {
-    return NextResponse.json(
-      { error: "Email delivery is not configured." },
-      { status: 503 },
-    )
+  if (!email || !email.includes("@")) {
+    return NextResponse.json({ error: "Email is required." }, { status: 400 })
   }
 
-  const text = [
-    `Standing Sun Wines — form submission (${page})`,
-    "—".repeat(40),
-    "",
-    rows || "(no fields)",
-    "",
-  ].join("\n")
+  const newsletterOnly = isNewsletterSignup(page, fields)
 
-  const htmlTable = Object.entries(fields)
-    .filter(([k]) => !["access_key", "botcheck"].includes(k))
-    .map(
-      ([k, v]) =>
-        `<tr><td style="padding:6px 12px;font-weight:600;">${escapeHtml(k)}</td><td style="padding:6px 12px;">${escapeHtml(String(v))}</td></tr>`,
-    )
-    .join("")
+  if (!newsletterOnly) {
+    const missing = RESEND_ENV_KEYS.filter((key) => !readEnv(key))
+    if (missing.length > 0) {
+      return NextResponse.json(
+        {
+          error:
+            "Email delivery is not configured. Add the missing variables to .env.local (local) or your host’s environment settings (production), then restart the dev server.",
+          missing,
+        },
+        { status: 503 },
+      )
+    }
 
-  const html = `<!DOCTYPE html><html><body style="font-family:Georgia,serif;background:#231f20;color:#f9f5e5;padding:24px;">
-  <h1 style="font-size:18px;">Standing Sun Wines</h1>
-  <p style="opacity:0.85;">Page: <strong>${escapeHtml(page)}</strong></p>
-  <table style="width:100%;max-width:560px;border-collapse:collapse;background:#111;">${htmlTable}</table>
-  </body></html>`
+    const apiKey = readEnv("RESEND_API_KEY")!
+    const from = readEnv("RESEND_FROM")!
+    const to = readEnv("HOST_INQUIRY_TO_EMAIL")!
 
-  const resend = new Resend(apiKey)
-  const { error } = await resend.emails.send({
-    from,
-    to: [to],
-    ...(replyEmail && replyEmail.includes("@") ? { replyTo: replyEmail } : {}),
-    subject: `Standing Sun Wines inquiry (${page})`,
-    text,
-    html,
-  })
+    const emailFields = prepareEmailFields(fields)
 
-  if (error) {
-    return NextResponse.json(
-      { error: "Could not send your message. Please try again later." },
-      { status: 502 },
-    )
+    const text = buildSswInquiryEmailText(page, emailFields)
+    const html = buildSswInquiryEmailHtml(page, emailFields)
+
+    const resend = new Resend(apiKey)
+    const { error } = await resend.emails.send({
+      from,
+      to: [to],
+      replyTo: email,
+      subject: `Standing Sun Wines inquiry (${page})`,
+      text,
+      html,
+    })
+
+    if (error) {
+      return NextResponse.json(
+        { error: "Could not send your message. Please try again later." },
+        { status: 502 },
+      )
+    }
+  }
+
+  const mailchimp = await upsertInquiryToMailchimp(page, fields)
+  if (!mailchimp.ok) {
+    return NextResponse.json({ error: mailchimp.error }, { status: 502 })
   }
 
   return NextResponse.json({ success: true }, { status: 200 })

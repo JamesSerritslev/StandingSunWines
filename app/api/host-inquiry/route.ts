@@ -9,108 +9,10 @@
 
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { buildHostInquiryEmailHtml } from "@/lib/email/inquiry-template"
 
 function str(v: unknown): string {
   return typeof v === "string" ? v.trim() : ""
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-}
-
-/** Brand palette — matches site globals (email-safe hex only). */
-const BRAND = {
-  coal: "#282b2e",
-  cream: "#f8e9d0",
-  parched: "#f9f5e5",
-  orange: "#f58220",
-  orangeDk: "#a05c26",
-  earth: "#302725",
-  border: "rgba(40,43,46,0.14)",
-  muted: "rgba(40,43,46,0.72)",
-} as const
-
-function buildInquiryEmailHtml(fields: {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  eventType: string
-  guestCount: string
-  preferredDate: string
-  preferredTime: string
-  message: string
-}): string {
-  const {
-    firstName,
-    lastName,
-    email,
-    phone,
-    eventType,
-    guestCount,
-    preferredDate,
-    preferredTime,
-    message,
-  } = fields
-  const dash = "—"
-  const phoneDisp = phone || dash
-  const dateDisp = preferredDate || dash
-  const timeDisp = preferredTime || dash
-  const msgDisp = message || dash
-
-  const row = (label: string, value: string) => `
-<tr>
-  <td style="padding:14px 28px 2px;font-family:Arial,Helvetica,sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:${BRAND.orangeDk};">${escapeHtml(label)}</td>
-</tr>
-<tr>
-  <td style="padding:0 28px 14px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.45;color:${BRAND.coal};border-bottom:1px solid ${BRAND.border};">${escapeHtml(value)}</td>
-</tr>`
-
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
-<body style="margin:0;padding:0;background-color:${BRAND.earth};">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:${BRAND.earth};">
-<tr>
-<td style="padding:28px 16px;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:580px;margin:0 auto;background-color:${BRAND.cream};border:1px solid rgba(40,43,46,0.12);">
-    <tr>
-      <td style="background-color:${BRAND.coal};padding:22px 28px 20px;border-bottom:3px solid ${BRAND.orange};">
-        <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:0.42em;text-transform:uppercase;color:${BRAND.orange};font-weight:600;">Standing Sun Wines</p>
-        <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:400;color:${BRAND.cream};line-height:1.15;">New inquiry</h1>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding:8px 0 0;background-color:${BRAND.parched};">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-          ${row("Guest name", `${firstName} ${lastName}`)}
-          ${row("Email", email)}
-          ${row("Phone", phoneDisp)}
-          ${row("Event type", eventType)}
-          ${row("Guest count", guestCount)}
-          ${row("Preferred date", dateDisp)}
-          ${row("Preferred time", timeDisp)}
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding:8px 28px 28px;background-color:${BRAND.parched};">
-        <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:${BRAND.orangeDk};">Message</p>
-        <div style="background-color:${BRAND.cream};border-left:3px solid ${BRAND.orange};padding:16px 18px;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.55;color:${BRAND.coal};border-top:1px solid ${BRAND.border};border-right:1px solid ${BRAND.border};border-bottom:1px solid ${BRAND.border};">${escapeHtml(msgDisp).replace(/\n/g, "<br/>")}</div>
-      </td>
-    </tr>
-  </table>
-</td>
-</tr>
-</table>
-</body>
-</html>
-`.trim()
 }
 
 /** Trim and strip one layer of matching quotes (common .env typo). */
@@ -211,7 +113,7 @@ export async function POST(req: Request) {
     "Reply to this email to reach the guest directly.",
   ].join("\n")
 
-  const html = buildInquiryEmailHtml({
+  const html = buildHostInquiryEmailHtml({
     firstName,
     lastName,
     email,
