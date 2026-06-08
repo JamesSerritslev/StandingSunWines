@@ -33,7 +33,7 @@ export function SectionContactForm({ section }: { section: SectionContactForm })
       return
     }
     setStatus("ok")
-    setMsg("Thanks — you're on the list.")
+    setMsg("Thanks, you're on the list.")
     form.reset()
   }
 
@@ -79,7 +79,7 @@ export function SectionContactForm({ section }: { section: SectionContactForm })
       {status === "ok" ? (
         <div className="ssw-form-feedback-wrap">
           <p className="ssw-form-feedback" data-state="ok" role="status">
-            Thanks — you&apos;re on the list. We&apos;ll be in touch soon.
+            Thanks, you&apos;re on the list. We&apos;ll be in touch soon.
           </p>
         </div>
       ) : status === "err" && msg ? (

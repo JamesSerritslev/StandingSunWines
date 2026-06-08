@@ -11,7 +11,7 @@ export const revalidate = 60
 export const metadata: Metadata = {
   title: "The Winery",
   description:
-    "4,000 sq ft industrial winery and custom crush facility in Buellton, Santa Barbara County — production, Winemaker in Residence, and private events.",
+    "4,000 sq ft industrial winery and custom crush facility in Buellton, Santa Barbara County: production, Winemaker in Residence, and private events.",
   openGraph: buildOpenGraph({
     title: "The Winery · Standing Sun Wines",
     description:

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     absolute: "Standing Sun Wines · Santa Barbara County",
   },
   description:
-    "Custom crush winery, live music, and private events in Buellton, California — wine, art, and music at the gateway to Santa Ynez Valley.",
+    "Custom crush winery, live music, and private events in Buellton, California: wine, art, and music at the gateway to Santa Ynez Valley.",
   openGraph: buildOpenGraph({
     title: "Standing Sun Wines · Santa Barbara County",
     description:

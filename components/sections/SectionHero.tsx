@@ -16,6 +16,9 @@ export function SectionHero({ section }: { section: SectionHero }) {
           className="hero-logo"
           src={logoSrc}
           alt="Standing Sun Wines"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
         {tagline ? <p className="hero-tagline">{tagline}</p> : null}
         {ctas && ctas.length > 0 ? (

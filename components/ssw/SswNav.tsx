@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
@@ -115,8 +115,16 @@ function NavLinks({
   )
 }
 
+function scrollHomeToTop() {
+  if (window.location.hash) {
+    window.history.replaceState(null, "", window.location.pathname)
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" })
+}
+
 export function SswNav({ logo, items }: Props) {
   const pathname = usePathname()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [mobile, setMobile] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -178,6 +186,16 @@ export function SswNav({ logo, items }: Props) {
 
   const close = () => setOpen(false)
 
+  const goHomeTop = () => {
+    close()
+    setHomeSection(null)
+    if (pathname === "/") {
+      scrollHomeToTop()
+    } else {
+      router.push("/")
+    }
+  }
+
   const links = (
     <NavLinks
       items={items}
@@ -210,18 +228,24 @@ export function SswNav({ logo, items }: Props) {
   return (
     <>
       <nav>
-        <Link href="/" className="nav-logo-wrap" onClick={close}>
+        <button
+          type="button"
+          className="nav-logo-wrap"
+          aria-label="Go to top of home page"
+          onClick={goHomeTop}
+        >
           <Image
             className="nav-logo-mark"
             src={logo.src}
             alt={logo.alt}
             width={logo.width}
             height={logo.height}
+            style={{ width: "auto", height: "72px" }}
             priority
             sizes="180px"
             unoptimized
           />
-        </Link>
+        </button>
         <div className="nav-end">
           {!mobile ? links : null}
           <button

@@ -7,7 +7,7 @@ export const siteUrl =
 export const siteName = "Standing Sun Wines"
 
 export const defaultDescription =
-  "Standing Sun Wines — custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California."
+  "Standing Sun Wines: custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California."
 
 export const ogImagePath = "/og-image.jpg"
 
@@ -16,7 +16,7 @@ export const ogImage = {
   secureUrl: `${siteUrl}${ogImagePath}`,
   width: 1200,
   height: 630,
-  alt: "Standing Sun Wines — Santa Barbara County",
+  alt: "Standing Sun Wines, Santa Barbara County",
   type: "image/jpeg",
 } as const
 

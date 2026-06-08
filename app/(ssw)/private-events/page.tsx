@@ -11,7 +11,7 @@ export const revalidate = 60
 export const metadata: Metadata = {
   title: "Private Events",
   description:
-    "Weddings, corporate retreats, and private parties in a 4,000 sq ft working winery in Buellton — Santa Ynez Valley event venue.",
+    "Weddings, corporate retreats, and private parties in a 4,000 sq ft working winery in Buellton: Santa Ynez Valley event venue.",
   openGraph: buildOpenGraph({
     title: "Private Events · Standing Sun Wines",
     description:

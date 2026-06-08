@@ -12,7 +12,7 @@ import {
 export const metadata: Metadata = {
   title: "Standing Sun Live",
   description:
-    "Upcoming concerts and events at Standing Sun Wines in Buellton, California — music at the winery in Santa Ynez Valley.",
+    "Upcoming concerts and events at Standing Sun Wines in Buellton, California: music at the winery in Santa Ynez Valley.",
   openGraph: buildOpenGraph({
     title: "Standing Sun Live · Standing Sun Wines",
     description:
@@ -71,7 +71,7 @@ export default async function EventsPage() {
           </h2>
           <div className="mx-auto mb-6 h-0.5 w-12 bg-orange" />
           <p className="font-body mx-auto max-w-[560px] text-[15px] font-normal leading-relaxed text-coal/85">
-            Intimate concerts and gatherings at our working winery — see what&apos;s scheduled below,
+            Intimate concerts and gatherings at our working winery, see what&apos;s scheduled below,
             or browse all upcoming shows on Eventbrite.
           </p>
         </section>

@@ -252,7 +252,7 @@ export function resolveSiteSettings(
 
   const defaultDesc =
     doc?.seoDefaultDescription ??
-    "Standing Sun Wines — custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California."
+    "Standing Sun Wines: custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California."
 
   return {
     brandName: pickStr(doc?.brandName, "Standing Sun Wines"),

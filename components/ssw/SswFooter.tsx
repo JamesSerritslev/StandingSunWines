@@ -31,6 +31,7 @@ export function SswFooter({
             alt={footerLogo.alt}
             width={footerLogo.width}
             height={footerLogo.height}
+            style={{ width: "160px", height: "auto" }}
             unoptimized
           />
         </div>

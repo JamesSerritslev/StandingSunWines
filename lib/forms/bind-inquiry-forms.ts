@@ -182,12 +182,12 @@ export function bindInquiryForms(root: HTMLElement, opts: Options): () => void {
       }
 
       const okMsg = isNewsletter
-        ? "Thanks — you're on the list. We'll keep you updated on new releases and events."
-        : "Thanks — we received your message. We'll be in touch soon."
+        ? "Thanks, you're on the list. We'll keep you updated on new releases and events."
+        : "Thanks, we received your message. We'll be in touch soon."
       setInlineFeedback(form, "ok", okMsg)
       opts.onStatus(
         "ok",
-        isNewsletter ? null : "Thanks — we received your message.",
+        isNewsletter ? null : "Thanks, we received your message.",
       )
       form.reset()
     })()

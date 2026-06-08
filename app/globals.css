@@ -376,21 +376,31 @@
   scroll-margin-top: calc(var(--ssw-nav-offset) - 2rem);
 }
 
-/* Hero animations may not replay on client-side return; ensure visible after mount */
-.ssw-page-body--ready .hero-logo,
-.ssw-page-body--ready .hero-tagline,
-.ssw-page-body--ready .hero-ctas {
-  opacity: 1;
+/* Hero entrance: hidden until animation runs (fill-mode `both` holds 0% during delay) */
+.hero-logo,
+.hero-tagline,
+.hero-ctas {
+  opacity: 0;
+}
+
+/* Prepared HTML: stay hidden until client has mounted and armed animations */
+.ssw-page-body:not(.ssw-page-body--ready) .hero-logo,
+.ssw-page-body:not(.ssw-page-body--ready) .hero-tagline,
+.ssw-page-body:not(.ssw-page-body--ready) .hero-ctas {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ssw-page-body .hero-logo,
-  .ssw-page-body .hero-tagline,
-  .ssw-page-body .hero-ctas {
-    opacity: 1;
-    animation: none;
+  .hero-logo,
+  .hero-tagline,
+  .hero-ctas {
+    opacity: 1 !important;
+    visibility: visible !important;
+    animation: none !important;
+    transform: none !important;
   }
-  
 }
 
 body nav {
@@ -399,6 +409,25 @@ body nav {
 }
 
 /* SswNav (React): cluster links + hamburger on the right; mobile drawer */
+body nav .nav-logo-wrap {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+body nav .nav-logo-mark {
+  width: auto;
+  height: 72px;
+}
+
+body footer .footer-logo {
+  width: 160px;
+  height: auto;
+}
+
 body nav:has(.ssw-nav-toggle) {
   justify-content: space-between;
   overflow: visible;
@@ -603,15 +632,24 @@ body .ssw-nav-toggle[aria-expanded="true"] .ssw-nav-toggle-bar:nth-child(3) {
     text-wrap: pretty;
   }
 
+  body .nav-links > li:not(:has(> a.nav-cta)) + li:has(> a.nav-cta) {
+    margin-top: 10px;
+  }
+
+  body .nav-links > li:has(> a.nav-cta) + li:has(> a.nav-cta) {
+    margin-top: 8px;
+  }
+
   body .nav-links a.nav-cta,
   body .nav-links a.nav-cta.active {
     width: 100%;
-    min-height: 44px;
-    padding: 0 20px;
+    min-height: 52px;
+    padding: 14px 24px;
+    font-size: 10px;
     letter-spacing: 0.22em;
     line-height: 1.2;
     border-bottom: none;
-    white-space: normal;
+    white-space: nowrap;
     text-align: center;
   }
 

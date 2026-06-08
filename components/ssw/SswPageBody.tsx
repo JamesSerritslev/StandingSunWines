@@ -37,11 +37,32 @@ export function SswPageBody({ html, pageSource }: Props) {
     const root = ref.current
     if (!root || htmlRef.current === html) return
 
+    setReady(false)
     root.innerHTML = html
     htmlRef.current = html
-    setReady(false)
-    const frame = requestAnimationFrame(() => setReady(true))
-    return () => cancelAnimationFrame(frame)
+
+    const heroLogo = root.querySelector<HTMLImageElement>(".hero-logo")
+    if (heroLogo) {
+      heroLogo.loading = "eager"
+      heroLogo.fetchPriority = "high"
+      heroLogo.decoding = "async"
+    }
+
+    root.querySelectorAll<HTMLElement>(".hero-logo, .hero-tagline, .hero-ctas").forEach((el) => {
+      el.style.animation = "none"
+      void el.offsetHeight
+      el.style.removeProperty("animation")
+    })
+
+    let outer = 0
+    let inner = 0
+    outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setReady(true))
+    })
+    return () => {
+      cancelAnimationFrame(outer)
+      cancelAnimationFrame(inner)
+    }
   }, [html])
 
   useEffect(() => {

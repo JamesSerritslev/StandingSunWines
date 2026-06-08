@@ -173,7 +173,7 @@ const SITE_SETTINGS = {
   newsletterSubmitLabel: "Join the list",
   seoDefaultTitle: "Standing Sun Wines · Santa Barbara County",
   seoDefaultDescription:
-    "Standing Sun Wines — custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California.",
+    "Standing Sun Wines: custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California.",
   schemaDescription:
     "Custom crush winery, live music venue, and private event space in Buellton, California.",
   schemaStreetAddress: "92 2nd Street",
@@ -189,7 +189,7 @@ const EVENTS_PAGE = {
   title: "Standing Sun Live",
   slug: { _type: "slug", current: "events" },
   seoDescription:
-    "Upcoming concerts and events at Standing Sun Wines in Buellton, California — music at the winery in Santa Ynez Valley.",
+    "Upcoming concerts and events at Standing Sun Wines in Buellton, California: music at the winery in Santa Ynez Valley.",
   sections: [
     {
       _type: "sectionInteriorHero",
@@ -206,7 +206,7 @@ const EVENTS_PAGE = {
       titleMain: "Upcoming",
       titleEm: "Nights",
       body:
-        "Intimate concerts and gatherings at our working winery — see what's scheduled below, or browse all upcoming shows on Eventbrite.",
+        "Intimate concerts and gatherings at our working winery, see what's scheduled below, or browse all upcoming shows on Eventbrite.",
     },
     {
       _type: "sectionEventsList",

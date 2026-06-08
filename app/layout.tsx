@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: buildOpenGraph({
     title: "Standing Sun Wines · Santa Barbara County",
     description:
-      "Wine, music, and art — custom crush, live events, and private gatherings in Buellton, California.",
+      "Wine, music, and art: custom crush, live events, and private gatherings in Buellton, California.",
     url: siteUrl,
   }),
   twitter: buildTwitter({
@@ -84,8 +84,8 @@ export default async function RootLayout({
           {children}
         </div>
 
-        {/* Live Content API — keeps Presentation preview in sync with edits */}
-        <SanityLive />
+        {/* Live Content API — only in Draft Mode (needs Sanity CORS for the preview origin) */}
+        {isDraftMode ? <SanityLive /> : null}
 
         {/* Visual Editing overlays — only active in Draft Mode (inside Presentation iframe) */}
         {isDraftMode ? <VisualEditing /> : null}

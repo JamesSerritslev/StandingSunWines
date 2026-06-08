@@ -11,7 +11,7 @@ export const revalidate = 60
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contact Standing Sun Wines in Buellton, California — custom crush, private events, and general inquiries.",
+    "Contact Standing Sun Wines in Buellton, California: custom crush, private events, and general inquiries.",
   openGraph: buildOpenGraph({
     title: "Contact · Standing Sun Wines",
     description: "Get in touch with Standing Sun Wines in Buellton, CA.",
