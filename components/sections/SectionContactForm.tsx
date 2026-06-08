@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { FormStatusToast } from "@/components/forms/FormStatusToast"
 import type { SectionContactForm } from "@/lib/sanity/types"
 import { onFormEngage } from "@/lib/forms/location"
 import { formDataToFields, submitInquiry } from "@/lib/forms/submit-inquiry"
@@ -40,8 +39,6 @@ export function SectionContactForm({ section }: { section: SectionContactForm })
 
   return (
     <section className="contact" id="contact">
-      <FormStatusToast message={msg} status={status} />
-
       {eyebrow ? (
         <p className="eyebrow" style={{ textAlign: "center" }}>
           {eyebrow}
@@ -64,49 +61,6 @@ export function SectionContactForm({ section }: { section: SectionContactForm })
         onFocusCapture={() => onFormEngage()}
         onInputCapture={() => onFormEngage()}
       >
-        {status === "ok" ? (
-          <p
-            className="ssw-form-feedback"
-            role="status"
-            style={{
-              margin: "0 0 16px",
-              padding: "12px 16px",
-              fontSize: 13,
-              background: "#1a3d1a",
-              color: "#f9f5e5",
-            }}
-          >
-            Thanks — you&apos;re on the list. We&apos;ll be in touch soon.
-          </p>
-        ) : status === "err" && msg ? (
-          <p
-            className="ssw-form-feedback"
-            role="alert"
-            style={{
-              margin: "0 0 16px",
-              padding: "12px 16px",
-              fontSize: 13,
-              background: "#3d1a1a",
-              color: "#f9f5e5",
-            }}
-          >
-            {msg}
-          </p>
-        ) : status === "sending" ? (
-          <p
-            className="ssw-form-feedback"
-            role="status"
-            style={{
-              margin: "0 0 16px",
-              padding: "12px 16px",
-              fontSize: 13,
-              background: "#2a2a2a",
-              color: "#f9f5e5",
-            }}
-          >
-            Sending your message…
-          </p>
-        ) : null}
         <input type="hidden" name="interest" value="Newsletter" />
         <input type="text" name="first_name" placeholder="First Name" required />
         <input type="text" name="last_name" placeholder="Last Name" required />
@@ -121,6 +75,26 @@ export function SectionContactForm({ section }: { section: SectionContactForm })
           {status === "sending" ? "Sending…" : "Subscribe"}
         </button>
       </form>
+
+      {status === "ok" ? (
+        <div className="ssw-form-feedback-wrap">
+          <p className="ssw-form-feedback" data-state="ok" role="status">
+            Thanks — you&apos;re on the list. We&apos;ll be in touch soon.
+          </p>
+        </div>
+      ) : status === "err" && msg ? (
+        <div className="ssw-form-feedback-wrap">
+          <p className="ssw-form-feedback" data-state="err" role="alert">
+            {msg}
+          </p>
+        </div>
+      ) : status === "sending" ? (
+        <div className="ssw-form-feedback-wrap">
+          <p className="ssw-form-feedback" data-state="sending" role="status">
+            Subscribing…
+          </p>
+        </div>
+      ) : null}
     </section>
   )
 }

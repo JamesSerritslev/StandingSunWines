@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-
+import { buildOpenGraph } from "@/lib/site-metadata"
 import { EventsList } from "@/components/events/events-list"
 import { PageBuilder } from "@/components/pages/PageBuilder"
 import { SswChrome } from "@/components/ssw/SswChrome"
@@ -13,6 +13,12 @@ export const metadata: Metadata = {
   title: "Standing Sun Live",
   description:
     "Upcoming concerts and events at Standing Sun Wines in Buellton, California — music at the winery in Santa Ynez Valley.",
+  openGraph: buildOpenGraph({
+    title: "Standing Sun Live · Standing Sun Wines",
+    description:
+      "Upcoming concerts and events at Standing Sun Wines in Buellton, California.",
+    url: "/events",
+  }),
   alternates: { canonical: "/events" },
 }
 
@@ -46,22 +52,22 @@ export default async function EventsPage() {
             <div className="interior-hero-scrim" aria-hidden />
           </div>
           <div className="relative z-2">
-            <p className="font-label mb-4 text-[11px] uppercase tracking-[0.5em] text-orange">
+            <p className="font-label mb-4 text-[11px] uppercase tracking-[0.5em] text-orange-accent">
               Standing Sun Live · Buellton
             </p>
             <h1 className="font-display mb-3.5 text-[clamp(40px,6vw,72px)] leading-[1.05] text-cream">
-              Events <em className="not-italic text-orange">Calendar</em>
+              Events <em className="not-italic text-orange-accent">Calendar</em>
             </h1>
             <div className="mt-5 h-0.5 w-15 bg-orange" />
           </div>
         </section>
 
         <section className="mx-auto max-w-[920px] px-4 py-16 text-center sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-12">
-          <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange">
+          <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange-accent">
             What&apos;s On
           </p>
           <h2 className="font-display mb-6 text-[clamp(34px,4.5vw,52px)] leading-[1.05] text-coal">
-            Upcoming <em className="not-italic text-orange">Nights</em>
+            Upcoming <em className="not-italic text-orange-accent">Nights</em>
           </h2>
           <div className="mx-auto mb-6 h-0.5 w-12 bg-orange" />
           <p className="font-body mx-auto max-w-[560px] text-[15px] font-normal leading-relaxed text-coal/85">
@@ -79,11 +85,11 @@ export default async function EventsPage() {
         </section>
 
         <section className="bg-coal px-4 py-16 text-center text-cream sm:px-6 sm:py-20 md:px-10 md:py-22 lg:px-12">
-          <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange">
+          <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange-accent">
             Stay in the Loop
           </p>
           <h2 className="font-display mb-6 text-[clamp(34px,4.5vw,52px)] leading-[1.05] text-cream">
-            Tickets &amp; <em className="not-italic text-orange">Updates</em>
+            Tickets &amp; <em className="not-italic text-orange-accent">Updates</em>
           </h2>
           <div className="mx-auto mb-6 h-0.5 w-12 bg-orange" />
           <p className="font-body mx-auto mb-8 max-w-[520px] text-[15px] font-normal leading-relaxed text-cream/70">

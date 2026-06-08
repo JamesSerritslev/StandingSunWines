@@ -14,8 +14,12 @@ export function FormStatusToast({ message, status }: Props) {
         right: 24,
         zIndex: 200,
         padding: "12px 18px",
-        background: status === "ok" ? "#1a3d1a" : "#3d1a1a",
-        color: "#f9f5e5",
+        background:
+          status === "ok"
+            ? "rgba(182, 86, 39, 0.95)"
+            : "rgba(40, 43, 46, 0.95)",
+        border: `1px solid ${status === "ok" ? "rgba(212, 113, 58, 0.5)" : "rgba(239, 68, 68, 0.35)"}`,
+        color: "var(--cream, #f9f5e5)",
         fontSize: 13,
         maxWidth: 320,
       }}

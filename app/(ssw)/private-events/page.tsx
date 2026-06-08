@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { buildOpenGraph } from "@/lib/site-metadata"
 import "@/app/ssw/ssw-private-events.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
 import { PageBuilder } from "@/components/pages/PageBuilder"
@@ -11,12 +12,12 @@ export const metadata: Metadata = {
   title: "Private Events",
   description:
     "Weddings, corporate retreats, and private parties in a 4,000 sq ft working winery in Buellton — Santa Ynez Valley event venue.",
-  openGraph: {
+  openGraph: buildOpenGraph({
     title: "Private Events · Standing Sun Wines",
     description:
       "Industrial winery venue for weddings and private events in Buellton, CA.",
-    type: "website",
-  },
+    url: "/private-events",
+  }),
   alternates: { canonical: "/private-events" },
 }
 

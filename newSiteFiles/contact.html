@@ -177,46 +177,44 @@
       <input type="hidden" name="subject" value="✉️ Contact Form — Standing Sun Wines">
       <input type="hidden" name="from_name" value="Standing Sun — Contact">
       <input type="hidden" name="replyto" value="email">
+      <input type="hidden" name="event_type" value="">
       <input type="checkbox" name="botcheck" style="display:none;">
       
       <div class="form-row">
         <div class="form-field">
-          <label>First Name</label>
-          <input type="text" name="first_name" required/>
+          <input type="text" name="first_name" placeholder="First Name" required/>
         </div>
         <div class="form-field">
-          <label>Last Name</label>
-          <input type="text" name="last_name" required/>
+          <input type="text" name="last_name" placeholder="Last Name" required/>
         </div>
       </div>
 
       <div class="form-field">
-        <label>Email</label>
-        <input type="email" name="email" required/>
+        <input type="email" name="email" placeholder="Email" required/>
       </div>
 
       <div class="form-field">
-        <label>Phone</label>
-        <input type="tel" name="phone"/>
+        <input type="tel" name="phone" placeholder="Phone (optional)"/>
       </div>
 
       <div class="form-field">
-        <label>What's this about?</label>
-        <select id="inquiry-type" name="inquiry_type" onchange="showFields()" required>
-          <option value="">Select inquiry type...</option>
+        <select id="inquiry-type" name="inquiry_type" required>
+          <option value="">What's this about?</option>
           <option value="custom-crush">Custom Crush / Winemaker in Residence</option>
-          <option value="private-events">Private Event Inquiry</option>
+          <option value="wedding">Wedding</option>
+          <option value="corporate-retreat">Corporate Retreat / Offsite</option>
+          <option value="private-party">Private Party</option>
+          <option value="rehearsal-dinner">Rehearsal Dinner</option>
+          <option value="event-other">Other Private Event</option>
           <option value="general">General Inquiry</option>
         </select>
       </div>
 
       <!-- CUSTOM CRUSH FIELDS -->
       <div class="conditional-fields" id="fields-custom-crush">
-        <p class="conditional-fields-title">Custom Crush Details</p>
         <div class="form-field">
-          <label>I am a...</label>
-          <select>
-            <option value="">Select one...</option>
+          <select name="winemaker_type">
+            <option value="">I am a...</option>
             <option>First-time winemaker</option>
             <option>Established wine brand</option>
             <option>Hobbyist / home winemaker</option>
@@ -224,9 +222,8 @@
           </select>
         </div>
         <div class="form-field">
-          <label>Estimated annual production</label>
-          <select>
-            <option value="">Select one...</option>
+          <select name="annual_production">
+            <option value="">Estimated annual production</option>
             <option>Under 100 cases</option>
             <option>100–500 cases</option>
             <option>500–1,000 cases</option>
@@ -234,44 +231,27 @@
           </select>
         </div>
         <div class="form-field" style="margin-bottom:0;">
-          <label>Target start date</label>
-          <input type="text" placeholder="e.g. Harvest 2025"/>
+          <input type="text" name="target_start_date" placeholder="Target start date (e.g. Harvest 2025)"/>
         </div>
       </div>
 
-      <!-- PRIVATE EVENTS FIELDS -->
-      <div class="conditional-fields" id="fields-private-events">
-        <p class="conditional-fields-title">Event Details</p>
-        <div class="form-field">
-          <label>Type of event</label>
-          <select name="event_type">
-            <option value="">Select one...</option>
-            <option>Wedding</option>
-            <option>Corporate Retreat / Offsite</option>
-            <option>Private Party (birthday, anniversary, etc.)</option>
-            <option>Rehearsal Dinner</option>
-            <option>Other</option>
-          </select>
-        </div>
+      <!-- EVENT FIELDS -->
+      <div class="conditional-fields" id="fields-event">
         <div class="form-row">
           <div class="form-field">
-            <label>Estimated date</label>
-            <input type="text" name="estimated_date" placeholder="MM/YYYY"/>
+            <input type="text" name="estimated_date" placeholder="Estimated Date (MM/YYYY)"/>
           </div>
           <div class="form-field" style="margin-bottom:0;">
-            <label>Guest count</label>
-            <input type="number" name="guest_count" placeholder="Number"/>
+            <input type="number" name="guest_count" placeholder="Estimated Guest Count"/>
           </div>
         </div>
       </div>
 
       <!-- GENERAL FIELDS -->
       <div class="conditional-fields" id="fields-general">
-        <p class="conditional-fields-title">How Can We Help?</p>
         <div class="form-field" style="margin-bottom:0;">
-          <label>Topic</label>
-          <select>
-            <option value="">Select one...</option>
+          <select name="general_topic">
+            <option value="">Topic</option>
             <option>Press / Media</option>
             <option>Wine Purchase / Order</option>
             <option>Live Events Question</option>
@@ -282,8 +262,7 @@
       </div>
 
       <div class="form-field">
-        <label>Message</label>
-        <textarea name="message" rows="5" placeholder="Tell us more..." required></textarea>
+        <textarea name="message" rows="5" placeholder="Message" required></textarea>
       </div>
 
       <button type="submit" class="btn btn-primary">Send Message</button>
@@ -319,18 +298,6 @@
   </div>
   <p class="footer-copy">© 2025 Standing Sun Wines · All Rights Reserved · Buellton, California</p>
 </footer>
-
-<script>
-  function showFields() {
-    var type = document.getElementById('inquiry-type').value;
-    var allFields = document.querySelectorAll('.conditional-fields');
-    allFields.forEach(function(f) { f.classList.remove('active'); });
-    if (type) {
-      var target = document.getElementById('fields-' + type);
-      if (target) target.classList.add('active');
-    }
-  }
-</script>
 
 </body>
 </html>

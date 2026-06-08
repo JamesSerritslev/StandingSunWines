@@ -3,11 +3,14 @@ import { draftMode } from "next/headers"
 import { VisualEditing } from "next-sanity/visual-editing"
 import "./globals.css"
 import "./ssw/ssw-base.css"
+import {
+  buildOpenGraph,
+  buildTwitter,
+  defaultDescription,
+  siteName,
+  siteUrl,
+} from "@/lib/site-metadata"
 import { SanityLive } from "@/sanity/lib/live"
-
-const siteUrl =
-  (process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-    "https://www.standingsunwines.com") as string
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -24,8 +27,7 @@ export const metadata: Metadata = {
     default: "Standing Sun Wines · Santa Barbara County",
     template: "%s · Standing Sun Wines",
   },
-  description:
-    "Standing Sun Wines — custom crush winery, live music, and private events in Buellton at the gateway to Santa Ynez Valley, Santa Barbara County, California.",
+  description: defaultDescription,
   keywords: [
     "Standing Sun Wines",
     "Buellton winery",
@@ -35,26 +37,24 @@ export const metadata: Metadata = {
     "private events",
     "winery venue",
   ],
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    siteName: "Standing Sun Wines",
+  openGraph: buildOpenGraph({
     title: "Standing Sun Wines · Santa Barbara County",
     description:
       "Wine, music, and art — custom crush, live events, and private gatherings in Buellton, California.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Standing Sun Wines",
+    url: siteUrl,
+  }),
+  twitter: buildTwitter({
+    title: siteName,
     description:
       "Custom crush winery and event destination in Buellton, Santa Barbara County.",
-  },
+  }),
   robots: {
     index: true,
     follow: true,
   },
   icons: {
-    icon: "/icon.svg",
+    icon: "/images/ssw/ssw-3a30683668704b66.png",
+    apple: "/images/ssw/ssw-3a30683668704b66.png",
   },
 }
 

@@ -60,8 +60,7 @@
   .hero-logo {
     width:min(340px,68vw);
     height:auto;
-    margin-bottom:28px;
-    margin-left:175px;
+    margin:0 auto 28px 188px;
     display:block;
     opacity:0;
     animation:fadeUp 1s ease forwards 0.3s;
@@ -84,7 +83,7 @@
   .scroll-line { width:1px; height:38px; background:linear-gradient(to bottom, var(--gold-dk), transparent); animation:scrollPulse 2s ease-in-out infinite; }
 
   /* SHARED */
-  .eyebrow { font-size:9px; letter-spacing:0.4em; text-transform:uppercase; color:var(--spanish); margin-bottom:14px; }
+  .eyebrow { font-size:9px; letter-spacing:0.4em; text-transform:uppercase; color:var(--spanish-lt); margin-bottom:14px; }
   .section-title { font-family:'Libre Baskerville',serif; font-size:clamp(26px,3.8vw,42px); font-weight:400; line-height:1.15; margin-bottom:18px; color:var(--cream); }
   .section-title em { font-style:italic; color:var(--hammock); }
   .body-text { font-size:13px; font-weight:300; line-height:1.85; letter-spacing:0.03em; color:var(--hammock); max-width:540px; }
@@ -117,7 +116,7 @@
   .event-card img { width:100%; height:100%; object-fit:cover; filter:brightness(0.65); transition:filter 0.4s, transform 0.5s; display:block; }
   .event-card:hover img { filter:brightness(0.75); transform:scale(1.03); }
   .event-overlay { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:32px; background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%); }
-  .event-tag { font-size:8px; letter-spacing:0.35em; text-transform:uppercase; color:var(--spanish); margin-bottom:8px; }
+  .event-tag { font-size:8px; letter-spacing:0.35em; text-transform:uppercase; color:var(--spanish-lt); margin-bottom:8px; }
   .event-title { font-family:'Libre Baskerville',serif; font-size:clamp(18px,2.2vw,24px); color:var(--cream); line-height:1.2; }
 .bottles-img img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
 
@@ -172,7 +171,7 @@
   @media(max-width:900px) {
     nav { padding:12px max(16px, env(safe-area-inset-left, 0px)) 12px max(16px, env(safe-area-inset-right, 0px)); }
     .nav-links { gap:14px; }
-    .hero-logo { display:block; margin-left:98px; margin-right:max(0px, env(safe-area-inset-right, 0px)); width:min(680px, 92vw); max-width:100%; }
+    .hero-logo { display:block; margin:0 auto 28px 45px; width:min(340px, 68vw); max-width:100%; }
     .hero-content { padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
     .hero-ctas { flex-direction:column; align-items:center; gap:12px; }
     .hero-ctas .btn { width:100%; max-width:min(400px, 100%); box-sizing:border-box; text-align:center; }
@@ -190,18 +189,6 @@
     .footer-addr { text-align:center; }
     .footer-nav-group { justify-content:center; }
     footer { padding:48px max(20px, env(safe-area-inset-left, 0px)) max(28px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-right, 0px)); }
-  }
-
-  @media(max-width:425px) {
-    .hero-logo { margin-left:81px; }
-  }
-
-  @media(max-width:375px) {
-    .hero-logo { margin-left:64px; }
-  }
-
-  @media(max-width:320px) {
-    .hero-logo { margin-left:59px; }
   }
 
   @media(max-width:480px) {

@@ -231,6 +231,68 @@
   color: #f9f5e5;
 }
 
+.ssw-page-body .form-field label {
+  display: none;
+}
+
+@keyframes sswFeedbackPop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ssw-page-body .ssw-form-feedback-wrap,
+.contact .ssw-form-feedback-wrap {
+  width: 100%;
+  max-width: 540px;
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.ssw-page-body .ssw-form-feedback,
+.contact .ssw-form-feedback {
+  width: 100%;
+  margin: 0;
+  padding: 16px 20px;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  line-height: 1.55;
+  text-align: center;
+  transform-origin: center center;
+  animation: sswFeedbackPop 0.45s ease-out;
+}
+
+.ssw-page-body .ssw-form-feedback[data-state="ok"],
+.contact .ssw-form-feedback[data-state="ok"] {
+  background: rgba(182, 86, 39, 0.12);
+  border: 1px solid rgba(182, 86, 39, 0.45);
+  border-top: 2px solid var(--spanish);
+  color: var(--cream);
+}
+
+.ssw-page-body .ssw-form-feedback[data-state="err"],
+.contact .ssw-form-feedback[data-state="err"] {
+  background: rgba(40, 43, 46, 0.55);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-top: 2px solid #c44;
+  color: var(--cream);
+}
+
+.ssw-page-body .ssw-form-feedback[data-state="sending"],
+.contact .ssw-form-feedback[data-state="sending"] {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(161, 144, 115, 0.22);
+  color: var(--hammock);
+}
+
 /* Animation for spinning vinyl */
 @keyframes spin {
   from { transform: rotate(0deg); }
@@ -289,6 +351,46 @@
   .pt-page-hero {
     padding-top: var(--ssw-nav-offset);
   }
+
+  /* Brighter orange accent on dark backgrounds (events, interior heroes) */
+  .text-orange-accent {
+    color: #ffb04d;
+  }
+}
+
+/* Home anchor sections — clear fixed nav when scrolling via hash links */
+.ssw-page-body [id="about"],
+.ssw-page-body [id="winemaker"],
+.ssw-page-body [id="private"],
+.ssw-page-body [id="contact"],
+.ssw-page-body [id="gallery"],
+.ssw-page-body [id="winery"],
+.ssw-page-body [id="types"],
+.ssw-page-body [id="inquiry"],
+.ssw-page-body [id="facility"],
+.ssw-page-body [id="serious-wine"] {
+  scroll-margin-top: calc(var(--ssw-nav-offset) + 1rem);
+}
+
+.ssw-page-body [id="events"] {
+  scroll-margin-top: calc(var(--ssw-nav-offset) - 2rem);
+}
+
+/* Hero animations may not replay on client-side return; ensure visible after mount */
+.ssw-page-body--ready .hero-logo,
+.ssw-page-body--ready .hero-tagline,
+.ssw-page-body--ready .hero-ctas {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ssw-page-body .hero-logo,
+  .ssw-page-body .hero-tagline,
+  .ssw-page-body .hero-ctas {
+    opacity: 1;
+    animation: none;
+  }
+  
 }
 
 body nav {
@@ -322,20 +424,20 @@ body .nav-links a.active:not(.nav-cta) {
 }
 
 /*
- * Nav Contact CTA: single locked box on all routes. (Do not add `btn` on this link —
- * page-level .btn rules change padding and caused active vs inactive resize.)
+ * Nav CTAs (Join Our List + Contact): locked box sizing on all routes. (Do not add
+ * `btn` on these links — page-level .btn rules change padding and caused resize.)
  */
 body nav .nav-links a.nav-cta {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 9px 20px;
+  padding: 9px 16px;
   min-height: 38px;
   font-family: "Montserrat", sans-serif;
   font-size: 9px;
   font-weight: 500;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   line-height: 1;
   text-decoration: none;

@@ -24,16 +24,16 @@
   .nav-cta:hover{background:var(--spanish-lt)!important;}
   .nav-sister{border-bottom:1px solid rgba(182,86,39,0.5);padding-bottom:2px;color:var(--spanish)!important;}
 
-  .hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 80px 80px;}
+  .hero{height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px 80px;}
   .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.4);}
   .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(35,31,32,0.95) 0%,transparent 60%);}
-  .hero-content{position:relative;z-index:2;max-width:720px;}
-  .hero-eyebrow{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--spanish);margin-bottom:14px;}
+  .hero-content{position:relative;z-index:2;max-width:720px;margin-inline:auto;}
+  .hero-eyebrow{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--spanish-lt);margin-bottom:14px;}
   .hero-title{font-family:'Libre Baskerville',serif;font-size:clamp(44px,7vw,82px);font-weight:400;line-height:1.0;color:var(--cream);margin-bottom:20px;}
   .hero-title em{font-style:italic;color:var(--hammock);}
-  .hero-body{font-size:13px;font-weight:300;line-height:1.85;color:var(--hammock);max-width:520px;margin-bottom:32px;}
-  .hero-rule{width:60px;height:1px;background:var(--spanish);margin-bottom:32px;}
-  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-body{font-size:13px;font-weight:300;line-height:1.85;color:var(--hammock);max-width:520px;margin:0 auto 32px;}
+  .hero-rule{width:60px;height:1px;background:var(--spanish);margin:0 auto 32px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
 
   .eyebrow{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--spanish);margin-bottom:14px;}
   .section-title{font-family:'Libre Baskerville',serif;font-size:clamp(26px,3.8vw,44px);font-weight:400;line-height:1.15;margin-bottom:18px;color:var(--cream);}
@@ -50,8 +50,9 @@
   .types{padding:100px 80px;max-width:1200px;margin:0 auto;}
   .types-header{text-align:center;margin-bottom:64px;}
   .types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
-  .type-card{background:#1a1714;padding:48px 36px;border-top:2px solid var(--spanish);transition:transform 0.3s;}
-  .type-card:hover{transform:translateY(-4px);}
+  a.type-card{display:block;text-decoration:none;color:inherit;cursor:pointer;}
+  .type-card{background:#1a1714;padding:48px 36px;border-top:2px solid var(--spanish);transition:transform 0.3s,border-color 0.2s;}
+  .type-card:hover{transform:translateY(-4px);border-top-color:var(--spanish-lt);}
   .type-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;color:var(--spanish);}
   .type-title{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:12px;}
   .type-rule{width:28px;height:1px;background:var(--spanish);margin-bottom:16px;}
@@ -175,7 +176,7 @@
 
   <div class="types-grid">
 
-    <div class="type-card">
+    <a href="#inquiry" class="type-card">
       <div class="type-icon">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 21s-7-4.5-7-11a7 7 0 0 1 14 0c0 6.5-7 11-7 11z"/>
@@ -185,9 +186,9 @@
       <h3 class="type-title">Weddings</h3>
       <div class="type-rule"></div>
       <p class="type-desc">Say "I do" surrounded by barrels and string lights. Our industrial winery offers a one-of-a-kind backdrop for ceremonies, receptions, and rehearsal dinners.</p>
-    </div>
+    </a>
 
-    <div class="type-card">
+    <a href="#inquiry" class="type-card">
       <div class="type-icon">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="7" width="18" height="13" rx="1"/>
@@ -198,9 +199,9 @@
       <h3 class="type-title">Corporate Retreats</h3>
       <div class="type-rule"></div>
       <p class="type-desc">Reset, reconnect, and reimagine in a setting that inspires. Perfect for offsites, team building, client dinners, and product launches.</p>
-    </div>
+    </a>
 
-    <div class="type-card">
+    <a href="#inquiry" class="type-card">
       <div class="type-icon">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 2 L18 2 L17 8 L7 8 Z"/>
@@ -211,7 +212,7 @@
       <h3 class="type-title">Private Parties &amp; Events</h3>
       <div class="type-rule"></div>
       <p class="type-desc">Birthdays, anniversaries, retirement parties, album releases — whatever brings your people together, we'll help you make it unforgettable.</p>
-    </div>
+    </a>
 
   </div>
 </section>

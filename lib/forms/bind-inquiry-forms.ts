@@ -1,4 +1,8 @@
 import { attachFormLocationListeners } from "@/lib/forms/location"
+import {
+  EVENT_INQUIRY_VALUES,
+  inquiryTypeLabel,
+} from "@/lib/forms/inquiry-options"
 import { isNewsletterSignup } from "@/lib/forms/newsletter-signup"
 import { formDataToFields, submitInquiry } from "@/lib/forms/submit-inquiry"
 
@@ -29,36 +33,61 @@ function setSubmitBusy(form: HTMLFormElement, busy: boolean): void {
   })
 }
 
+function findFormFeedbackWrap(form: HTMLFormElement): HTMLElement | null {
+  const next = form.nextElementSibling
+  return next instanceof HTMLElement &&
+    next.classList.contains("ssw-form-feedback-wrap")
+    ? next
+    : null
+}
+
+function findFormFeedback(form: HTMLFormElement): HTMLElement | null {
+  const wrap = findFormFeedbackWrap(form)
+  if (wrap) {
+    return wrap.querySelector<HTMLElement>(".ssw-form-feedback")
+  }
+  const legacy =
+    form.nextElementSibling instanceof HTMLElement &&
+    form.nextElementSibling.classList.contains("ssw-form-feedback")
+      ? form.nextElementSibling
+      : null
+  return legacy ?? form.querySelector<HTMLElement>(".ssw-form-feedback")
+}
+
 function setInlineFeedback(
   form: HTMLFormElement,
   kind: FormBindStatus,
   text: string | null,
 ): void {
-  let el = form.querySelector<HTMLElement>(".ssw-form-feedback")
+  let wrap = findFormFeedbackWrap(form)
+  let el = findFormFeedback(form)
+
   if (!text) {
-    el?.remove()
+    wrap?.remove()
+    if (!wrap) el?.remove()
     return
   }
-  if (!el) {
+
+  if (!wrap) {
+    wrap = document.createElement("div")
+    wrap.className = "ssw-form-feedback-wrap"
+    if (!el) {
+      el = document.createElement("p")
+      el.className = "ssw-form-feedback"
+    } else {
+      el.remove()
+    }
+    wrap.appendChild(el)
+    form.after(wrap)
+  } else if (!el) {
     el = document.createElement("p")
     el.className = "ssw-form-feedback"
-    el.setAttribute("role", "status")
-    form.insertBefore(el, form.firstChild)
+    wrap.appendChild(el)
   }
+
   el.textContent = text
   el.dataset.state = kind
-  el.style.cssText = [
-    "margin:0 0 16px",
-    "padding:12px 16px",
-    "font-size:13px",
-    "line-height:1.45",
-    "font-family:Montserrat,sans-serif",
-    kind === "ok"
-      ? "background:#1a3d1a;color:#f9f5e5"
-      : kind === "err"
-        ? "background:#3d1a1a;color:#f9f5e5"
-        : "background:#2a2a2a;color:#f9f5e5",
-  ].join(";")
+  el.setAttribute("role", kind === "err" ? "alert" : "status")
 }
 
 function formFromSubmitEvent(e: Event): HTMLFormElement | null {
@@ -68,9 +97,54 @@ function formFromSubmitEvent(e: Event): HTMLFormElement | null {
   return null
 }
 
+function syncInquiryTypeFields(root: HTMLElement, value: string): void {
+  const hiddenEventType = root.querySelector<HTMLInputElement>(
+    'input[name="event_type"][type="hidden"]',
+  )
+  if (hiddenEventType) {
+    hiddenEventType.value = EVENT_INQUIRY_VALUES.has(value)
+      ? inquiryTypeLabel(value)
+      : ""
+  }
+}
+
+function applyInquiryTypeChange(root: HTMLElement, value: string): void {
+  root.querySelectorAll<HTMLElement>(".conditional-fields").forEach((el) => {
+    el.classList.remove("active")
+  })
+
+  if (value === "custom-crush") {
+    root.querySelector("#fields-custom-crush")?.classList.add("active")
+  } else if (EVENT_INQUIRY_VALUES.has(value)) {
+    root.querySelector("#fields-event")?.classList.add("active")
+  } else if (value === "general") {
+    root.querySelector("#fields-general")?.classList.add("active")
+  }
+
+  syncInquiryTypeFields(root, value)
+}
+
+/** Wire contact form inquiry_type dropdown and conditional field panels. */
+function bindInquiryTypeSelect(root: HTMLElement): () => void {
+  const select = root.querySelector<HTMLSelectElement>("#inquiry-type")
+  if (!select) return () => {}
+
+  const form = select.closest("form")
+  const onChange = () => applyInquiryTypeChange(root, select.value)
+  select.addEventListener("change", onChange)
+  form?.addEventListener("reset", onChange)
+  onChange()
+
+  return () => {
+    select.removeEventListener("change", onChange)
+    form?.removeEventListener("reset", onChange)
+  }
+}
+
 /** Bind all inquiry forms under `root` — capture phase prevents native navigation. */
 export function bindInquiryForms(root: HTMLElement, opts: Options): () => void {
   const locationCleanups: Array<() => void> = []
+  const inquiryTypeCleanup = bindInquiryTypeSelect(root)
 
   root.querySelectorAll<HTMLFormElement>("form.ssw-inquiry-form, form[action*='web3forms']").forEach((form) => {
     form.setAttribute("action", "#")
@@ -108,10 +182,13 @@ export function bindInquiryForms(root: HTMLElement, opts: Options): () => void {
       }
 
       const okMsg = isNewsletter
-        ? "Thanks — you're on the list. We'll be in touch soon."
+        ? "Thanks — you're on the list. We'll keep you updated on new releases and events."
         : "Thanks — we received your message. We'll be in touch soon."
       setInlineFeedback(form, "ok", okMsg)
-      opts.onStatus("ok", isNewsletter ? "Thanks — you're on the list." : "Thanks — we received your message.")
+      opts.onStatus(
+        "ok",
+        isNewsletter ? null : "Thanks — we received your message.",
+      )
       form.reset()
     })()
   }
@@ -121,5 +198,6 @@ export function bindInquiryForms(root: HTMLElement, opts: Options): () => void {
   return () => {
     root.removeEventListener("submit", onSubmit, true)
     locationCleanups.forEach((fn) => fn())
+    inquiryTypeCleanup()
   }
 }
