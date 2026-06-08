@@ -1,8 +1,23 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FormStatusToast } from "@/components/forms/FormStatusToast"
 import { bindInquiryForms, type FormBindStatus } from "@/lib/forms/bind-inquiry-forms"
+
+const PAGE_HASH_SECTIONS: Record<string, ReadonlySet<string>> = {
+  home: new Set([
+    "about",
+    "winemaker",
+    "events",
+    "private",
+    "contact",
+    "gallery",
+    "winery",
+  ]),
+  "private-events": new Set(["types", "inquiry"]),
+  winery: new Set(["facility", "serious-wine", "winemaker", "inquiry"]),
+  contact: new Set(["contact-form"]),
+}
 
 type Props = {
   html: string
@@ -11,8 +26,23 @@ type Props = {
 
 export function SswPageBody({ html, pageSource }: Props) {
   const ref = useRef<HTMLDivElement>(null)
+  const htmlRef = useRef<string | null>(null)
   const [status, setStatus] = useState<FormBindStatus>("idle")
   const [msg, setMsg] = useState<string | null>(null)
+  const [ready, setReady] = useState(false)
+
+  // Imperatively set HTML only when the prop changes. Using dangerouslySetInnerHTML
+  // on every render would wipe inline form feedback injected after submit.
+  useLayoutEffect(() => {
+    const root = ref.current
+    if (!root || htmlRef.current === html) return
+
+    root.innerHTML = html
+    htmlRef.current = html
+    setReady(false)
+    const frame = requestAnimationFrame(() => setReady(true))
+    return () => cancelAnimationFrame(frame)
+  }, [html])
 
   useEffect(() => {
     if (!msg) return
@@ -30,6 +60,7 @@ export function SswPageBody({ html, pageSource }: Props) {
     return bindInquiryForms(root, {
       pageSource,
       onStatus: (nextStatus, message) => {
+        if (!message) return
         setStatus(nextStatus)
         setMsg(message)
       },
@@ -37,18 +68,29 @@ export function SswPageBody({ html, pageSource }: Props) {
   }, [html, pageSource])
 
   useEffect(() => {
-    if (pageSource !== "contact") return
-    const scrollToForm = () => {
-      if (window.location.hash !== "#contact-form") return
-      const el = document.getElementById("contact-form")
+    const sections = PAGE_HASH_SECTIONS[pageSource]
+    if (!sections) {
+      if (!window.location.hash) window.scrollTo(0, 0)
+      return
+    }
+
+    const scrollToTarget = () => {
+      const hash = window.location.hash.replace(/^#/, "")
+      if (!hash) {
+        window.scrollTo(0, 0)
+        return
+      }
+      if (!sections.has(hash)) return
+      const el = document.getElementById(hash)
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
     }
-    scrollToForm()
-    const t = window.setTimeout(scrollToForm, 80)
-    window.addEventListener("hashchange", scrollToForm)
+
+    scrollToTarget()
+    const t = window.setTimeout(scrollToTarget, 80)
+    window.addEventListener("hashchange", scrollToTarget)
     return () => {
       window.clearTimeout(t)
-      window.removeEventListener("hashchange", scrollToForm)
+      window.removeEventListener("hashchange", scrollToTarget)
     }
   }, [html, pageSource])
 
@@ -57,8 +99,7 @@ export function SswPageBody({ html, pageSource }: Props) {
       <FormStatusToast message={msg} status={status} />
       <div
         ref={ref}
-        className="ssw-page-body"
-        dangerouslySetInnerHTML={{ __html: html }}
+        className={`ssw-page-body${ready ? " ssw-page-body--ready" : ""}`}
       />
     </>
   )

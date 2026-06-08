@@ -23,14 +23,14 @@ export function SectionInteriorHero({ section, interiorHeroFallback }: Props) {
       </div>
       <div className="relative z-2">
         {eyebrow ? (
-          <p className="font-label mb-4 text-[11px] uppercase tracking-[0.5em] text-orange">
+          <p className="font-label mb-4 text-[11px] uppercase tracking-[0.5em] text-orange-accent">
             {eyebrow}
           </p>
         ) : null}
         {(titleMain || titleEm) ? (
           <h1 className="font-display mb-3.5 text-[clamp(40px,6vw,72px)] leading-[1.05] text-cream">
             {titleMain}
-            {titleEm ? <em className="not-italic text-orange">{" "}{titleEm}</em> : null}
+            {titleEm ? <em className="not-italic text-orange-accent">{" "}{titleEm}</em> : null}
           </h1>
         ) : null}
         <div className="mt-5 h-0.5 w-15 bg-orange" />

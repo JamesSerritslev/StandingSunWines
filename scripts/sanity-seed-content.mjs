@@ -107,15 +107,6 @@ const SITE_SETTINGS = {
       activePathPrefixes: [],
     },
     {
-      _key: navKey("gallery"),
-      key: "gallery",
-      label: "Gallery",
-      href: "/#gallery",
-      kind: "anchor",
-      styleVariant: "default",
-      activePathPrefixes: [],
-    },
-    {
       _key: navKey("private"),
       key: "private",
       label: "Private Events",
@@ -131,6 +122,15 @@ const SITE_SETTINGS = {
       href: "https://www.analogueroom.com",
       kind: "external",
       styleVariant: "analogue",
+      activePathPrefixes: [],
+    },
+    {
+      _key: navKey("newsletter"),
+      key: "newsletter",
+      label: "Join Our List",
+      href: "/#contact",
+      kind: "anchor",
+      styleVariant: "cta",
       activePathPrefixes: [],
     },
     {

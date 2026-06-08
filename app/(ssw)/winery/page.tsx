@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { buildOpenGraph } from "@/lib/site-metadata"
 import "@/app/ssw/ssw-winery.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
 import { PageBuilder } from "@/components/pages/PageBuilder"
@@ -11,12 +12,12 @@ export const metadata: Metadata = {
   title: "The Winery",
   description:
     "4,000 sq ft industrial winery and custom crush facility in Buellton, Santa Barbara County — production, Winemaker in Residence, and private events.",
-  openGraph: {
+  openGraph: buildOpenGraph({
     title: "The Winery · Standing Sun Wines",
     description:
       "Industrial winery and custom crush at the gateway to Santa Ynez Valley.",
-    type: "website",
-  },
+    url: "/winery",
+  }),
   alternates: { canonical: "/winery" },
 }
 

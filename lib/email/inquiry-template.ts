@@ -1,3 +1,5 @@
+import { inquiryTypeLabel } from "@/lib/forms/inquiry-options"
+
 /** Brand palette — matches site globals (email-safe hex only). */
 export const BRAND = {
   void: "#231f20",
@@ -62,8 +64,15 @@ const EMAIL_FIELD_LABELS: Record<string, string> = {
   guest_count: "Guest Count",
   estimated_date: "Estimated Date",
   event_details: "Event Details",
-  winemaker_type: "Winemaker Type",
-  annual_production: "Annual Production",
+  winemaker_type: "I am a...",
+  annual_production: "Estimated Annual Production",
+  general_topic: "Topic",
+  target_start_date: "Target Start Date",
+}
+
+function formatFieldDisplayValue(key: string, value: string): string {
+  if (key === "inquiry_type" && value) return inquiryTypeLabel(value)
+  return value
 }
 
 const FIELD_DISPLAY_ORDER = [
@@ -79,6 +88,8 @@ const FIELD_DISPLAY_ORDER = [
   "annual_production",
   "estimated_date",
   "guest_count",
+  "general_topic",
+  "target_start_date",
   "location",
   "message",
   "event_details",
@@ -105,6 +116,16 @@ export function formatEmailFieldLabel(key: string): string {
     .join(" ")
 }
 
+function fieldValueString(value: unknown): string {
+  if (value == null) return ""
+  if (typeof value === "string") return value.trim()
+  return JSON.stringify(value)
+}
+
+function hasDisplayValue(value: unknown): boolean {
+  return fieldValueString(value).length > 0
+}
+
 export function prepareEmailFields(
   fields: Record<string, unknown>,
 ): Record<string, unknown> {
@@ -112,15 +133,10 @@ export function prepareEmailFields(
   for (const [k, v] of Object.entries(fields)) {
     if (HIDDEN_EMAIL_FIELD_KEYS.has(k)) continue
     if (k === "location" && typeof v === "string" && isLatLongString(v)) continue
+    if (!hasDisplayValue(v)) continue
     out[k] = v
   }
   return out
-}
-
-function fieldValueString(value: unknown): string {
-  if (value == null) return ""
-  if (typeof value === "string") return value.trim()
-  return JSON.stringify(value)
 }
 
 function orderedFieldEntries(
@@ -137,23 +153,26 @@ function orderedFieldEntries(
 }
 
 function emailFieldRow(label: string, value: string): string {
-  const display = value || "—"
   return `
 <tr>
   <td style="padding:14px 28px 2px;font-family:Arial,Helvetica,sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:${BRAND.orange};">${escapeHtml(label)}</td>
 </tr>
 <tr>
-  <td style="padding:0 28px 14px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.45;color:${BRAND.text};border-bottom:1px solid ${BRAND.border};">${escapeHtml(display)}</td>
+  <td style="padding:0 28px 14px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.45;color:${BRAND.text};border-bottom:1px solid ${BRAND.border};">${escapeHtml(value)}</td>
 </tr>`
 }
 
+function emailFieldRowOptional(label: string, value: string): string {
+  const trimmed = value.trim()
+  return trimmed ? emailFieldRow(label, trimmed) : ""
+}
+
 function messageBlock(label: string, value: string): string {
-  const display = value || "—"
   return `
 <tr>
   <td style="padding:8px 28px 28px;background-color:${BRAND.void};">
     <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:${BRAND.orange};">${escapeHtml(label)}</p>
-    <div style="background-color:${BRAND.panel};border-left:3px solid ${BRAND.orange};padding:16px 18px;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.55;color:${BRAND.text};border-top:1px solid ${BRAND.border};border-right:1px solid ${BRAND.border};border-bottom:1px solid ${BRAND.border};">${escapeHtml(display).replace(/\n/g, "<br/>")}</div>
+    <div style="background-color:${BRAND.panel};border-left:3px solid ${BRAND.orange};padding:16px 18px;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.55;color:${BRAND.text};border-top:1px solid ${BRAND.border};border-right:1px solid ${BRAND.border};border-bottom:1px solid ${BRAND.border};">${escapeHtml(value).replace(/\n/g, "<br/>")}</div>
   </td>
 </tr>`
 }
@@ -194,7 +213,8 @@ export function buildSswInquiryEmailHtml(
   const messageFields: [string, string][] = []
 
   for (const [key, value] of entries) {
-    const str = fieldValueString(value)
+    if (!hasDisplayValue(value)) continue
+    const str = formatFieldDisplayValue(key, fieldValueString(value))
     if (MESSAGE_FIELD_KEYS.has(key)) {
       messageFields.push([formatEmailFieldLabel(key), str])
     } else {
@@ -227,11 +247,13 @@ export function buildSswInquiryEmailText(
   page: string,
   fields: Record<string, unknown>,
 ): string {
-  const lines = orderedFieldEntries(fields).map(([key, value]) => {
-    const label = formatEmailFieldLabel(key)
-    const str = fieldValueString(value) || "—"
-    return `${label}: ${str}`
-  })
+  const lines = orderedFieldEntries(fields)
+    .filter(([, value]) => hasDisplayValue(value))
+    .map(([key, value]) => {
+      const label = formatEmailFieldLabel(key)
+      const str = formatFieldDisplayValue(key, fieldValueString(value))
+      return `${label}: ${str}`
+    })
 
   return [
     "STANDING SUN WINES — Form submission",
@@ -273,17 +295,17 @@ export function buildHostInquiryEmailHtml(fields: {
     <tr>
       <td style="padding:8px 0 0;background-color:${BRAND.void};">
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-          ${emailFieldRow("Guest name", `${firstName} ${lastName}`.trim())}
-          ${emailFieldRow("Email", email)}
-          ${emailFieldRow("Phone", phone)}
-          ${emailFieldRow("Event type", eventType)}
-          ${emailFieldRow("Guest count", guestCount)}
-          ${emailFieldRow("Preferred date", preferredDate)}
-          ${emailFieldRow("Preferred time", preferredTime)}
+          ${emailFieldRowOptional("Guest name", `${firstName} ${lastName}`)}
+          ${emailFieldRowOptional("Email", email)}
+          ${emailFieldRowOptional("Phone", phone)}
+          ${emailFieldRowOptional("Event type", eventType)}
+          ${emailFieldRowOptional("Guest count", guestCount)}
+          ${emailFieldRowOptional("Preferred date", preferredDate)}
+          ${emailFieldRowOptional("Preferred time", preferredTime)}
         </table>
       </td>
     </tr>
-    ${messageBlock("Message", message)}`
+    ${message.trim() ? messageBlock("Message", message.trim()) : ""}`
 
   return emailShell(
     "New inquiry",

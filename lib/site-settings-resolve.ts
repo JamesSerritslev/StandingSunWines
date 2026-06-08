@@ -72,7 +72,6 @@ export const DEFAULT_NAV_LINKS: Omit<NavLinkInput, "_key">[] = [
     activePathPrefixes: ["/winery"],
   },
   { key: "events", label: "Live Events", href: "/#events", kind: "anchor", styleVariant: "default", activePathPrefixes: [] },
-  { key: "gallery", label: "Gallery", href: "/#gallery", kind: "anchor", styleVariant: "default", activePathPrefixes: [] },
   {
     key: "private",
     label: "Private Events",
@@ -87,6 +86,14 @@ export const DEFAULT_NAV_LINKS: Omit<NavLinkInput, "_key">[] = [
     href: "https://www.analogueroom.com",
     kind: "external",
     styleVariant: "analogue",
+    activePathPrefixes: [],
+  },
+  {
+    key: "newsletter",
+    label: "Join Our List",
+    href: "/#contact",
+    kind: "anchor",
+    styleVariant: "cta",
     activePathPrefixes: [],
   },
   {
@@ -179,7 +186,24 @@ export function normalizeFooterLinks(rows: FooterLinkInput[] | undefined): Resol
 }
 
 function normalizeNav(nav: NavLinkInput[] | undefined, sisterSiteUrl: string): ResolvedNavItem[] {
-  const source = nav?.length ? nav : DEFAULT_NAV_LINKS
+  let source: Omit<NavLinkInput, "_key">[] = nav?.length ? nav : DEFAULT_NAV_LINKS
+  source = source.filter((raw) => raw.key !== "gallery")
+
+  if (!source.some((raw) => raw.key === "newsletter")) {
+    const newsletter = DEFAULT_NAV_LINKS.find((raw) => raw.key === "newsletter")
+    const contactIdx = source.findIndex((raw) => raw.key === "contact")
+    if (newsletter) {
+      source =
+        contactIdx >= 0
+          ? [
+              ...source.slice(0, contactIdx),
+              newsletter,
+              ...source.slice(contactIdx),
+            ]
+          : [...source, newsletter]
+    }
+  }
+
   const rows: ResolvedNavItem[] = []
   for (let i = 0; i < source.length; i++) {
     const raw = source[i]!

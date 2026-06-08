@@ -13,16 +13,60 @@ type Props = {
   items: ResolvedNavItem[]
 }
 
+const HOME_SCROLL_SECTIONS = ["about", "events"] as const
+
+function anchorIdFromHref(href: string): string | null {
+  const hash = href.includes("#") ? href.split("#").pop() : null
+  return hash?.trim() ? hash.trim() : null
+}
+
+function readHomeHashSection(): (typeof HOME_SCROLL_SECTIONS)[number] | null {
+  const id = window.location.hash.replace(/^#/, "")
+  return HOME_SCROLL_SECTIONS.includes(id as (typeof HOME_SCROLL_SECTIONS)[number])
+    ? (id as (typeof HOME_SCROLL_SECTIONS)[number])
+    : null
+}
+
+function readHomeScrollSection(): (typeof HOME_SCROLL_SECTIONS)[number] | null {
+  const styles = getComputedStyle(document.documentElement)
+  const navOffset = Number.parseFloat(styles.getPropertyValue("--ssw-nav-offset")) || 100
+  const probe = navOffset + 40
+
+  let current: (typeof HOME_SCROLL_SECTIONS)[number] | null = null
+  for (const id of HOME_SCROLL_SECTIONS) {
+    const el = document.getElementById(id)
+    if (!el) continue
+    const { top, bottom } = el.getBoundingClientRect()
+    if (top <= probe && bottom > probe) current = id
+  }
+  return current
+}
+
+function isNavItemActive(
+  item: ResolvedNavItem,
+  pathname: string,
+  homeSection: (typeof HOME_SCROLL_SECTIONS)[number] | null,
+): boolean {
+  if (item.activeExactPaths.some((p) => pathname === p)) return true
+  if (pathname !== "/" || !homeSection) return false
+  const anchor = anchorIdFromHref(item.href)
+  return anchor === homeSection
+}
+
 function NavLinks({
   items,
   pathname,
+  homeSection,
   open,
   onNavigate,
+  onHomeSectionSelect,
 }: {
   items: ResolvedNavItem[]
   pathname: string
+  homeSection: (typeof HOME_SCROLL_SECTIONS)[number] | null
   open: boolean
   onNavigate: () => void
+  onHomeSectionSelect: (id: (typeof HOME_SCROLL_SECTIONS)[number]) => void
 }) {
   return (
     <ul className={`nav-links ${open ? "nav-links-open" : ""}`}>
@@ -42,13 +86,25 @@ function NavLinks({
             </li>
           )
         }
-        const active = item.activeExactPaths.some((p) => pathname === p)
+        const active = isNavItemActive(item, pathname, homeSection)
         return (
           <li key={item.key}>
             <Link
               href={item.href}
               className={`${item.classNameHints.cta ? "nav-cta " : ""}${active ? "active " : ""}`.trim()}
-              onClick={onNavigate}
+              onClick={() => {
+                const anchor = anchorIdFromHref(item.href)
+                if (
+                  pathname === "/" &&
+                  anchor &&
+                  HOME_SCROLL_SECTIONS.includes(
+                    anchor as (typeof HOME_SCROLL_SECTIONS)[number],
+                  )
+                ) {
+                  onHomeSectionSelect(anchor as (typeof HOME_SCROLL_SECTIONS)[number])
+                }
+                onNavigate()
+              }}
             >
               {item.label}
             </Link>
@@ -64,6 +120,9 @@ export function SswNav({ logo, items }: Props) {
   const [open, setOpen] = useState(false)
   const [mobile, setMobile] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [homeSection, setHomeSection] = useState<
+    (typeof HOME_SCROLL_SECTIONS)[number] | null
+  >(null)
 
   useEffect(() => {
     setMounted(true)
@@ -73,6 +132,36 @@ export function SswNav({ logo, items }: Props) {
     mq.addEventListener("change", sync)
     return () => mq.removeEventListener("change", sync)
   }, [])
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setHomeSection(null)
+      return
+    }
+
+    const sync = () => {
+      setHomeSection(readHomeScrollSection() ?? readHomeHashSection())
+    }
+
+    sync()
+    const onHash = () => sync()
+    let ticking = false
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        ticking = false
+        setHomeSection(readHomeScrollSection() ?? readHomeHashSection())
+      })
+    }
+
+    window.addEventListener("hashchange", onHash)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      window.removeEventListener("hashchange", onHash)
+      window.removeEventListener("scroll", onScroll)
+    }
+  }, [pathname])
 
   useEffect(() => {
     setOpen(false)
@@ -90,7 +179,14 @@ export function SswNav({ logo, items }: Props) {
   const close = () => setOpen(false)
 
   const links = (
-    <NavLinks items={items} pathname={pathname} open={open} onNavigate={close} />
+    <NavLinks
+      items={items}
+      pathname={pathname}
+      homeSection={homeSection}
+      open={open}
+      onNavigate={close}
+      onHomeSectionSelect={setHomeSection}
+    />
   )
 
   const mobileDrawer =

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { buildOpenGraph } from "@/lib/site-metadata"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -21,6 +22,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${event.title} | Standing Sun Live`,
     description: event.description,
+    openGraph: buildOpenGraph({
+      title: `${event.title} · Standing Sun Live`,
+      description: event.description,
+      url: `/events/${slug}`,
+    }),
   }
 }
 
@@ -65,18 +71,18 @@ export default async function EventDetailPage({ params }: PageProps) {
           <div className="relative z-2 max-w-[880px]">
             <Link
               href="/events"
-              className="-mx-1 mb-6 inline-flex min-h-10 items-center px-1 font-label text-[10px] uppercase tracking-[0.3em] text-orange/90 transition-colors hover:text-cream sm:tracking-[0.35em]"
+              className="-mx-1 mb-6 inline-flex min-h-10 items-center px-1 font-label text-[10px] uppercase tracking-[0.3em] text-orange-accent/90 transition-colors hover:text-cream sm:tracking-[0.35em]"
             >
               {settings.eventDetailBackLabel}
             </Link>
-            <p className="font-label mb-3 text-[11px] uppercase tracking-[0.4em] text-orange">
+            <p className="font-label mb-3 text-[11px] uppercase tracking-[0.4em] text-orange-accent">
               {event.eventType}
             </p>
             <h1 className="font-display mb-4 text-[clamp(32px,5vw,52px)] leading-[1.05] text-cream">
               {event.title}
             </h1>
             <p className="font-body text-[15px] text-cream/85">
-              <span className="font-label mr-3 text-[10px] uppercase tracking-[0.2em] text-orange">
+              <span className="font-label mr-3 text-[10px] uppercase tracking-[0.2em] text-orange-accent">
                 {settings.eventDetailWhenLabel}
               </span>
               {dateLine}
