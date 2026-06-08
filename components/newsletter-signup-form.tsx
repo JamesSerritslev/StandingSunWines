@@ -2,7 +2,17 @@
 
 import { useState } from "react"
 
-export function NewsletterSignupForm() {
+interface NewsletterSignupFormProps {
+  eyebrow?: string
+  headline?: string
+  submitIdleLabel?: string
+}
+
+export function NewsletterSignupForm({
+  eyebrow = "Updates",
+  headline = "Hear what's spinning",
+  submitIdleLabel = "Join the list",
+}: NewsletterSignupFormProps) {
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -41,11 +51,9 @@ export function NewsletterSignupForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <p className="font-label text-[9px] tracking-[0.35em] text-orange uppercase">
-        Updates
+        {eyebrow}
       </p>
-      <p className="font-display text-lg text-cream">
-        Hear what&apos;s spinning
-      </p>
+      <p className="font-display text-lg text-cream">{headline}</p>
       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
         <input
           type="text"
@@ -81,7 +89,7 @@ export function NewsletterSignupForm() {
         disabled={loading}
         className="min-h-10 w-full border border-orange bg-orange px-4 py-2 font-label text-[10px] tracking-[0.28em] text-cream uppercase transition-colors hover:bg-spanish disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {loading ? "Joining…" : "Join the list"}
+        {loading ? "Joining…" : submitIdleLabel}
       </button>
       {message ? (
         <p

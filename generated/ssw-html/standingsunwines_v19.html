@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Standing Sun Wines · Santa Barbara County</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #f9f5e5;
+    --coal: #282b2e;
+    --hammock: #c3b398;
+    --gold: #f9af1b;
+    --gold-dk: #a4762b;
+    --spanish: #b65627;
+    --spanish-lt: #d4713a;
+    --folder: #a19073;
+    --void: #231f20;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--void); color:var(--cream); font-family:'Montserrat',sans-serif; overflow-x:hidden; }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:14px 48px; display:flex; align-items:center; justify-content:space-between;
+    background:linear-gradient(to bottom, rgba(35,31,32,0.97), transparent);
+    backdrop-filter:blur(8px);
+  }
+  .nav-logo-wrap { display:flex; align-items:center; text-decoration:none; }
+  .nav-logo-mark { height:72px; width:auto; }
+  .nav-links { display:flex; gap:32px; list-style:none; align-items:center; }
+  .nav-links a { font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--hammock); text-decoration:none; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--cream); }
+  .nav-cta { background:var(--spanish); color:var(--cream) !important; padding:9px 20px; }
+  .nav-cta:hover { background:var(--spanish-lt) !important; }
+  .nav-sister { border-bottom:1px solid rgba(182,86,39,0.5); padding-bottom:2px; color:var(--spanish) !important; }
+
+  /* HERO */
+  .hero {
+    height:100vh; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background-image:url('/images/ssw/ssw-686a64508695a231.jpg');
+    background-size:cover; background-position:center;
+    filter:brightness(0.4);
+  }
+  .hero-bg::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to bottom, transparent 40%, rgba(35,31,32,0.95) 100%);
+  }
+  .hero-content { position:relative; z-index:2; text-align:center; padding:0 24px; }
+  .hero-logo {
+    width:min(340px,68vw);
+    height:auto;
+    margin:0 auto 28px 98px;
+    display:block;
+    opacity:0;
+    animation:fadeUp 1s ease forwards 0.3s;
+    filter:
+      drop-shadow(0 8px 36px rgba(0,0,0,0.9))
+      drop-shadow(0 2px 6px rgba(0,0,0,0.95))
+      brightness(1.12)
+      contrast(1.1)
+      saturate(1.06);
+  }
+  .hero-tagline { font-family:'Libre Baskerville',serif; font-size:clamp(12px,1.6vw,17px); font-style:italic; letter-spacing:0.15em; color:var(--hammock); margin-bottom:36px; opacity:0; animation:fadeUp 1s ease forwards 0.6s; }
+  .hero-ctas { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; opacity:0; animation:fadeUp 1s ease forwards 0.9s; }
+  .btn { display:inline-block; padding:13px 30px; font-family:'Montserrat',sans-serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; text-decoration:none; transition:all 0.2s; }
+  .btn-primary { background:var(--spanish); color:var(--cream); }
+  .btn-primary:hover { background:var(--spanish-lt); }
+  .btn-outline { border:1px solid rgba(161,144,115,0.45); color:var(--hammock); }
+  .btn-outline:hover { border-color:var(--cream); color:var(--cream); }
+  .hero-scroll { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; z-index:2; }
+  .hero-scroll span { font-size:8px; letter-spacing:0.35em; text-transform:uppercase; color:var(--folder); }
+  .scroll-line { width:1px; height:38px; background:linear-gradient(to bottom, var(--gold-dk), transparent); animation:scrollPulse 2s ease-in-out infinite; }
+
+  /* SHARED */
+  .eyebrow { font-size:9px; letter-spacing:0.4em; text-transform:uppercase; color:var(--spanish-lt); margin-bottom:14px; }
+  .section-title { font-family:'Libre Baskerville',serif; font-size:clamp(26px,3.8vw,42px); font-weight:400; line-height:1.15; margin-bottom:18px; color:var(--cream); }
+  .section-title em { font-style:italic; color:var(--hammock); }
+  .body-text { font-size:13px; font-weight:300; line-height:1.85; letter-spacing:0.03em; color:var(--hammock); max-width:540px; }
+  .hr { width:38px; height:1px; background:var(--spanish); margin:20px 0; }
+
+  /* ABOUT — 2 col, photo LEFT */
+  .about { display:grid; grid-template-columns:1fr 1fr; min-height:640px; }
+  .about-img {
+    background-image:url('/images/ssw/ssw-b4995a73fbb28fb4.jpg');
+    background-size:cover; background-position:center top;
+  }
+  .about-text { background:#1a1612; padding:88px 64px; display:flex; flex-direction:column; justify-content:center; }
+
+  /* WINEMAKER — text LEFT, photo RIGHT */
+  .winemaker { display:grid; grid-template-columns:1fr 1fr; min-height:600px; }
+  .winemaker-text { background:var(--void); padding:88px 64px; display:flex; flex-direction:column; justify-content:center; }
+  .winemaker-img {
+    background-image:url('/images/ssw/ssw-bcb9952c58238c19.jpg');
+    background-size:cover; background-position:center top;
+  }
+
+  /* EVENTS */
+  .events { background:#0e0d0c; padding:96px 48px; }
+  .events-header { text-align:center; margin-bottom:56px; }
+  .events-header .body-text { margin:0 auto; text-align:center; }
+
+  /* Single full-width event photo + side bottles */
+  .events-layout { display:block; max-width:900px; margin:0 auto 44px; }
+  .event-card { position:relative; overflow:hidden; aspect-ratio:16/9; width:100%; }
+  .event-card img { width:100%; height:100%; object-fit:cover; filter:brightness(0.65); transition:filter 0.4s, transform 0.5s; display:block; }
+  .event-card:hover img { filter:brightness(0.75); transform:scale(1.03); }
+  .event-overlay { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:32px; background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%); }
+  .event-tag { font-size:8px; letter-spacing:0.35em; text-transform:uppercase; color:var(--spanish-lt); margin-bottom:8px; }
+  .event-title { font-family:'Libre Baskerville',serif; font-size:clamp(18px,2.2vw,24px); color:var(--cream); line-height:1.2; }
+.bottles-img img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+
+  .events-cta { text-align:center; }
+
+  /* PRIVATE EVENTS */
+  .private { position:relative; min-height:680px; display:flex; align-items:center; overflow:hidden; }
+  .private-bg {
+    position:absolute; inset:0;
+    background-image:url('/images/ssw/ssw-589384843857d0ab.jpg');
+    background-size:cover; background-position:center top;
+    filter:brightness(0.28);
+  }
+  .private-content { position:relative; z-index:2; max-width:660px; padding:96px 80px; }
+  .private-quote { font-family:'Libre Baskerville',serif; font-size:clamp(14px,1.8vw,19px); font-style:italic; color:var(--hammock); line-height:1.65; border-left:2px solid var(--spanish); padding-left:22px; margin:28px 0; }
+
+
+/* CONTACT */
+  .contact { background:#111010; padding:96px 48px; text-align:center; }
+  .contact form { max-width:540px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+  .contact input, .contact select, .contact textarea {
+    background:rgba(255,255,255,0.05); border:1px solid rgba(161,144,115,0.18);
+    padding:14px 18px; color:var(--cream); font-family:'Montserrat',sans-serif;
+    font-size:12px; outline:none; letter-spacing:0.04em; width:100%;
+  }
+  .contact select { color:var(--hammock); }
+  .contact textarea { resize:vertical; }
+  .contact button { border:none; cursor:pointer; font-family:'Montserrat',sans-serif; }
+
+  /* FOOTER */
+  footer { background:#080706; padding:60px 48px 36px; border-top:1px solid rgba(255,255,255,0.04); }
+  .footer-grid { display:grid; grid-template-columns:180px 1fr auto; gap:48px; align-items:start; margin-bottom:44px; }
+  .footer-logo { width:160px; height:auto; opacity:0.75; }
+  .footer-nav-group { display:flex; gap:48px; justify-content:center; flex-wrap:wrap; }
+  .footer-col { display:flex; flex-direction:column; gap:10px; }
+  .footer-col a { font-size:9px; letter-spacing:0.25em; text-transform:uppercase; color:var(--folder); text-decoration:none; transition:color 0.2s; }
+  .footer-col a:hover { color:var(--cream); }
+  .footer-addr { text-align:right; }
+  .footer-addr strong { font-size:8px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-dk); display:block; margin-bottom:6px; }
+  .footer-addr p { font-size:11px; line-height:1.7; color:var(--folder); }
+  .footer-sister { margin-top:16px; }
+  .footer-sister a { font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--spanish); text-decoration:none; border-bottom:1px solid rgba(182,86,39,0.35); padding-bottom:2px; }
+  .footer-copy { text-align:center; font-size:9px; letter-spacing:0.12em; color:rgba(161,144,115,0.28); border-top:1px solid rgba(255,255,255,0.04); padding-top:22px; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+  @media(max-width:900px) {
+    nav { padding:12px max(16px, env(safe-area-inset-left, 0px)) 12px max(16px, env(safe-area-inset-right, 0px)); }
+    .nav-links { gap:14px; }
+    .hero-logo { display:block; margin-left:98px; margin-right:max(0px, env(safe-area-inset-right, 0px)); width:min(680px, 92vw); max-width:100%; }
+    .hero-content { padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
+    .hero-ctas { flex-direction:column; align-items:center; gap:12px; }
+    .hero-ctas .btn { width:100%; max-width:min(400px, 100%); box-sizing:border-box; text-align:center; }
+    .events { padding:64px max(20px, env(safe-area-inset-left, 0px)) 72px max(20px, env(safe-area-inset-right, 0px)); }
+    .contact { padding:72px max(20px, env(safe-area-inset-left, 0px)) 72px max(20px, env(safe-area-inset-right, 0px)); }
+    .about, .winemaker { grid-template-columns:1fr; }
+    .about-img { min-height:280px; }
+    .winemaker-img { min-height:280px; order:2; }
+    .winemaker-text { order:1; }
+    .about-text, .winemaker-text { padding:52px max(20px, env(safe-area-inset-left, 0px)) 52px max(20px, env(safe-area-inset-right, 0px)); }
+    .events-layout { grid-template-columns:1fr; }
+    .event-overlay { padding:max(20px, env(safe-area-inset-left, 0px)); }
+    .private-content { padding:56px max(20px, env(safe-area-inset-left, 0px)) 60px max(20px, env(safe-area-inset-right, 0px)); }
+    .footer-grid { grid-template-columns:1fr; text-align:center; }
+    .footer-addr { text-align:center; }
+    .footer-nav-group { justify-content:center; }
+    footer { padding:48px max(20px, env(safe-area-inset-left, 0px)) max(28px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-right, 0px)); }
+  }
+
+  @media(max-width:425px) {
+    .hero-logo { margin-left:81px; }
+  }
+
+  @media(max-width:375px) {
+    .hero-logo { margin-left:64px; }
+  }
+
+  @media(max-width:320px) {
+    .hero-logo { margin-left:59px; }
+  }
+
+  @media(max-width:480px) {
+    .section-title { font-size:clamp(22px, 8vw, 34px); }
+    .about-text, .winemaker-text { padding:40px max(16px, env(safe-area-inset-left, 0px)) 40px max(16px, env(safe-area-inset-right, 0px)); }
+    .events { padding:48px max(16px, env(safe-area-inset-left, 0px)) 56px max(16px, env(safe-area-inset-right, 0px)); }
+    .contact { padding:56px max(16px, env(safe-area-inset-left, 0px)) 56px max(16px, env(safe-area-inset-right, 0px)); }
+    .private-content { padding:44px max(16px, env(safe-area-inset-left, 0px)) 48px max(16px, env(safe-area-inset-right, 0px)); }
+    .hero-scroll { bottom:max(16px, env(safe-area-inset-bottom, 0px)); }
+    .hero-tagline { font-size:clamp(11px, 3.5vw, 16px); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo-wrap" href="#">
+    <img class="nav-logo-mark" src="/images/ssw/ssw-3a30683668704b66.png" alt="Standing Sun Wines"/>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="winery.html">The Winery</a></li>
+    <li><a href="events.html">Live Events</a></li>
+    <li><a href="private-events.html">Private Events</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="https://www.analogueroom.com" class="nav-sister" target="_blank">The Analogue Room</a></li>
+    <li><a href="contact.html" class="nav-cta btn">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <img class="hero-logo" src="/images/ssw/ssw-d553bb7215e2dee2.png" alt="Standing Sun Wines"/>
+    <p class="hero-tagline">Wines · Music · Art</p>
+    <div class="hero-ctas">
+      <a href="#winemaker" class="btn btn-primary">Winemaker in Residence</a>
+      <a href="#events" class="btn btn-outline">Standing Sun Live</a>
+      <a href="#private" class="btn btn-outline">Private Events</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Discover</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:#0e0d0c; padding:96px 48px; text-align:center;">
+  <p class="eyebrow" style="text-align:center;">About Us</p>
+  <h2 class="section-title" style="text-align:center; margin-bottom:18px;">Standing Sun <em>Wines</em></h2>
+  <div class="hr" style="margin:20px auto;"></div>
+  <p class="body-text" style="max-width:680px; margin:0 auto; text-align:center;">
+    Standing Sun Wines is a custom crush winery and live event destination located at the gateway to the Santa Ynez Valley in Buellton, California. Founded on the belief that wine, art, and music belong together, we've built a space where the craft of winemaking lives alongside creative expression — a 4,000 square foot industrial winery that doubles as a concert hall, event venue, and community gathering place.
+  </p>
+  <br/>
+  <p class="body-text" style="max-width:680px; margin:0 auto; text-align:center;">
+    Whether you're a winemaker looking for a world-class custom crush facility, a couple searching for a one-of-a-kind wedding venue, or a music lover seeking an intimate live experience, Standing Sun is your place in the valley.
+  </p>
+</section>
+
+<!-- WHERE WINE MEETS ART -->
+<section class="about" id="winery">
+  <div class="about-img"></div>
+  <div class="about-text">
+    <p class="eyebrow">Buellton, California</p>
+    <h2 class="section-title">Where Wine<br>Meets <em>Art</em></h2>
+    <div class="hr"></div>
+    <p class="body-text">Located at the gateway to Santa Ynez Valley, Standing Sun Wines is an industrial winery unlike any other. Stainless steel tanks, oak barrels, and original murals share a 4,000 square foot space that pulses with creative energy — a working winery that doubles as a live music venue and private event destination.</p>
+    <br/>
+    <p class="body-text">We make wine here. We host concerts here. We celebrate weddings, corporate retreats, and milestone moments here. The barrels and tanks are never far from the table.</p>
+  </div>
+</section>
+
+<!-- WINEMAKER IN RESIDENCE -->
+<section class="winemaker" id="winemaker">
+  <div class="winemaker-text">
+    <p class="eyebrow">Custom Crush Program</p>
+    <h2 class="section-title">Winemaker<br><em>in Residence</em></h2>
+    <div class="hr"></div>
+    <p class="body-text">Standing Sun Wines is a fully equipped custom crush facility actively accepting clients for our Winemaker in Residence program. Whether you're an established brand looking for production space or an aspiring winemaker ready to bring your vision to life, our winemaker works alongside you every step of the way.</p>
+    <br/>
+    <p class="body-text">From harvest through bottling, we provide the facility, equipment, and expertise — you bring the grapes and the dream.</p>
+    <div class="hr"></div>
+    <a href="/winery" class="btn btn-primary" style="align-self:flex-start;">Learn More</a>
+  </div>
+  <div class="winemaker-img"></div>
+</section>
+
+<!-- STANDING SUN LIVE -->
+<section class="events" id="events">
+  <div id="gallery" class="events-header">
+    <p class="eyebrow">Standing Sun Live</p>
+    <h2 class="section-title" style="text-align:center;">Music at<br><em>the Winery</em></h2>
+    <div class="hr" style="margin:18px auto;"></div>
+    <p class="body-text">Intimate concerts in a 4,000 sq ft working winery — surrounded by barrels, tanks, and original art. There's no venue quite like it in the Santa Ynez Valley.</p>
+  </div>
+  <div class="events-layout">
+    <div class="event-card" onclick="window.location.href='events.html'" style="cursor:pointer;">
+      <img src="/images/ssw/ssw-a797a261eb289a92.jpg" alt="Concert crowd at Standing Sun"/>
+      <div class="event-overlay">
+        <div class="event-tag">Standing Sun Live</div>
+        <div class="event-title">Music at the Winery</div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="events-cta">
+    <a href="https://www.eventbrite.com/o/standing-sun-wines-121252721971" target="_blank" class="btn btn-primary">See Upcoming Events on Eventbrite</a>
+  </div>
+</section>
+
+<!-- PRIVATE EVENTS -->
+<section id="private">
+  <div class="private">
+    <div class="private-bg"></div>
+    <div class="private-content">
+      <p class="eyebrow">Private Events</p>
+      <h2 class="section-title">An Unforgettable<br><em>Setting</em></h2>
+      <div class="hr"></div>
+      <p class="body-text">Located at the gateway to Santa Ynez Valley in Buellton, CA, Standing Sun Wines offers an intimate, unique industrial venue for weddings, corporate retreats, and private events.</p>
+      <p class="private-quote">"This venue boasts a 4,000 square foot industrial winery — barrels, steel tanks, and modern art as the perfect backdrop for your private event."</p>
+      <a href="#contact" class="btn btn-primary">Contact Us to Book</a>
+    </div>
+  </div>
+  </section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="eyebrow" style="text-align:center;">Get in Touch</p>
+  <h2 class="section-title" style="text-align:center; margin-bottom:14px;">Let's Make<br><em>Something Together</em></h2>
+  <div class="hr" style="margin:18px auto 36px;"></div>
+  <form class="ssw-inquiry-form" action="#" method="post">
+      <input type="hidden" name="access_key" value="d285445e-1bf2-424e-987a-e14eec9c02b6">
+      <input type="hidden" name="subject" value="📬 Newsletter signup — Standing Sun Wines">
+      <input type="hidden" name="from_name" value="Standing Sun — Newsletter">
+      <input type="hidden" name="replyto" value="email">
+      <input type="hidden" name="interest" value="Newsletter">
+      <input type="checkbox" name="botcheck" style="display:none;">
+
+    <input type="text" name="first_name" placeholder="First Name" required/>
+    <input type="text" name="last_name" placeholder="Last Name" required/>
+    <input type="email" name="email" placeholder="Email" required/>
+    <input type="tel" name="phone" placeholder="Phone (optional)"/>
+    <button type="submit" class="btn btn-primary">Subscribe</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <img class="footer-logo" src="/images/ssw/ssw-d553bb7215e2dee2.png" alt="Standing Sun Wines"/>
+    </div>
+    <div class="footer-nav-group">
+      <div class="footer-col">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="winery.html">The Winery</a>
+      </div>
+      <div class="footer-col">
+        <a href="index.html#events">Live Events</a>
+        <a href="private-events.html">Private Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    </div>
+    <div class="footer-addr">
+      <strong>Standing Sun Wines</strong>
+      <p>92 2nd Street<br/>Buellton, CA 93427</p>
+      <div class="footer-sister">
+        <a href="https://www.analogueroom.com">Visit The Analogue Room →</a>
+      </div>
+    </div>
+  </div>
+  <p class="footer-copy">© 2025 Standing Sun Wines · All Rights Reserved · Buellton, California</p>
+</footer>
+
+</body>
+</html>

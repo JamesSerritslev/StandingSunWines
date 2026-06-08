@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   ...studioMetadata,
-  title: "Studio | The Analogue Room",
+  title: "Studio | Standing Sun Wines",
 }
 
 export const viewport: Viewport = studioViewport
