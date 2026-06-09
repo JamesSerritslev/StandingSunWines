@@ -11,14 +11,8 @@ const root = process.cwd()
 const srcDir = path.join(root, "generated", "ssw-html")
 const outDir = path.join(root, "app", "ssw")
 
-/** Tailwind preflight sets img { max-width: 100% } which breaks some static HTML layouts. */
-const tailwindSswImgFix = `
-/* After Tailwind preflight: static SSW markup expects full-width decorative imgs */
-.ssw-page-body img {
-  max-width: none;
-  height: auto;
-}
-`
+/** Tailwind preflight img fix lives in app/globals.css (.ssw-page-body img). */
+const tailwindSswImgFix = ""
 
 const pages = [
   { html: "standingsunwines_v19.html", css: "ssw-base.css" },

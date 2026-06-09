@@ -203,9 +203,3 @@
     .hero-scroll { bottom:max(16px, env(safe-area-inset-bottom, 0px)); }
     .hero-tagline { font-size:clamp(11px, 3.5vw, 16px); }
   }
-/* After Tailwind preflight: static SSW markup expects full-width decorative imgs */
-.ssw-page-body img {
-  max-width: none;
-  height: auto;
-}
-

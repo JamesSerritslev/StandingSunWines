@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next"
 import { draftMode } from "next/headers"
 import { VisualEditing } from "next-sanity/visual-editing"
 import "./globals.css"
-import "./ssw/ssw-base.css"
 import {
   buildOpenGraph,
   buildTwitter,

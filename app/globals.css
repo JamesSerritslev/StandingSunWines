@@ -191,6 +191,12 @@
   font-weight: 400;
 }
 
+/* Tailwind preflight sets img { max-width: 100% } — static SSW markup needs full-width imgs */
+.ssw-page-body img {
+  max-width: none;
+  height: auto;
+}
+
 /* SSW inquiry forms — dark native selects (Windows/Chrome default to white) */
 .ssw-page-body .form-field select,
 .ssw-page-body .contact select,
@@ -376,26 +382,42 @@
   scroll-margin-top: calc(var(--ssw-nav-offset) - 2rem);
 }
 
-/* Hero entrance: hidden until animation runs (fill-mode `both` holds 0% during delay) */
-.hero-logo,
-.hero-tagline,
-.hero-ctas {
+/* Home hero entrance: hidden until animation runs (fill-mode `both` holds 0% during delay) */
+.ssw-page-body--home .hero-logo,
+.ssw-page-body--home .hero-tagline,
+.ssw-page-body--home .hero-ctas {
   opacity: 0;
 }
 
 /* Prepared HTML: stay hidden until client has mounted and armed animations */
-.ssw-page-body:not(.ssw-page-body--ready) .hero-logo,
-.ssw-page-body:not(.ssw-page-body--ready) .hero-tagline,
-.ssw-page-body:not(.ssw-page-body--ready) .hero-ctas {
+.ssw-page-body--home:not(.ssw-page-body--ready) .hero-logo,
+.ssw-page-body--home:not(.ssw-page-body--ready) .hero-tagline,
+.ssw-page-body--home:not(.ssw-page-body--ready) .hero-ctas {
   opacity: 0 !important;
   visibility: hidden !important;
   animation: none !important;
 }
 
+/* Interior SSW pages (winery, contact, private-events): stack hero CTAs on mobile */
+@media (max-width: 900px) {
+  .ssw-page-body:not(.ssw-page-body--home) .hero-ctas {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ssw-page-body:not(.ssw-page-body--home) .hero-ctas .btn {
+    width: 100%;
+    max-width: min(400px, 100%);
+    box-sizing: border-box;
+    text-align: center;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-logo,
-  .hero-tagline,
-  .hero-ctas {
+  .ssw-page-body--home .hero-logo,
+  .ssw-page-body--home .hero-tagline,
+  .ssw-page-body--home .hero-ctas {
     opacity: 1 !important;
     visibility: visible !important;
     animation: none !important;

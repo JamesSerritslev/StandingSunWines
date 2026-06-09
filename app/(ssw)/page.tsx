@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { buildOpenGraph } from "@/lib/site-metadata"
+import "@/app/ssw/ssw-base.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
 import { PageBuilder } from "@/components/pages/PageBuilder"
 import { html } from "@/lib/ssw/prepared/home"

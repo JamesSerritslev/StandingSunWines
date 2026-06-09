@@ -19,6 +19,13 @@ const PAGE_HASH_SECTIONS: Record<string, ReadonlySet<string>> = {
   contact: new Set(["contact-form"]),
 }
 
+const PAGE_BODY_CLASS: Record<string, string> = {
+  home: "ssw-page-body--home",
+  winery: "ssw-page-body--winery",
+  contact: "ssw-page-body--contact",
+  "private-events": "ssw-page-body--private-events",
+}
+
 type Props = {
   html: string
   pageSource: string
@@ -120,7 +127,13 @@ export function SswPageBody({ html, pageSource }: Props) {
       <FormStatusToast message={msg} status={status} />
       <div
         ref={ref}
-        className={`ssw-page-body${ready ? " ssw-page-body--ready" : ""}`}
+        className={[
+          "ssw-page-body",
+          PAGE_BODY_CLASS[pageSource] ?? "",
+          ready ? "ssw-page-body--ready" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
       />
     </>
   )
