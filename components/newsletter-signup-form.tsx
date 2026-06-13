@@ -50,7 +50,7 @@ export function NewsletterSignupForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <p className="font-label text-[9px] tracking-[0.35em] text-orange uppercase">
+      <p className="font-label uppercase text-orange">
         {eyebrow}
       </p>
       <p className="font-display text-lg text-cream">{headline}</p>

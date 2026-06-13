@@ -137,7 +137,7 @@ const SITE_SETTINGS = {
       _key: navKey("contact"),
       key: "contact",
       label: "Contact",
-      href: "/contact#contact-form",
+      href: "/contact",
       kind: "internal",
       styleVariant: "cta",
       activePathPrefixes: ["/contact"],
@@ -154,7 +154,7 @@ const SITE_SETTINGS = {
     links: [
       { _key: "fc_r1", label: "Live Events", href: "/#events" },
       { _key: "fc_r2", label: "Private Events", href: "/private-events" },
-      { _key: "fc_r3", label: "Contact", href: "/contact#contact-form" },
+      { _key: "fc_r3", label: "Contact", href: "/contact" },
     ],
   },
   footerAddressTitle: "Standing Sun Wines",

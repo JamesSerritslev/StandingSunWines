@@ -43,6 +43,7 @@
   .stat-label{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--folder);}
   .facility{padding:100px 80px;max-width:1200px;margin:0 auto;}
   .facility-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px;}
+  .facility-grid:last-child{margin-bottom:0;}
   .facility-grid.reverse{direction:rtl;}
   .facility-grid.reverse > *{direction:ltr;}
   .facility-img{overflow:hidden;}

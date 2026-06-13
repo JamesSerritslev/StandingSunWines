@@ -23,7 +23,7 @@ export function SectionInteriorHero({ section, interiorHeroFallback }: Props) {
       </div>
       <div className="relative z-2">
         {eyebrow ? (
-          <p className="font-label mb-4 text-[11px] uppercase tracking-[0.5em] text-orange-accent">
+          <p className="font-label mb-4 uppercase text-orange-accent">
             {eyebrow}
           </p>
         ) : null}

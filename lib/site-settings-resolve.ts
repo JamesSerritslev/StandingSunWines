@@ -99,7 +99,7 @@ export const DEFAULT_NAV_LINKS: Omit<NavLinkInput, "_key">[] = [
   {
     key: "contact",
     label: "Contact",
-    href: "/contact#contact-form",
+    href: "/contact",
     kind: "internal",
     styleVariant: "cta",
     activePathPrefixes: ["/contact"],
@@ -115,7 +115,7 @@ export const DEFAULT_FOOTER_LEFT: FooterLinkInput[] = [
 export const DEFAULT_FOOTER_RIGHT: FooterLinkInput[] = [
   { label: "Live Events", href: "/#events" },
   { label: "Private Events", href: "/private-events" },
-  { label: "Contact", href: "/contact#contact-form" },
+  { label: "Contact", href: "/contact" },
 ]
 
 export interface ResolvedLogo {

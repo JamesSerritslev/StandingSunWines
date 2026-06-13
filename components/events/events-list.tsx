@@ -68,7 +68,7 @@ function EventCard({
       }`}
     >
       <div className="text-center md:border-r border-coal/15 md:pr-9">
-        <p className="font-label text-[11px] tracking-[0.4em] uppercase text-orange mb-1.5">
+        <p className="font-label uppercase text-orange mb-1.5">
           {month}
         </p>
         <p className="font-display text-5xl text-coal leading-none mb-1.5">{day}</p>
@@ -76,7 +76,7 @@ function EventCard({
       </div>
 
       <div className="text-center md:text-left">
-        <p className="font-label text-[9px] tracking-[0.35em] uppercase text-orange mb-2">
+        <p className="font-label uppercase text-orange mb-2">
           {event.eventType || "Event Type"}
         </p>
         <h3 className="font-display text-2xl text-coal leading-tight mb-2.5">

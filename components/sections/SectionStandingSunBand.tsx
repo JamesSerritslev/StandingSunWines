@@ -16,7 +16,7 @@ export function SectionStandingSunBand({ section, defaultEventbriteUrl }: Props)
     return (
       <section className="bg-coal px-4 py-16 text-center text-cream sm:px-6 sm:py-20 md:px-10 md:py-22 lg:px-12">
         {eyebrow ? (
-          <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange-accent">
+          <p className="font-label mb-4 uppercase text-orange-accent">
             {eyebrow}
           </p>
         ) : null}
@@ -54,7 +54,7 @@ export function SectionStandingSunBand({ section, defaultEventbriteUrl }: Props)
   return (
     <section className="mx-auto max-w-[920px] px-4 py-16 text-center sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-12">
       {eyebrow ? (
-        <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange-accent">{eyebrow}</p>
+        <p className="font-label mb-4 uppercase text-orange-accent">{eyebrow}</p>
       ) : null}
       {(titleMain || titleEm) ? (
         <h2 className="font-display mb-6 text-[clamp(34px,4.5vw,52px)] leading-[1.05] text-coal">

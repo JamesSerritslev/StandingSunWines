@@ -52,7 +52,7 @@ export default async function EventsPage() {
             <div className="interior-hero-scrim" aria-hidden />
           </div>
           <div className="relative z-2">
-            <p className="font-label mb-4 text-[11px] uppercase tracking-[0.5em] text-orange-accent">
+            <p className="font-label mb-4 uppercase text-orange-accent">
               Standing Sun Live · Buellton
             </p>
             <h1 className="font-display mb-3.5 text-[clamp(40px,6vw,72px)] leading-[1.05] text-cream">
@@ -63,7 +63,7 @@ export default async function EventsPage() {
         </section>
 
         <section className="mx-auto max-w-[920px] px-4 py-16 text-center sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-12">
-          <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange-accent">
+          <p className="font-label mb-4 uppercase text-orange-accent">
             What&apos;s On
           </p>
           <h2 className="font-display mb-6 text-[clamp(34px,4.5vw,52px)] leading-[1.05] text-coal">
@@ -85,7 +85,7 @@ export default async function EventsPage() {
         </section>
 
         <section className="bg-coal px-4 py-16 text-center text-cream sm:px-6 sm:py-20 md:px-10 md:py-22 lg:px-12">
-          <p className="font-label mb-4 text-[10px] uppercase tracking-[0.5em] text-orange-accent">
+          <p className="font-label mb-4 uppercase text-orange-accent">
             Stay in the Loop
           </p>
           <h2 className="font-display mb-6 text-[clamp(34px,4.5vw,52px)] leading-[1.05] text-cream">

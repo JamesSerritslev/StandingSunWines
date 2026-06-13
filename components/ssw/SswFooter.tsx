@@ -1,7 +1,7 @@
 import Image from "next/image"
-import Link from "next/link"
 
 import type { ResolvedSiteSettings } from "@/lib/site-settings-resolve"
+import { SswFooterLink } from "./SswFooterLink"
 
 export function SswFooter({
   footerLogo,
@@ -38,16 +38,16 @@ export function SswFooter({
         <div className="footer-nav-group">
           <div className="footer-col">
             {footerColumnLeft.map((link) => (
-              <Link key={link.href + link.label} href={link.href}>
+              <SswFooterLink key={link.href + link.label} href={link.href}>
                 {link.label}
-              </Link>
+              </SswFooterLink>
             ))}
           </div>
           <div className="footer-col">
             {footerColumnRight.map((link) => (
-              <Link key={link.href + link.label} href={link.href}>
+              <SswFooterLink key={link.href + link.label} href={link.href}>
                 {link.label}
-              </Link>
+              </SswFooterLink>
             ))}
           </div>
         </div>

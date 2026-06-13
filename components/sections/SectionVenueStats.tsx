@@ -13,7 +13,7 @@ export function SectionVenueStats({ section, stats }: Props) {
     <section className="bg-coal/[0.04] px-4 py-16 sm:px-6 md:px-10 lg:px-12">
       <div className="mx-auto max-w-[960px] text-center md:text-left">
         {eyebrow ? (
-          <p className="font-label mb-3 text-[10px] uppercase tracking-[0.5em] text-orange-accent">{eyebrow}</p>
+          <p className="font-label mb-3 uppercase text-orange-accent">{eyebrow}</p>
         ) : null}
         {title ? (
           <h2 className="font-display mb-10 text-[clamp(28px,3.8vw,40px)] leading-tight text-coal">{title}</h2>

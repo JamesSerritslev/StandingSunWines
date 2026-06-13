@@ -7,6 +7,13 @@ import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
 import type { ResolvedNavItem, ResolvedLogo } from "@/lib/site-settings-resolve"
+import {
+  isContactTopHref,
+  isHomeNavItem,
+  pinScrollToTop,
+  scrollContactToTop,
+  scrollHomeToTop,
+} from "@/lib/ssw/scroll-home-to-top"
 
 type Props = {
   logo: ResolvedLogo
@@ -47,7 +54,12 @@ function isNavItemActive(
   pathname: string,
   homeSection: (typeof HOME_SCROLL_SECTIONS)[number] | null,
 ): boolean {
-  if (item.activeExactPaths.some((p) => pathname === p)) return true
+  if (item.activeExactPaths.some((p) => pathname === p)) {
+    if (isHomeNavItem(item)) {
+      return pathname === "/" && !homeSection
+    }
+    return true
+  }
   if (pathname !== "/" || !homeSection) return false
   const anchor = anchorIdFromHref(item.href)
   return anchor === homeSection
@@ -60,6 +72,8 @@ function NavLinks({
   open,
   onNavigate,
   onHomeSectionSelect,
+  onHomeTop,
+  onContactTop,
 }: {
   items: ResolvedNavItem[]
   pathname: string
@@ -67,6 +81,8 @@ function NavLinks({
   open: boolean
   onNavigate: () => void
   onHomeSectionSelect: (id: (typeof HOME_SCROLL_SECTIONS)[number]) => void
+  onHomeTop: () => void
+  onContactTop: () => void
 }) {
   return (
     <ul className={`nav-links ${open ? "nav-links-open" : ""}`}>
@@ -92,7 +108,18 @@ function NavLinks({
             <Link
               href={item.href}
               className={`${item.classNameHints.cta ? "nav-cta " : ""}${active ? "active " : ""}`.trim()}
-              onClick={() => {
+              onClick={(e) => {
+                if (isHomeNavItem(item)) {
+                  e.preventDefault()
+                  onHomeTop()
+                  onNavigate()
+                  return
+                }
+                if (isContactTopHref(item.href)) {
+                  onContactTop()
+                  onNavigate()
+                  return
+                }
                 const anchor = anchorIdFromHref(item.href)
                 if (
                   pathname === "/" &&
@@ -113,13 +140,6 @@ function NavLinks({
       })}
     </ul>
   )
-}
-
-function scrollHomeToTop() {
-  if (window.location.hash) {
-    window.history.replaceState(null, "", window.location.pathname)
-  }
-  window.scrollTo({ top: 0, behavior: "smooth" })
 }
 
 export function SswNav({ logo, items }: Props) {
@@ -147,6 +167,11 @@ export function SswNav({ logo, items }: Props) {
       return
     }
 
+    const hash = window.location.hash.replace(/^#/, "")
+    if (!hash) {
+      pinScrollToTop()
+    }
+
     const sync = () => {
       setHomeSection(readHomeScrollSection() ?? readHomeHashSection())
     }
@@ -172,6 +197,11 @@ export function SswNav({ logo, items }: Props) {
   }, [pathname])
 
   useEffect(() => {
+    if (pathname !== "/contact") return
+    pinScrollToTop()
+  }, [pathname])
+
+  useEffect(() => {
     setOpen(false)
   }, [pathname])
 
@@ -191,8 +221,18 @@ export function SswNav({ logo, items }: Props) {
     setHomeSection(null)
     if (pathname === "/") {
       scrollHomeToTop()
+      pinScrollToTop()
     } else {
       router.push("/")
+    }
+  }
+
+  const goContactTop = () => {
+    close()
+    if (pathname === "/contact") {
+      scrollContactToTop()
+    } else {
+      router.push("/contact")
     }
   }
 
@@ -204,6 +244,8 @@ export function SswNav({ logo, items }: Props) {
       open={open}
       onNavigate={close}
       onHomeSectionSelect={setHomeSection}
+      onHomeTop={goHomeTop}
+      onContactTop={goContactTop}
     />
   )
 
