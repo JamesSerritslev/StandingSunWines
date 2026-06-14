@@ -8,7 +8,7 @@ import { defineConfig } from "sanity"
 import { presentationTool, defineDocuments, defineLocations } from "sanity/presentation"
 import { structureTool } from "sanity/structure"
 
-import { apiVersion, dataset, projectId } from "./sanity/env"
+import { apiVersion, dataset, getStudioPreviewOrigin, projectId } from "./sanity/env"
 import { schema } from "./sanity/schemaTypes"
 import { structure } from "./sanity/structure"
 
@@ -29,12 +29,10 @@ export default defineConfig({
 
     presentationTool({
       previewUrl: {
-        origin:
-          typeof process !== "undefined"
-            ? (process.env.SANITY_STUDIO_PREVIEW_ORIGIN ?? "http://localhost:3000")
-            : "http://localhost:3000",
-        draftMode: {
-          enable: "/api/draft-mode",
+        initial: getStudioPreviewOrigin(),
+        previewMode: {
+          enable: "/api/draft-mode/enable",
+          disable: "/api/disable-draft",
         },
       },
       resolve: {
