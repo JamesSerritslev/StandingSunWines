@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { readEnv, readInquiryToEmails } from "@/lib/email/env"
 import { upsertInquiryToMailchimp } from "@/lib/mailchimp/upsert-inquiry"
 import {
   buildSswInquiryEmailHtml,
@@ -8,25 +9,18 @@ import {
 } from "@/lib/email/inquiry-template"
 import { isNewsletterSignup } from "@/lib/forms/newsletter-signup"
 
-function readEnv(key: string): string | undefined {
-  const raw = process.env[key]
-  if (raw == null) return undefined
-  let v = raw.trim()
-  if (!v) return undefined
-  if (
-    (v.startsWith('"') && v.endsWith('"')) ||
-    (v.startsWith("'") && v.endsWith("'"))
-  ) {
-    v = v.slice(1, -1).trim()
-  }
-  return v || undefined
-}
-
 const RESEND_ENV_KEYS = [
   "RESEND_API_KEY",
   "RESEND_FROM",
   "HOST_INQUIRY_TO_EMAIL",
 ] as const
+
+function inquiryEmailConfigured(): boolean {
+  return (
+    RESEND_ENV_KEYS.every((key) => Boolean(readEnv(key))) &&
+    readInquiryToEmails().length > 0
+  )
+}
 
 export async function POST(req: Request) {
   let body: unknown
@@ -60,8 +54,11 @@ export async function POST(req: Request) {
   const newsletterOnly = isNewsletterSignup(page, fields)
 
   if (!newsletterOnly) {
-    const missing = RESEND_ENV_KEYS.filter((key) => !readEnv(key))
-    if (missing.length > 0) {
+    if (!inquiryEmailConfigured()) {
+      const missing = RESEND_ENV_KEYS.filter((key) => !readEnv(key))
+      if (readEnv("HOST_INQUIRY_TO_EMAIL") && readInquiryToEmails().length === 0) {
+        missing.push("HOST_INQUIRY_TO_EMAIL")
+      }
       return NextResponse.json(
         {
           error:
@@ -74,7 +71,7 @@ export async function POST(req: Request) {
 
     const apiKey = readEnv("RESEND_API_KEY")!
     const from = readEnv("RESEND_FROM")!
-    const to = readEnv("HOST_INQUIRY_TO_EMAIL")!
+    const to = readInquiryToEmails()
 
     const emailFields = prepareEmailFields(fields)
 
@@ -84,7 +81,7 @@ export async function POST(req: Request) {
     const resend = new Resend(apiKey)
     const { error } = await resend.emails.send({
       from,
-      to: [to],
+      to,
       replyTo: email,
       subject: `Standing Sun Wines inquiry (${page})`,
       text,

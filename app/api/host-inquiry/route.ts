@@ -4,30 +4,16 @@
  * Add to `.env.local` (and hosting):
  *   RESEND_API_KEY=re_...
  *   RESEND_FROM="Standing Sun Wines <onboarding@resend.dev>"   // or verified domain sender
- *   HOST_INQUIRY_TO_EMAIL=jamesserritslev@gmail.com
+ *   HOST_INQUIRY_TO_EMAIL=blake@standingsunwines.com,john@standingsunwines.com
  */
 
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { readEnv, readInquiryToEmails } from "@/lib/email/env"
 import { buildHostInquiryEmailHtml } from "@/lib/email/inquiry-template"
 
 function str(v: unknown): string {
   return typeof v === "string" ? v.trim() : ""
-}
-
-/** Trim and strip one layer of matching quotes (common .env typo). */
-function readEnv(key: string): string | undefined {
-  const raw = process.env[key]
-  if (raw == null) return undefined
-  let v = raw.trim()
-  if (!v) return undefined
-  if (
-    (v.startsWith('"') && v.endsWith('"')) ||
-    (v.startsWith("'") && v.endsWith("'"))
-  ) {
-    v = v.slice(1, -1).trim()
-  }
-  return v || undefined
 }
 
 export async function POST(req: Request) {
@@ -71,13 +57,13 @@ export async function POST(req: Request) {
 
   const apiKey = readEnv("RESEND_API_KEY")
   const from = readEnv("RESEND_FROM")
-  const to = readEnv("HOST_INQUIRY_TO_EMAIL")
+  const to = readInquiryToEmails()
 
-  if (!apiKey || !from || !to) {
+  if (!apiKey || !from || to.length === 0) {
     const missing = [
       !apiKey && "RESEND_API_KEY",
       !from && "RESEND_FROM",
-      !to && "HOST_INQUIRY_TO_EMAIL",
+      to.length === 0 && "HOST_INQUIRY_TO_EMAIL",
     ].filter(Boolean) as string[]
     const dev = process.env.NODE_ENV === "development"
     return NextResponse.json(
@@ -128,7 +114,7 @@ export async function POST(req: Request) {
   const resend = new Resend(apiKey)
   const { error } = await resend.emails.send({
     from,
-    to: [to],
+    to,
     replyTo: email,
     subject: `Standing Sun Wines — inquiry (${eventType}, ${lastName})`,
     text,
