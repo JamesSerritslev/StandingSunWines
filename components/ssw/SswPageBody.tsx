@@ -56,6 +56,12 @@ export function SswPageBody({ html, pageSource }: Props) {
     const root = ref.current
     if (!root) return
 
+    const hash = window.location.hash.replace(/^#/, "")
+    const hashSections = PAGE_HASH_SECTIONS[pageSource]
+    if (!hash || !hashSections?.has(hash)) {
+      pinScrollToTop()
+    }
+
     setReady(false)
 
     const needsInject = htmlRef.current !== html || root.childElementCount === 0

@@ -1,11 +1,9 @@
 import type { Metadata } from "next"
 import { buildOpenGraph } from "@/lib/site-metadata"
 import { EventsList } from "@/components/events/events-list"
-import { PageBuilder } from "@/components/pages/PageBuilder"
 import { SswChrome } from "@/components/ssw/SswChrome"
 import {
   getEvents,
-  getPage,
   getResolvedSiteSettings,
 } from "@/lib/sanity/queries"
 
@@ -25,21 +23,12 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function EventsPage() {
-  const [events, page, site] = await Promise.all([
+  const [events, site] = await Promise.all([
     getEvents(),
-    getPage("events"),
     getResolvedSiteSettings(),
   ])
 
   const heroBg = site.interiorHeroUrl
-
-  if (page?.sections?.length) {
-    return (
-      <SswChrome>
-        <PageBuilder page={page} events={events} site={site} />
-      </SswChrome>
-    )
-  }
 
   return (
     <SswChrome>

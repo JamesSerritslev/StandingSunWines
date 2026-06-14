@@ -197,7 +197,13 @@ export function SswNav({ logo, items }: Props) {
   }, [pathname])
 
   useEffect(() => {
-    if (pathname !== "/contact") return
+    if (
+      pathname !== "/contact" &&
+      pathname !== "/private-events" &&
+      pathname !== "/winery"
+    ) {
+      return
+    }
     pinScrollToTop()
   }, [pathname])
 

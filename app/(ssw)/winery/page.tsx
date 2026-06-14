@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import { buildOpenGraph } from "@/lib/site-metadata"
 import "@/app/ssw/ssw-winery.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
-import { PageBuilder } from "@/components/pages/PageBuilder"
-import { html } from "@/lib/ssw/prepared/winery"
-import { getPage, getResolvedSiteSettings } from "@/lib/sanity/queries"
+import { applyPageContent } from "@/lib/ssw/apply-page-content"
+import { html as wineryHtml } from "@/lib/ssw/prepared/winery"
+import { getPage } from "@/lib/sanity/queries"
 
 export const revalidate = 60
 
@@ -22,11 +22,7 @@ export const metadata: Metadata = {
 }
 
 export default async function WineryPage() {
-  const [page, site] = await Promise.all([getPage("winery"), getResolvedSiteSettings()])
-
-  if (page?.sections?.length) {
-    return <PageBuilder page={page} site={site} />
-  }
-
+  const page = await getPage("winery")
+  const html = applyPageContent(wineryHtml, page)
   return <SswPageBody html={html} pageSource="winery" />
 }

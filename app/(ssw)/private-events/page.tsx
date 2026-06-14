@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import { buildOpenGraph } from "@/lib/site-metadata"
 import "@/app/ssw/ssw-private-events.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
-import { PageBuilder } from "@/components/pages/PageBuilder"
-import { html } from "@/lib/ssw/prepared/privateEvents"
-import { getPage, getResolvedSiteSettings } from "@/lib/sanity/queries"
+import { applyPageContent } from "@/lib/ssw/apply-page-content"
+import { html as privateEventsHtml } from "@/lib/ssw/prepared/privateEvents"
+import { getPage } from "@/lib/sanity/queries"
 
 export const revalidate = 60
 
@@ -22,11 +22,7 @@ export const metadata: Metadata = {
 }
 
 export default async function PrivateEventsPage() {
-  const [page, site] = await Promise.all([getPage("private-events"), getResolvedSiteSettings()])
-
-  if (page?.sections?.length) {
-    return <PageBuilder page={page} site={site} />
-  }
-
+  const page = await getPage("private-events")
+  const html = applyPageContent(privateEventsHtml, page)
   return <SswPageBody html={html} pageSource="private-events" />
 }

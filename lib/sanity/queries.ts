@@ -46,11 +46,26 @@ const SITE_SETTINGS_QUERY = `*[_type == "siteSettings" && _id == $id][0] {
 /** Cached per-request — reused by layouts and events routes. */
 export const getResolvedSiteSettings = cache(async (): Promise<ResolvedSiteSettings> => {
   try {
-    const { data } = await sanityFetch({
-      query: SITE_SETTINGS_QUERY,
-      params: { id: SITE_SETTINGS_DOC_ID },
-    })
-    return resolveSiteSettings(data as SiteSettingsDocument | null, (img, w) =>
+    const [{ data: settingsDoc }, homeImages] = await Promise.all([
+      sanityFetch({
+        query: SITE_SETTINGS_QUERY,
+        params: { id: SITE_SETTINGS_DOC_ID },
+      }),
+      getHomeChromeImages(),
+    ])
+
+    const navSlot = homeImages.find((item) => item.key === "nav-logo")
+    const footerSlot = homeImages.find((item) => item.key === "footer-logo")
+
+    const merged: SiteSettingsDocument = {
+      ...(settingsDoc as SiteSettingsDocument | null),
+      ...(navSlot?.image ? { navLogo: navSlot.image, navLogoAlt: navSlot.alt } : {}),
+      ...(footerSlot?.image
+        ? { footerLogo: footerSlot.image, footerLogoAlt: footerSlot.alt }
+        : {}),
+    }
+
+    return resolveSiteSettings(merged, (img, w) =>
       sanityImageUrl(img === null ? undefined : img, w),
     )
   } catch (error) {
@@ -59,28 +74,62 @@ export const getResolvedSiteSettings = cache(async (): Promise<ResolvedSiteSetti
   }
 })
 
-// ─── PAGE ────────────────────────────────────────────────────────────────────
+// ─── PAGE CONTENT (images + text) ────────────────────────────────────────────
 
-const PAGE_QUERY = `*[_type == "page" && _id == $id][0] {
-  _id,
-  title,
-  slug,
-  seoDescription,
-  sections[] {
-    ...,
-    body[] { ... }
+const PAGE_CONTENT_QUERY = `{
+  "imagesDoc": *[_type == "pageImages" && pageKey == $id][0] {
+    images[] {
+      _key,
+      key,
+      label,
+      alt,
+      image
+    }
+  },
+  "textDoc": *[_type == "pageText" && pageKey == $id][0] {
+    paragraphs[] {
+      _key,
+      key,
+      label,
+      text
+    }
   }
 }`
 
+const HOME_LOGOS_QUERY = `*[_type == "pageImages" && _id == "images-home"][0].images[] {
+  key,
+  alt,
+  image
+}`
+
+/** Global nav/footer logos live on Home → Images in Studio. */
+export async function getHomeChromeImages(): Promise<
+  { key: string; alt?: string; image?: import("./types").SanityImage }[]
+> {
+  try {
+    const { data } = await sanityFetch({ query: HOME_LOGOS_QUERY })
+    return (data as { key: string; alt?: string; image?: import("./types").SanityImage }[]) ?? []
+  } catch {
+    return []
+  }
+}
+
 /**
- * Fetch a marketing page document by its fixed _id.
- * Returns null if the document doesn't exist yet — callers fall back to the
- * static HTML blob in that case.
+ * Fetch editable page content by route key (home, winery, contact, private-events).
  */
 export async function getPage(id: string): Promise<SanityPage | null> {
   try {
-    const { data } = await sanityFetch({ query: PAGE_QUERY, params: { id } })
-    return (data as SanityPage) ?? null
+    const { data } = await sanityFetch({ query: PAGE_CONTENT_QUERY, params: { id } })
+    const row = data as {
+      imagesDoc?: { images?: SanityPage["images"] }
+      textDoc?: { paragraphs?: SanityPage["paragraphs"] }
+    } | null
+    if (!row?.imagesDoc && !row?.textDoc) return null
+    return {
+      _id: id,
+      images: row.imagesDoc?.images ?? [],
+      paragraphs: row.textDoc?.paragraphs ?? [],
+    }
   } catch (error) {
     console.error(`Error fetching page "${id}" from Sanity:`, error)
     return null

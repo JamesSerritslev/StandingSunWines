@@ -178,6 +178,7 @@
     .hero-content { padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
     .hero-ctas { flex-direction:column; align-items:center; gap:12px; }
     .hero-ctas .btn { width:100%; max-width:min(400px, 100%); box-sizing:border-box; text-align:center; }
+    .hero-scroll { display:none; }
     .events { padding:64px max(20px, env(safe-area-inset-left, 0px)) 72px max(20px, env(safe-area-inset-right, 0px)); }
     .contact { padding:72px max(20px, env(safe-area-inset-left, 0px)) 72px max(20px, env(safe-area-inset-right, 0px)); }
     .about, .winemaker { grid-template-columns:1fr; }
@@ -200,6 +201,5 @@
     .events { padding:48px max(16px, env(safe-area-inset-left, 0px)) 56px max(16px, env(safe-area-inset-right, 0px)); }
     .contact { padding:56px max(16px, env(safe-area-inset-left, 0px)) 56px max(16px, env(safe-area-inset-right, 0px)); }
     .private-content { padding:44px max(16px, env(safe-area-inset-left, 0px)) 48px max(16px, env(safe-area-inset-right, 0px)); }
-    .hero-scroll { bottom:max(16px, env(safe-area-inset-bottom, 0px)); }
     .hero-tagline { font-size:clamp(11px, 3.5vw, 16px); }
   }

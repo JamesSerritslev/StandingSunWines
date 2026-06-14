@@ -12,13 +12,11 @@ import { apiVersion, dataset, projectId } from "./sanity/env"
 import { schema } from "./sanity/schemaTypes"
 import { structure } from "./sanity/structure"
 
-/** Maps page document _id → route */
 const PAGE_ROUTES: Record<string, string> = {
   home: "/",
   winery: "/winery",
   contact: "/contact",
   "private-events": "/private-events",
-  events: "/events",
 }
 
 export default defineConfig({
@@ -43,23 +41,19 @@ export default defineConfig({
         mainDocuments: defineDocuments([
           {
             route: "/",
-            filter: `_type == "page" && _id == "home"`,
+            filter: `_type == "pageImages" && pageKey == "home"`,
           },
           {
             route: "/winery",
-            filter: `_type == "page" && _id == "winery"`,
+            filter: `_type == "pageImages" && pageKey == "winery"`,
           },
           {
             route: "/contact",
-            filter: `_type == "page" && _id == "contact"`,
+            filter: `_type == "pageImages" && pageKey == "contact"`,
           },
           {
             route: "/private-events",
-            filter: `_type == "page" && _id == "private-events"`,
-          },
-          {
-            route: "/events",
-            filter: `_type == "page" && _id == "events"`,
+            filter: `_type == "pageImages" && pageKey == "private-events"`,
           },
           {
             route: "/events/:slug",
@@ -68,32 +62,29 @@ export default defineConfig({
         ]),
 
         locations: {
-          siteSettings: defineLocations({
-            select: { sid: "_id" },
-            resolve: () => ({
-              locations: [
-                { title: "Home (global chrome preview)", href: "/" },
-                { title: "Events list", href: "/events" },
-                { title: "Private Events", href: "/private-events" },
-                { title: "Contact", href: "/contact" },
-              ],
-            }),
-          }),
-          page: defineLocations({
-            select: { title: "title", id: "_id" },
+          pageImages: defineLocations({
+            select: { pageTitle: "pageTitle", pageKey: "pageKey" },
             resolve: (doc) => {
-              const id = doc?.id as string | undefined
-              const href = id ? PAGE_ROUTES[id] : undefined
+              const key = doc?.pageKey as string | undefined
+              const href = key ? PAGE_ROUTES[key] : undefined
               return {
-                locations: href ? [{ title: (doc?.title as string) || "Page", href }] : [],
+                locations: href
+                  ? [{ title: `${(doc?.pageTitle as string) || "Page"} (images)`, href }]
+                  : [],
               }
             },
           }),
-          hostEventVenueStats: defineLocations({
-            select: { sid: "_id" },
-            resolve: () => ({
-              locations: [{ title: "Private Events (preview)", href: "/private-events" }],
-            }),
+          pageText: defineLocations({
+            select: { pageTitle: "pageTitle", pageKey: "pageKey" },
+            resolve: (doc) => {
+              const key = doc?.pageKey as string | undefined
+              const href = key ? PAGE_ROUTES[key] : undefined
+              return {
+                locations: href
+                  ? [{ title: `${(doc?.pageTitle as string) || "Page"} (text)`, href }]
+                  : [],
+              }
+            },
           }),
           event: defineLocations({
             select: { title: "title", slug: "slug.current" },

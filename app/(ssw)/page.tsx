@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import { buildOpenGraph } from "@/lib/site-metadata"
 import "@/app/ssw/ssw-base.css"
 import { SswPageBody } from "@/components/ssw/SswPageBody"
-import { PageBuilder } from "@/components/pages/PageBuilder"
-import { html } from "@/lib/ssw/prepared/home"
-import { getPage, getResolvedSiteSettings } from "@/lib/sanity/queries"
+import { applyPageContent } from "@/lib/ssw/apply-page-content"
+import { html as homeHtml } from "@/lib/ssw/prepared/home"
+import { getPage } from "@/lib/sanity/queries"
 
 export const revalidate = 60
 
@@ -24,12 +24,7 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  const [page, site] = await Promise.all([getPage("home"), getResolvedSiteSettings()])
-
-  if (page?.sections?.length) {
-    return <PageBuilder page={page} site={site} />
-  }
-
-  // Fallback to prepared HTML until the "home" page document is created in Sanity
+  const page = await getPage("home")
+  const html = applyPageContent(homeHtml, page)
   return <SswPageBody html={html} pageSource="home" />
 }

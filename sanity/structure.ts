@@ -1,67 +1,66 @@
 import type { StructureResolver } from "sanity/structure"
 
-const HOST_EVENT_VENUE_STATS_ID = "hostEventVenueStats"
-const SITE_SETTINGS_ID = "siteSettings"
+/** Marketing routes the client can edit (images + text only). */
+export const EDITABLE_PAGES = [
+  { key: "home", title: "Home" },
+  { key: "winery", title: "Winery" },
+  { key: "contact", title: "Contact" },
+  { key: "private-events", title: "Private Events" },
+] as const
 
-const PAGE_IDS = [
-  { id: "home", title: "Home", route: "/" },
-  { id: "winery", title: "Winery", route: "/winery" },
-  { id: "contact", title: "Contact", route: "/contact" },
-  { id: "private-events", title: "Private Events", route: "/private-events" },
-  { id: "events", title: "Standing Sun Live", route: "/events" },
-]
+export function imagesDocId(pageKey: string) {
+  return `images-${pageKey}`
+}
+
+export function textDocId(pageKey: string) {
+  return `text-${pageKey}`
+}
 
 export const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
     .items([
       S.listItem()
-        .title("Site settings")
-        .id(SITE_SETTINGS_ID)
-        .icon(() => "⚙️")
-        .schemaType("siteSettings")
-        .child(S.document().schemaType("siteSettings").documentId(SITE_SETTINGS_ID)),
-
-      S.divider(),
-
-      S.listItem()
-        .title("Pages")
-        .icon(() => "📄")
+        .title("Images")
+        .icon(() => "🖼️")
         .child(
           S.list()
-            .title("Pages")
+            .title("Images")
             .items(
-              PAGE_IDS.map(({ id, title, route }) =>
+              EDITABLE_PAGES.map(({ key, title }) =>
                 S.listItem()
-                  .title(`${title} (${route})`)
-                  .id(id)
-                  .schemaType("page")
-                  .child(S.document().schemaType("page").documentId(id).title(title)),
+                  .title(title)
+                  .id(imagesDocId(key))
+                  .schemaType("pageImages")
+                  .child(
+                    S.document()
+                      .schemaType("pageImages")
+                      .documentId(imagesDocId(key))
+                      .title(`${title} — images`),
+                  ),
               ),
             ),
         ),
 
-      S.divider(),
-
-      ...S.documentTypeListItems().filter((item) => {
-        const id =
-          item.getId?.() ?? (item as unknown as { spec?: { id?: string } }).spec?.id
-        return (
-          id !== "hostEventVenueStats" &&
-          id !== "page" &&
-          id !== "siteSettings"
-        )
-      }),
-
-      S.divider(),
-
       S.listItem()
-        .title("Host Event · Venue stats")
-        .id(HOST_EVENT_VENUE_STATS_ID)
-        .schemaType("hostEventVenueStats")
+        .title("Text")
+        .icon(() => "✏️")
         .child(
-          S.document()
-            .schemaType("hostEventVenueStats")
-            .documentId(HOST_EVENT_VENUE_STATS_ID),
+          S.list()
+            .title("Text")
+            .items(
+              EDITABLE_PAGES.map(({ key, title }) =>
+                S.listItem()
+                  .title(title)
+                  .id(textDocId(key))
+                  .schemaType("pageText")
+                  .child(
+                    S.document()
+                      .schemaType("pageText")
+                      .documentId(textDocId(key))
+                      .title(`${title} — text`),
+                  ),
+              ),
+            ),
         ),
     ])

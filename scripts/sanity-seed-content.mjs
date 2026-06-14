@@ -1,5 +1,5 @@
 /**
- * Seeds `siteSettings` and the `events` page document using the Content API.
+ * Seeds siteSettings and all marketing page documents (images + paragraphs only).
  * Requires env: NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET,
  * SANITY_API_WRITE_TOKEN (Editor access).
  *
@@ -9,9 +9,11 @@
  */
 
 import { existsSync, readFileSync } from "node:fs"
-import { resolve } from "node:path"
+import { basename, resolve } from "node:path"
 
 import { createClient } from "@sanity/client"
+
+import { PAGE_IMAGE_DOCUMENTS, PAGE_TEXT_DOCUMENTS } from "./page-content-seed-data.mjs"
 
 /** Parse KEY=value so `npm run seed:sanity` picks up NEXT_PUBLIC_* from `.env.local`. */
 function loadDotenvFile(relPath) {
@@ -183,56 +185,72 @@ const SITE_SETTINGS = {
   schemaAddressCountry: "US",
 }
 
-const EVENTS_PAGE = {
-  _id: "events",
-  _type: "page",
-  title: "Standing Sun Live",
-  slug: { _type: "slug", current: "events" },
-  seoDescription:
-    "Upcoming concerts and events at Standing Sun Wines in Buellton, California: music at the winery in Santa Ynez Valley.",
-  sections: [
-    {
-      _type: "sectionInteriorHero",
-      _key: "ev_hero",
-      eyebrow: "Standing Sun Live · Buellton",
-      titleMain: "Events",
-      titleEm: "Calendar",
+const uploadedAssets = new Map()
+
+/** Upload a file from `public/` and return a Sanity image field value. */
+async function uploadPublicImage(relativePath) {
+  const normalized = relativePath.replace(/^\/+/, "")
+  if (uploadedAssets.has(normalized)) {
+    return uploadedAssets.get(normalized)
+  }
+
+  const filepath = resolve(process.cwd(), "public", normalized)
+  if (!existsSync(filepath)) {
+    throw new Error(`Missing seed image: public/${normalized}`)
+  }
+
+  const buffer = readFileSync(filepath)
+  const asset = await client.assets.upload("image", buffer, {
+    filename: basename(filepath),
+  })
+
+  const imageField = {
+    _type: "image",
+    asset: {
+      _type: "reference",
+      _ref: asset._id,
     },
-    {
-      _type: "sectionStandingSunBand",
-      _key: "ev_intro",
-      bandStyle: "intro",
-      eyebrow: "What's On",
-      titleMain: "Upcoming",
-      titleEm: "Nights",
-      body:
-        "Intimate concerts and gatherings at our working winery, see what's scheduled below, or browse all upcoming shows on Eventbrite.",
-    },
-    {
-      _type: "sectionEventsList",
-      _key: "ev_list",
-    },
-    {
-      _type: "sectionStandingSunBand",
-      _key: "ev_footer_cta",
-      bandStyle: "footerCta",
-      eyebrow: "Stay in the Loop",
-      titleMain: "Tickets &",
-      titleEm: "Updates",
-      body: "New shows and ticket links are posted on Eventbrite first.",
-      ctaLabel: "View on Eventbrite",
-      ctaHref:
-        "https://www.eventbrite.com/o/standing-sun-wines-121252721971",
-    },
-  ],
+  }
+
+  uploadedAssets.set(normalized, imageField)
+  return imageField
+}
+
+async function hydrateImageDocument(doc) {
+  const images = []
+  for (const slot of doc.images) {
+    const { sourceFile, ...rest } = slot
+    if (sourceFile) {
+      rest.image = await uploadPublicImage(sourceFile)
+    }
+    images.push(rest)
+  }
+  return { ...doc, images }
 }
 
 async function main() {
-  const tx = client.transaction().createOrReplace(SITE_SETTINGS).createOrReplace(EVENTS_PAGE)
+  const oldPages = await client.fetch(`*[_type == "page"]._id`)
+
+  let tx = client.transaction().createOrReplace(SITE_SETTINGS)
+
+  for (const doc of PAGE_IMAGE_DOCUMENTS) {
+    const hydrated = await hydrateImageDocument(doc)
+    tx = tx.createOrReplace(hydrated)
+  }
+
+  for (const doc of PAGE_TEXT_DOCUMENTS) {
+    tx = tx.createOrReplace(doc)
+  }
+
+  for (const id of oldPages) {
+    tx = tx.delete(id)
+  }
 
   await tx.commit({ visibility: "async" })
 
-  console.log("Seeded documents: siteSettings, events page (_id events).")
+  console.log(
+    `Seeded ${PAGE_IMAGE_DOCUMENTS.length} image docs (${uploadedAssets.size} unique assets uploaded), ${PAGE_TEXT_DOCUMENTS.length} text docs.`,
+  )
 }
 
 main().catch((err) => {
