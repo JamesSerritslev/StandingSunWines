@@ -20,7 +20,13 @@ type Props = {
   items: ResolvedNavItem[]
 }
 
-const HOME_SCROLL_SECTIONS = ["about", "events"] as const
+const HOME_SCROLL_SECTIONS = ["about", "events", "location", "contact"] as const
+
+function pathMatchesActive(pathname: string, activePath: string): boolean {
+  if (pathname === activePath) return true
+  if (activePath !== "/" && pathname.startsWith(`${activePath}/`)) return true
+  return false
+}
 
 function anchorIdFromHref(href: string): string | null {
   const hash = href.includes("#") ? href.split("#").pop() : null
@@ -54,7 +60,7 @@ function isNavItemActive(
   pathname: string,
   homeSection: (typeof HOME_SCROLL_SECTIONS)[number] | null,
 ): boolean {
-  if (item.activeExactPaths.some((p) => pathname === p)) {
+  if (item.activeExactPaths.some((p) => pathMatchesActive(pathname, p))) {
     if (isHomeNavItem(item)) {
       return pathname === "/" && !homeSection
     }
@@ -197,13 +203,13 @@ export function SswNav({ logo, items }: Props) {
   }, [pathname])
 
   useEffect(() => {
-    if (
-      pathname !== "/contact" &&
-      pathname !== "/private-events" &&
-      pathname !== "/winery"
-    ) {
-      return
-    }
+    const isInteriorPage =
+      pathname === "/contact" ||
+      pathname === "/private-events" ||
+      pathname === "/winery" ||
+      pathname === "/events" ||
+      pathname.startsWith("/events/")
+    if (!isInteriorPage) return
     pinScrollToTop()
   }, [pathname])
 

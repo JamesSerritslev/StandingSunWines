@@ -109,6 +109,15 @@ const SITE_SETTINGS = {
       activePathPrefixes: [],
     },
     {
+      _key: navKey("location"),
+      key: "location",
+      label: "Location",
+      href: "/#location",
+      kind: "anchor",
+      styleVariant: "default",
+      activePathPrefixes: [],
+    },
+    {
       _key: navKey("private"),
       key: "private",
       label: "Private Events",

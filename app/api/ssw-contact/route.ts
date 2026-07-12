@@ -22,6 +22,24 @@ function inquiryEmailConfigured(): boolean {
   )
 }
 
+/** True when a honeypot field was filled (bot). */
+function isHoneypotTriggered(fields: Record<string, unknown>): boolean {
+  const botcheck = fields.botcheck
+  if (botcheck === true || botcheck === "on" || botcheck === "true" || botcheck === "1") {
+    return true
+  }
+  if (typeof botcheck === "string" && botcheck.trim().length > 0) {
+    return true
+  }
+
+  const website = fields.website
+  if (typeof website === "string" && website.trim().length > 0) {
+    return true
+  }
+
+  return false
+}
+
 export async function POST(req: Request) {
   let body: unknown
   try {
@@ -40,6 +58,11 @@ export async function POST(req: Request) {
     typeof o.fields === "object" && o.fields !== null && !Array.isArray(o.fields)
       ? (o.fields as Record<string, unknown>)
       : {}
+
+  // Honeypot: bots fill these; humans never see them. Silent 200 so bots think it worked.
+  if (isHoneypotTriggered(fields)) {
+    return NextResponse.json({ success: true }, { status: 200 })
+  }
 
   const email =
     (typeof fields.email === "string" && fields.email.trim()) ||

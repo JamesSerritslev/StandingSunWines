@@ -41,6 +41,7 @@ export function formatSubmissionSubtitle(page: string): string {
 export const HIDDEN_EMAIL_FIELD_KEYS = new Set([
   "access_key",
   "botcheck",
+  "website",
   "from_name",
   "subject",
   "replyto",

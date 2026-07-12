@@ -175,7 +175,7 @@ export const siteSettingsType = defineType({
       title: "Interior hero image URL fallback",
       type: "string",
       description: "Used when no image asset uploaded below.",
-      initialValue: "/images/interior.jpeg",
+      initialValue: "/images/ssw/ssw-a797a261eb289a92.jpg",
     }),
     defineField({
       name: "interiorHeroImage",

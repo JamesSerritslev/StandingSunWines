@@ -62,7 +62,6 @@ export interface SiteSettingsDocument {
 
 export const DEFAULT_NAV_LINKS: Omit<NavLinkInput, "_key">[] = [
   { key: "home", label: "Home", href: "/", kind: "internal", styleVariant: "default", activePathPrefixes: ["/"] },
-  { key: "about", label: "About", href: "/#about", kind: "anchor", styleVariant: "default", activePathPrefixes: [] },
   {
     key: "winery",
     label: "The Winery",
@@ -71,7 +70,14 @@ export const DEFAULT_NAV_LINKS: Omit<NavLinkInput, "_key">[] = [
     styleVariant: "default",
     activePathPrefixes: ["/winery"],
   },
-  { key: "events", label: "Live Events", href: "/#events", kind: "anchor", styleVariant: "default", activePathPrefixes: [] },
+  {
+    key: "events",
+    label: "Standing Sun Live",
+    href: "/events",
+    kind: "internal",
+    styleVariant: "default",
+    activePathPrefixes: ["/events"],
+  },
   {
     key: "private",
     label: "Private Events",
@@ -86,14 +92,6 @@ export const DEFAULT_NAV_LINKS: Omit<NavLinkInput, "_key">[] = [
     href: "https://www.analogueroom.com",
     kind: "external",
     styleVariant: "analogue",
-    activePathPrefixes: [],
-  },
-  {
-    key: "newsletter",
-    label: "Join Our List",
-    href: "/#contact",
-    kind: "anchor",
-    styleVariant: "cta",
     activePathPrefixes: [],
   },
   {
@@ -113,9 +111,11 @@ export const DEFAULT_FOOTER_LEFT: FooterLinkInput[] = [
 ]
 
 export const DEFAULT_FOOTER_RIGHT: FooterLinkInput[] = [
-  { label: "Live Events", href: "/#events" },
+  { label: "Standing Sun Live", href: "/events" },
   { label: "Private Events", href: "/private-events" },
   { label: "Contact", href: "/contact" },
+  { label: "Visit", href: "/contact#visit" },
+  { label: "Join Our List", href: "/#contact" },
 ]
 
 export interface ResolvedLogo {
@@ -174,35 +174,46 @@ function pickStr(v: unknown, fallback: string): string {
   return typeof v === "string" && v.trim().length > 0 ? v.trim() : fallback
 }
 
+function migrateFooterHref(href: string): string {
+  const trimmed = href.trim()
+  if (trimmed === "/#events") return "/events"
+  if (trimmed === "/#location") return "/contact#visit"
+  return trimmed
+}
+
 export function normalizeFooterLinks(rows: FooterLinkInput[] | undefined): ResolvedFooterLink[] {
   const out: ResolvedFooterLink[] = []
   for (const row of rows ?? []) {
     const label = row.label?.trim()
     const href = row.href?.trim()
     if (!label || !href) continue
-    out.push({ label, href })
+    out.push({ label, href: migrateFooterHref(href) })
   }
   return out
 }
 
-function normalizeNav(nav: NavLinkInput[] | undefined, sisterSiteUrl: string): ResolvedNavItem[] {
-  let source: Omit<NavLinkInput, "_key">[] = nav?.length ? nav : DEFAULT_NAV_LINKS
-  source = source.filter((raw) => raw.key !== "gallery")
+const LEGACY_NAV_KEYS = new Set(["about", "location", "newsletter", "gallery"])
 
-  if (!source.some((raw) => raw.key === "newsletter")) {
-    const newsletter = DEFAULT_NAV_LINKS.find((raw) => raw.key === "newsletter")
-    const contactIdx = source.findIndex((raw) => raw.key === "contact")
-    if (newsletter) {
-      source =
-        contactIdx >= 0
-          ? [
-              ...source.slice(0, contactIdx),
-              newsletter,
-              ...source.slice(contactIdx),
-            ]
-          : [...source, newsletter]
+function migrateEventsNavLink(raw: Omit<NavLinkInput, "_key">): Omit<NavLinkInput, "_key"> {
+  if (raw.key !== "events") return raw
+  const href = raw.href?.trim() ?? ""
+  if (href === "/#events" || href.endsWith("#events") || raw.kind === "anchor") {
+    return {
+      ...raw,
+      label: raw.label?.trim() || "Standing Sun Live",
+      href: "/events",
+      kind: "internal",
+      activePathPrefixes: ["/events"],
     }
   }
+  return raw
+}
+
+function normalizeNav(nav: NavLinkInput[] | undefined, sisterSiteUrl: string): ResolvedNavItem[] {
+  let source: Omit<NavLinkInput, "_key">[] = nav?.length ? nav : DEFAULT_NAV_LINKS
+  source = source
+    .filter((raw) => !LEGACY_NAV_KEYS.has(raw.key ?? ""))
+    .map(migrateEventsNavLink)
 
   const rows: ResolvedNavItem[] = []
   for (let i = 0; i < source.length; i++) {
@@ -244,7 +255,7 @@ export function resolveSiteSettings(
   const footerLogoResolved =
     resolvedImageUrl(doc?.footerLogo, 320) ?? DEFAULT_FOOTER_LOGO_PATH
 
-  const fallbackHero = pickStr(doc?.interiorHeroImageFallback, "/images/interior.jpeg")
+  const fallbackHero = pickStr(doc?.interiorHeroImageFallback, "/images/ssw/ssw-a797a261eb289a92.jpg")
   const interiorHeroUrl = resolvedImageUrl(doc?.interiorHeroImage, 2400) ?? fallbackHero
 
   const left = normalizeFooterLinks(doc?.footerColumnLeft?.links)

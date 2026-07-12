@@ -134,10 +134,19 @@ export default defineType({
 
 Sanity Studio is mounted at **`/studio`** (see `sanity.config.ts` and `app/studio/`). Run the Next app locally or deploy it, open `/studio`, and sign in with your Sanity account. You still need **`NEXT_PUBLIC_SANITY_PROJECT_ID`** and **`NEXT_PUBLIC_SANITY_DATASET`** in `.env.local` (or your host’s env) so the studio can talk to your project.
 
+## Events & ticketing
+
+Public event listings and ticket sales are **not** managed in Sanity.
+
+- **Current:** Eventbrite organizer URL in **Site settings** (`eventbriteOrgUrl`), linked from `/events` and the homepage.
+- **Planned:** Ticket Tailor box office embed on `/events` via `NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL`.
+
+The `event` document type in this studio is optional/legacy and is not published to the website. You can ignore it or remove it from the studio structure when cleaning up.
+
 ## Setup Instructions
 
 1. **Create a Sanity project** at [sanity.io](https://www.sanity.io/)
-2. **The event schema** is already defined in `sanity/schemaTypes/event.ts` for this embedded studio. If you use a separate Studio repo instead, add the same schema there.
+2. **Optional legacy `event` schema** exists in `sanity/schemaTypes/event.ts` but public `/events` uses Ticket Tailor (and Eventbrite until configured), not Sanity documents.
 3. **Get your credentials** from the Sanity dashboard:
    - Project ID
    - Dataset name (usually "production")
@@ -145,13 +154,14 @@ Sanity Studio is mounted at **`/studio`** (see `sanity.config.ts` and `app/studi
    - `NEXT_PUBLIC_SANITY_PROJECT_ID` - Your Sanity project ID
    - `NEXT_PUBLIC_SANITY_DATASET` - Your dataset name (e.g., "production")
 
-## Adding Events
+## Adding Events (legacy — not used on site)
 
-Once connected, the client can:
-1. Log into their Sanity Studio
+Sanity `event` documents are **not** displayed on `/events`. Use Eventbrite today and Ticket Tailor (`NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL`) for the public calendar.
+
+If you still maintain `event` docs in Studio for internal reference:
+
+1. Log into Sanity Studio
 2. Create new "Event" documents
-3. Fill in all required fields (title, date, time, description, event type)
-4. Optionally add images and ticket URLs
-5. Publish the event
+3. Fill in fields and publish
 
-Events will automatically appear on the website's `/events` page (Standing Sun Live), ordered by date.
+They will **not** appear on the public website unless you re-wire the events page to Sanity.

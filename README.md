@@ -63,7 +63,7 @@ Homepage `#contact` with hidden `interest=Newsletter` and `page=home` → **Mail
 
 ## The four forms
 
-All forms use class `ssw-inquiry-form`. Legacy Web3Forms hidden fields (`access_key`, `subject`, etc.) remain in HTML but are ignored by the API.
+All forms use class `ssw-inquiry-form`. Legacy Web3Forms hidden fields (`subject`, `from_name`, etc.) may remain in HTML but are ignored by the API.
 
 | # | Where | `page` value | Resend email | Mailchimp |
 |---|--------|--------------|--------------|-----------|
@@ -102,7 +102,20 @@ All forms use class `ssw-inquiry-form`. Legacy Web3Forms hidden fields (`access_
 
 ---
 
-## Editing SSW pages
+## Events & ticketing
+
+**Standing Sun Live** (`/events`) lists concerts and ticket sales. The site does **not** use Sanity for public event listings.
+
+| Phase | Source |
+|-------|--------|
+| **Now** | [Eventbrite](https://www.eventbrite.com/o/standing-sun-wines-121252721971) — linked from `/events` and the homepage events teaser |
+| **Next** | [Ticket Tailor](https://www.tickettailor.com/) box office embed on `/events` |
+
+Set `NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL` in `.env.local` with the box office URL from Ticket Tailor → **Promote → Website embed codes**. The embed component lives in `components/events/TicketTailorEmbed.tsx`. Until that env var is set, `/events` shows the Eventbrite CTA only (no public placeholder).
+
+Legacy `/events/[slug]` URLs redirect to `/events`. Sanity may still contain an `event` schema for studio experiments, but it is not wired to the public site.
+
+---
 
 Pages are generated from `newSiteFiles/` via scripts. After changing those HTML files, run:
 

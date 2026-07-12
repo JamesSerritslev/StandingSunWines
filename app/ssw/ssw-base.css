@@ -122,6 +122,41 @@
 
   .events-cta { text-align:center; }
 
+  .location-map { background:#111010; padding:72px 48px 8px; text-align:center; }
+  .events-map { max-width:900px; margin:0 auto; text-align:center; }
+  .ssw-mapbox-map__canvas { width:100%; height:clamp(220px,42vw,380px); border:1px solid rgba(195,179,152,0.2); }
+  .ssw-mapbox-map__open { display:inline-flex; margin-top:20px; }
+  .ssw-mapbox-map--fallback { text-align:center; padding:24px 16px; }
+  .ssw-mapbox-map__address {
+    font-family:'Libre Baskerville',serif;
+    font-size:16px;
+    line-height:1.7;
+    color:var(--cream,#f9f5e5);
+    margin:0;
+  }
+  .ssw-mapbox-map__address strong { display:block; margin-bottom:6px; font-weight:400; }
+
+  .ssw-map-marker {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:2px solid var(--cream);
+    box-shadow:0 4px 14px rgba(0,0,0,0.45);
+    cursor:pointer;
+  }
+  .ssw-map-marker svg { width:20px; height:20px; }
+  .ssw-map-marker--winery {
+    background:var(--spanish);
+    color:var(--cream);
+  }
+  .ssw-map-marker--user {
+    background:var(--hammock);
+    color:var(--void);
+  }
+
   /* PRIVATE EVENTS */
   .private { position:relative; min-height:680px; display:flex; align-items:center; overflow:hidden; }
   .private-bg {
@@ -135,7 +170,7 @@
 
 
 /* CONTACT */
-  .contact { background:#111010; padding:96px 48px; text-align:center; }
+  .contact { background:#111010; padding:40px 48px 96px; text-align:center; }
   .contact form { max-width:540px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
   .contact input, .contact textarea {
     background:rgba(255,255,255,0.05); border:1px solid rgba(161,144,115,0.18);
@@ -180,7 +215,8 @@
     .hero-ctas .btn { width:100%; max-width:min(400px, 100%); box-sizing:border-box; text-align:center; }
     .hero-scroll { display:none; }
     .events { padding:64px max(20px, env(safe-area-inset-left, 0px)) 72px max(20px, env(safe-area-inset-right, 0px)); }
-    .contact { padding:72px max(20px, env(safe-area-inset-left, 0px)) 72px max(20px, env(safe-area-inset-right, 0px)); }
+    .location-map { padding:56px max(20px, env(safe-area-inset-left, 0px)) 8px max(20px, env(safe-area-inset-right, 0px)); }
+    .contact { padding:32px max(20px, env(safe-area-inset-left, 0px)) 72px max(20px, env(safe-area-inset-right, 0px)); }
     .about, .winemaker { grid-template-columns:1fr; }
     .about-img { min-height:280px; }
     .winemaker-img { min-height:280px; order:2; }
@@ -199,7 +235,8 @@
     .section-title { font-size:clamp(22px, 8vw, 34px); }
     .about-text, .winemaker-text { padding:40px max(16px, env(safe-area-inset-left, 0px)) 40px max(16px, env(safe-area-inset-right, 0px)); }
     .events { padding:48px max(16px, env(safe-area-inset-left, 0px)) 56px max(16px, env(safe-area-inset-right, 0px)); }
-    .contact { padding:56px max(16px, env(safe-area-inset-left, 0px)) 56px max(16px, env(safe-area-inset-right, 0px)); }
+    .location-map { padding:40px max(16px, env(safe-area-inset-left, 0px)) 8px max(16px, env(safe-area-inset-right, 0px)); }
+    .contact { padding:28px max(16px, env(safe-area-inset-left, 0px)) 56px max(16px, env(safe-area-inset-right, 0px)); }
     .private-content { padding:44px max(16px, env(safe-area-inset-left, 0px)) 48px max(16px, env(safe-area-inset-right, 0px)); }
     .hero-tagline { font-size:clamp(11px, 3.5vw, 16px); }
   }

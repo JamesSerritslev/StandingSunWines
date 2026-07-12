@@ -172,12 +172,12 @@
     </div>
 
     <form class="ssw-inquiry-form" action="#" method="post">
-      <input type="hidden" name="access_key" value="d285445e-1bf2-424e-987a-e14eec9c02b6">
       <input type="hidden" name="subject" value="✉️ Contact Form, Standing Sun Wines">
       <input type="hidden" name="from_name" value="Standing Sun, Contact">
       <input type="hidden" name="replyto" value="email">
       <input type="hidden" name="event_type" value="">
-      <input type="checkbox" name="botcheck" style="display:none;">
+      <input type="checkbox" name="botcheck" value="1" class="ssw-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="text" name="website" class="ssw-hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Website">
       
       <div class="form-row">
         <div class="form-field">
@@ -268,6 +268,14 @@
     </form>
   </div>
 
+</section>
+
+<!-- VISIT / MAP -->
+<section class="visit-map" id="visit">
+  <p class="eyebrow" style="text-align:center;">Visit</p>
+  <h2 class="section-title" style="text-align:center;margin-bottom:14px;">Find <em>Us</em></h2>
+  <div class="hr" style="margin:18px auto 36px;"></div>
+  <div class="events-map" data-ssw-map aria-label="Map to Standing Sun Wines"></div>
 </section>
 
 <!-- FOOTER -->

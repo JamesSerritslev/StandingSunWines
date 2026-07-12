@@ -54,8 +54,8 @@ export default defineConfig({
             filter: `_type == "pageImages" && pageKey == "private-events"`,
           },
           {
-            route: "/events/:slug",
-            filter: `_type == "event" && slug.current == $slug`,
+            route: "/events",
+            filter: `_type == "siteSettings"`,
           },
         ]),
 
@@ -87,15 +87,9 @@ export default defineConfig({
           event: defineLocations({
             select: { title: "title", slug: "slug.current" },
             resolve: (doc) => ({
-              locations: doc?.slug
-                ? [
-                    {
-                      title: (doc.title as string) || "Event",
-                      href: `/events/${doc.slug as string}`,
-                    },
-                    { title: "Events list", href: "/events" },
-                  ]
-                : [],
+              locations: [
+                { title: (doc?.title as string) || "Event (legacy)", href: "/events" },
+              ],
             }),
           }),
         },

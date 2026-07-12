@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FormStatusToast } from "@/components/forms/FormStatusToast"
 import { bindInquiryForms, type FormBindStatus } from "@/lib/forms/bind-inquiry-forms"
+import { mountSswMaps } from "@/components/ssw/mount-ssw-maps"
 import { pinScrollToTop } from "@/lib/ssw/scroll-home-to-top"
 
 const PAGE_HASH_SECTIONS: Record<string, ReadonlySet<string>> = {
@@ -10,6 +11,7 @@ const PAGE_HASH_SECTIONS: Record<string, ReadonlySet<string>> = {
     "about",
     "winemaker",
     "events",
+    "location",
     "private",
     "contact",
     "gallery",
@@ -17,6 +19,7 @@ const PAGE_HASH_SECTIONS: Record<string, ReadonlySet<string>> = {
   ]),
   "private-events": new Set(["types", "inquiry"]),
   winery: new Set(["facility", "serious-wine", "winemaker", "inquiry"]),
+  contact: new Set(["contact-form", "visit"]),
 }
 
 const PAGE_BODY_CLASS: Record<string, string> = {
@@ -101,6 +104,13 @@ export function SswPageBody({ html, pageSource }: Props) {
 
   useEffect(() => {
     const root = ref.current
+    if (!root || !ready) return
+
+    return mountSswMaps(root)
+  }, [html, pageSource, ready])
+
+  useEffect(() => {
+    const root = ref.current
     if (!root) return
 
     return bindInquiryForms(root, {
@@ -115,27 +125,27 @@ export function SswPageBody({ html, pageSource }: Props) {
 
   useEffect(() => {
     if (pageSource === "contact") {
-      const pinContactTop = () => {
-        if (window.location.hash) {
-          window.history.replaceState(null, "", window.location.pathname)
-        }
-        pinScrollToTop()
-      }
-
-      pinContactTop()
-
-      const onHashChange = () => {
+      const scrollToTarget = () => {
         const hash = window.location.hash.replace(/^#/, "")
-        if (hash === "contact-form") {
-          const el = document.getElementById("contact-form")
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
+        if (!hash) {
+          if (window.location.hash) {
+            window.history.replaceState(null, "", window.location.pathname)
+          }
+          pinScrollToTop()
           return
         }
-        if (!hash) pinContactTop()
+        if (!PAGE_HASH_SECTIONS.contact?.has(hash)) return
+        const el = document.getElementById(hash)
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
       }
 
-      window.addEventListener("hashchange", onHashChange)
-      return () => window.removeEventListener("hashchange", onHashChange)
+      scrollToTarget()
+      const t = window.setTimeout(scrollToTarget, 80)
+      window.addEventListener("hashchange", scrollToTarget)
+      return () => {
+        window.clearTimeout(t)
+        window.removeEventListener("hashchange", scrollToTarget)
+      }
     }
 
     if (pageSource === "home") {

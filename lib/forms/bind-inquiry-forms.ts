@@ -141,6 +141,42 @@ function bindInquiryTypeSelect(root: HTMLElement): () => void {
   }
 }
 
+/** Ensure honeypot fields exist on every inquiry form (bots fill these; humans never see them). */
+function ensureHoneypotFields(form: HTMLFormElement): void {
+  if (!form.querySelector('input[name="botcheck"]')) {
+    const botcheck = document.createElement("input")
+    botcheck.type = "checkbox"
+    botcheck.name = "botcheck"
+    botcheck.value = "1"
+    botcheck.tabIndex = -1
+    botcheck.autocomplete = "off"
+    botcheck.setAttribute("aria-hidden", "true")
+    botcheck.className = "ssw-hp"
+    form.prepend(botcheck)
+  } else {
+    const existing = form.querySelector<HTMLInputElement>('input[name="botcheck"]')
+    if (existing) {
+      existing.classList.add("ssw-hp")
+      existing.tabIndex = -1
+      existing.setAttribute("aria-hidden", "true")
+      existing.autocomplete = "off"
+      existing.removeAttribute("style")
+    }
+  }
+
+  if (!form.querySelector('input[name="website"]')) {
+    const website = document.createElement("input")
+    website.type = "text"
+    website.name = "website"
+    website.tabIndex = -1
+    website.autocomplete = "off"
+    website.setAttribute("aria-hidden", "true")
+    website.className = "ssw-hp"
+    website.setAttribute("placeholder", "Website")
+    form.prepend(website)
+  }
+}
+
 /** Bind all inquiry forms under `root` — capture phase prevents native navigation. */
 export function bindInquiryForms(root: HTMLElement, opts: Options): () => void {
   const locationCleanups: Array<() => void> = []
@@ -150,6 +186,7 @@ export function bindInquiryForms(root: HTMLElement, opts: Options): () => void {
     form.setAttribute("action", "#")
     form.setAttribute("method", "post")
     form.classList.add("ssw-inquiry-form")
+    ensureHoneypotFields(form)
     locationCleanups.push(attachFormLocationListeners(form))
   })
 
