@@ -111,7 +111,7 @@ All forms use class `ssw-inquiry-form`. Legacy Web3Forms hidden fields (`subject
 | **Now** | [Eventbrite](https://www.eventbrite.com/o/standing-sun-wines-121252721971) — linked from `/events` and the homepage events teaser |
 | **Next** | [Ticket Tailor](https://www.tickettailor.com/) box office embed on `/events` |
 
-Set `NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL` in `.env.local` with the box office URL from Ticket Tailor → **Promote → Website embed codes**. The embed component lives in `components/events/TicketTailorEmbed.tsx`. Until that env var is set, `/events` shows the Eventbrite CTA only (no public placeholder).
+Set `NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL` to override the default Standing Sun Live box office URL. The embed lives in `components/events/TicketTailorEmbed.tsx` and matches Ticket Tailor's official inline widget attributes.
 
 Legacy `/events/[slug]` URLs redirect to `/events`. Sanity may still contain an `event` schema for studio experiments, but it is not wired to the public site.
 

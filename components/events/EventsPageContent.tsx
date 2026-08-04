@@ -1,4 +1,7 @@
-import { TicketTailorEmbed } from "@/components/events/TicketTailorEmbed"
+import {
+  DEFAULT_TICKET_TAILOR_URL,
+  TicketTailorEmbed,
+} from "@/components/events/TicketTailorEmbed"
 
 type Props = {
   heroBg: string
@@ -7,7 +10,7 @@ type Props = {
 }
 
 export function EventsPageContent({ heroBg, eventbriteUrl, ticketTailorUrl }: Props) {
-  const hasTicketTailor = Boolean(ticketTailorUrl?.trim())
+  const widgetUrl = ticketTailorUrl?.trim() || DEFAULT_TICKET_TAILOR_URL
 
   return (
     <div className="ssw-page-body ssw-page-body--events ssw-page-body--ready">
@@ -33,35 +36,23 @@ export function EventsPageContent({ heroBg, eventbriteUrl, ticketTailorUrl }: Pr
         </h2>
         <div className="hr" />
         <p className="body-text">
-          Intimate concerts and gatherings at our working winery. Tickets for upcoming
-          nights are available on Eventbrite.
+          Intimate concerts and gatherings at our working winery. Browse upcoming shows and
+          grab tickets below.
         </p>
       </section>
 
-      {hasTicketTailor ? (
-        <section className="events-widget-wrap" aria-label="Ticket sales">
-          <TicketTailorEmbed boxOfficeUrl={ticketTailorUrl} />
-        </section>
-      ) : null}
+      <section className="events-widget-wrap" aria-label="Ticket sales">
+        <TicketTailorEmbed boxOfficeUrl={widgetUrl} />
+      </section>
 
       <section className="events-fallback">
-        <p className="eyebrow">Tickets</p>
-        <h2 className="section-title">
-          View on <em>Eventbrite</em>
-        </h2>
-        <div className="hr" />
         <p className="body-text">
-          New shows and ticket links are posted on Eventbrite. Check upcoming nights and grab
-          tickets there.
+          Prefer Eventbrite?{" "}
+          <a href={eventbriteUrl} target="_blank" rel="noopener noreferrer">
+            View shows there
+          </a>
+          .
         </p>
-        <a
-          href={eventbriteUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn"
-        >
-          View on Eventbrite
-        </a>
       </section>
     </div>
   )
