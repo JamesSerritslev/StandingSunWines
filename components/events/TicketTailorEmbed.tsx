@@ -36,8 +36,8 @@ export function TicketTailorEmbed({
     script.async = true
     script.setAttribute("data-url", url)
     script.setAttribute("data-type", "inline")
-    script.setAttribute("data-inline-minimal", "true")
-    script.setAttribute("data-inline-show-logo", "false")
+    script.setAttribute("data-inline-minimal", "false")
+    script.setAttribute("data-inline-show-logo", "true")
     script.setAttribute("data-inline-bg-fill", "false")
     script.setAttribute("data-inline-inherit-ref-from-url-param", "")
     script.setAttribute("data-inline-ref", "website_widget")

@@ -2,6 +2,8 @@ import {
   DEFAULT_TICKET_TAILOR_URL,
   TicketTailorEmbed,
 } from "@/components/events/TicketTailorEmbed"
+import { SswMapboxMap } from "@/components/ssw/SswMapboxMap"
+import { STANDING_SUN_LOCATION } from "@/lib/site-location"
 
 type Props = {
   heroBg: string
@@ -37,12 +39,23 @@ export function EventsPageContent({ heroBg, eventbriteUrl, ticketTailorUrl }: Pr
         <div className="hr" />
         <p className="body-text">
           Intimate concerts and gatherings at our working winery. Browse upcoming shows and
-          grab tickets below.
+          grab tickets below — each listing includes date, time, and venue details.
         </p>
       </section>
 
       <section className="events-widget-wrap" aria-label="Ticket sales">
         <TicketTailorEmbed boxOfficeUrl={widgetUrl} />
+      </section>
+
+      <section className="events-venue" id="venue" aria-label="Venue">
+        <p className="body-text events-venue-address">
+          {STANDING_SUN_LOCATION.street}
+          <br />
+          {STANDING_SUN_LOCATION.cityStateZip}
+        </p>
+        <div className="events-venue-map">
+          <SswMapboxMap />
+        </div>
       </section>
 
       <section className="events-fallback">

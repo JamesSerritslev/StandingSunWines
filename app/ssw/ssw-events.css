@@ -195,7 +195,7 @@ nav {
 
 .tt-widget {
   width: 100%;
-  max-width: 720px;
+  max-width: 900px;
   min-height: 320px;
   margin: 0 auto;
   text-align: center;
@@ -240,6 +240,49 @@ nav {
 
 .events-fallback a:hover {
   border-bottom-color: var(--spanish);
+}
+
+.events-venue {
+  padding: 0 48px 80px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.events-venue-address {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.events-venue-map {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.events-venue-map .ssw-mapbox-map__canvas {
+  width: 100%;
+  height: clamp(220px, 42vw, 380px);
+  border: 1px solid rgba(195, 179, 152, 0.2);
+}
+
+.events-venue-map .ssw-mapbox-map__open {
+  display: inline-flex;
+  margin-top: 20px;
+}
+
+.events-venue-map .ssw-mapbox-map,
+.events-venue-map .ssw-mapbox-map--fallback {
+  text-align: center;
+}
+
+.events-venue-map .ssw-mapbox-map__address {
+  font-family: "Libre Baskerville", serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--cream);
+  margin: 0 auto;
+  text-align: center;
 }
 
 .btn {
@@ -352,6 +395,7 @@ footer {
 
   .events-intro,
   .events-widget-wrap,
+  .events-venue,
   .events-fallback {
     padding-left: max(20px, env(safe-area-inset-left, 0px));
     padding-right: max(20px, env(safe-area-inset-right, 0px));
