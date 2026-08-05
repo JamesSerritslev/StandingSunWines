@@ -1,35 +1,70 @@
 import type { Metadata } from "next"
 import { buildOpenGraph } from "@/lib/site-metadata"
 import "@/app/ssw/ssw-events.css"
-import { EventsPageContent } from "@/components/events/EventsPageContent"
-import { getResolvedSiteSettings } from "@/lib/sanity/queries"
+import { ShowLandingContent } from "@/components/events/ShowLandingContent"
+import { SHAWN_MULLINS } from "@/lib/shows"
+import { STANDING_SUN_LOCATION } from "@/lib/site-location"
 
-const DEFAULT_EVENTS_HERO = "/images/ssw/ssw-a797a261eb289a92.jpg"
+const show = SHAWN_MULLINS
 
 export const metadata: Metadata = {
-  title: "Standing Sun Live",
-  description:
-    "Upcoming concerts and events at Standing Sun Wines in Buellton, California: music at the winery in Santa Ynez Valley.",
+  title: show.metaTitle,
+  description: show.metaDescription,
   openGraph: buildOpenGraph({
-    title: "Standing Sun Live · Standing Sun Wines",
-    description:
-      "Upcoming concerts and events at Standing Sun Wines in Buellton, California.",
-    url: "/shawnmullins",
+    title: show.metaTitle,
+    description: show.metaDescription,
+    url: show.canonicalPath,
+    images: [show.ogImage],
   }),
-  alternates: { canonical: "/shawnmullins" },
+  alternates: { canonical: show.canonicalPath },
 }
 
-export default async function ShawnMullinsPage() {
-  const site = await getResolvedSiteSettings()
-  const heroBg = site.interiorHeroUrl.includes("interior.jpeg")
-    ? DEFAULT_EVENTS_HERO
-    : site.interiorHeroUrl
+function eventJsonLd() {
+  if (!show.startDateISO) return null
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "MusicEvent",
+    name: `${show.performer} Live at Standing Sun Wines`,
+    startDate: show.startDateISO,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    description: show.metaDescription,
+    image: [show.ogImage, show.artistImage.src],
+    performer: { "@type": "MusicGroup", name: show.performer },
+    organizer: { "@type": "Organization", name: "Standing Sun Wines" },
+    location: {
+      "@type": "MusicVenue",
+      name: "Standing Sun Wines",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: STANDING_SUN_LOCATION.street,
+        addressLocality: "Buellton",
+        addressRegion: "CA",
+        postalCode: "93427",
+        addressCountry: "US",
+      },
+    },
+    offers: {
+      "@type": "Offer",
+      url: show.ticketUrl,
+      availability: "https://schema.org/InStock",
+    },
+  }
+}
+
+export default function ShawnMullinsPage() {
+  const jsonLd = eventJsonLd()
 
   return (
-    <EventsPageContent
-      heroBg={heroBg}
-      eventbriteUrl={site.eventbriteOrgUrl}
-      ticketTailorUrl={process.env.NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL}
-    />
+    <>
+      {jsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      ) : null}
+      <ShowLandingContent show={show} />
+    </>
   )
 }

@@ -104,14 +104,17 @@ All forms use class `ssw-inquiry-form`. Legacy Web3Forms hidden fields (`subject
 
 ## Events & ticketing
 
-**Standing Sun Live** (`/shawnmullins`) lists concerts and ticket sales. The site does **not** use Sanity for public event listings.
+Each show gets its own landing page that sells the night and then checks the guest out in place — no intermediate calendar. `/shawnmullins` is the first one. The site does **not** use Sanity for public event listings.
 
-| Phase | Source |
-|-------|--------|
-| **Now** | [Eventbrite](https://www.eventbrite.com/o/standing-sun-wines-121252721971) — linked from `/shawnmullins` and the homepage events teaser |
-| **Next** | [Ticket Tailor](https://www.tickettailor.com/) box office embed on `/shawnmullins` |
+Ticketing runs on [Ticket Tailor](https://www.tickettailor.com/). `components/events/TicketTailorEmbed.tsx` renders their official inline widget; pass a **single-event** URL so the widget opens on seat selection rather than a list of shows.
 
-Set `NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL` to override the default Standing Sun Live box office URL. The embed lives in `components/events/TicketTailorEmbed.tsx` and matches Ticket Tailor's official inline widget attributes.
+**Adding the next show:**
+
+1. Copy the `SHAWN_MULLINS` entry in `lib/shows.ts`, then change the copy, images, and `ticketUrl`.
+2. Add it to the `SHOWS` map and create `app/(ssw)/<slug>/page.tsx` rendering `<ShowLandingContent show={...} />`.
+3. Add the route to `app/sitemap.ts` and, if it should appear in the header, to `DEFAULT_NAV_LINKS` in `lib/site-settings-resolve.ts`.
+
+Fill in `startDateISO` on a show to emit `MusicEvent` JSON-LD, which is what makes it eligible for Google's event rich results. Without it the structured data is skipped rather than published with a wrong date.
 
 Legacy `/events` and `/events/[slug]` URLs redirect to `/shawnmullins`. Sanity may still contain an `event` schema for studio experiments, but it is not wired to the public site.
 

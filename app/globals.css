@@ -559,53 +559,6 @@
 }
 
 /*
- * Events hero — scoped so contact/home CSS from client nav cannot center or full-height it.
- */
-.ssw-page-body--events .hero {
-  height: 50vh;
-  min-height: 380px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  padding: var(--ssw-nav-offset, max(6.25rem, calc(4.75rem + env(safe-area-inset-top, 0px)))) 80px 64px;
-}
-
-.ssw-page-body--events .hero-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.35);
-}
-
-.ssw-page-body--events .hero-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(35, 31, 32, 0.97) 0%, transparent 60%);
-}
-
-.ssw-page-body--events .hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: left;
-  max-width: none;
-  margin-inline: unset;
-  padding: 0;
-}
-
-.ssw-page-body--events .hero-rule {
-  width: 60px;
-  height: 1px;
-  background: var(--spanish);
-  margin-top: 22px;
-}
-
-/*
  * Winery hero — scoped so contact/home CSS from client nav cannot shorten or left-align it.
  */
 .ssw-page-body--winery .hero {
@@ -869,11 +822,6 @@
       max(20px, env(safe-area-inset-left, 0px)) 48px max(20px, env(safe-area-inset-right, 0px));
   }
 
-  .ssw-page-body--events .hero {
-    padding: var(--ssw-nav-offset, max(5.5rem, calc(4.25rem + env(safe-area-inset-top, 0px))))
-      max(20px, env(safe-area-inset-left, 0px)) 48px max(20px, env(safe-area-inset-right, 0px));
-  }
-
   .ssw-page-body--winery .hero {
     padding: var(--ssw-nav-offset, max(5.5rem, calc(4.25rem + env(safe-area-inset-top, 0px))))
       max(20px, env(safe-area-inset-left, 0px)) 56px max(20px, env(safe-area-inset-right, 0px));
@@ -904,10 +852,6 @@
   }
 
   .ssw-page-body--contact .hero-title {
-    font-size: clamp(30px, 9vw, 52px);
-  }
-
-  .ssw-page-body--events .hero-title {
     font-size: clamp(30px, 9vw, 52px);
   }
 
@@ -977,6 +921,18 @@ body nav .nav-logo-mark {
 body footer .footer-logo {
   width: 160px;
   height: auto;
+}
+
+/*
+ * The logo artwork is padded unevenly: the mark sits at x65–275 of a 440px
+ * canvas, leaving 2.5x more empty space on the right. Once the footer stacks
+ * and centres, that reads as the logo sitting left of centre, so nudge it back
+ * by half the difference (11.25% of its own width).
+ */
+@media (max-width: 900px) {
+  body footer .footer-logo {
+    transform: translateX(11.25%);
+  }
 }
 
 body nav:has(.ssw-nav-toggle) {

@@ -138,15 +138,15 @@ Sanity Studio is mounted at **`/studio`** (see `sanity.config.ts` and `app/studi
 
 Public event listings and ticket sales are **not** managed in Sanity.
 
-- **Current:** Eventbrite organizer URL in **Site settings** (`eventbriteOrgUrl`), linked from `/shawnmullins` and the homepage.
-- **Planned:** Ticket Tailor box office embed on `/shawnmullins` via `NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL`.
+- **Tickets:** Ticket Tailor, embedded per show. Show content lives in `lib/shows.ts`, not Sanity.
+- **Eventbrite:** the organizer URL in **Site settings** (`eventbriteOrgUrl`) is still used by the homepage events teaser.
 
 The `event` document type in this studio is optional/legacy and is not published to the website. You can ignore it or remove it from the studio structure when cleaning up.
 
 ## Setup Instructions
 
 1. **Create a Sanity project** at [sanity.io](https://www.sanity.io/)
-2. **Optional legacy `event` schema** exists in `sanity/schemaTypes/event.ts` but public `/shawnmullins` uses Ticket Tailor (and Eventbrite until configured), not Sanity documents.
+2. **Optional legacy `event` schema** exists in `sanity/schemaTypes/event.ts` but public show pages use `lib/shows.ts` and Ticket Tailor, not Sanity documents.
 3. **Get your credentials** from the Sanity dashboard:
    - Project ID
    - Dataset name (usually "production")
@@ -156,7 +156,7 @@ The `event` document type in this studio is optional/legacy and is not published
 
 ## Adding Events (legacy — not used on site)
 
-Sanity `event` documents are **not** displayed on `/shawnmullins`. Use Eventbrite today and Ticket Tailor (`NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL`) for the public calendar.
+Sanity `event` documents are **not** displayed on `/shawnmullins`. Public shows are defined in `lib/shows.ts` and ticketed through Ticket Tailor.
 
 If you still maintain `event` docs in Studio for internal reference:
 
