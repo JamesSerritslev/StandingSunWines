@@ -1,4 +1,3 @@
-import { ShowStickyCta } from "@/components/events/ShowStickyCta"
 import { TicketTailorEmbed } from "@/components/events/TicketTailorEmbed"
 import { SswMapboxMap } from "@/components/ssw/SswMapboxMap"
 import type { Show, ShowImage } from "@/lib/shows"
@@ -141,8 +140,6 @@ export function ShowLandingContent({ show }: Props) {
           <SswMapboxMap />
         </div>
       </section>
-
-      <ShowStickyCta label="Get Tickets" targetId="tickets" />
     </div>
   )
 }

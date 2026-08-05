@@ -451,11 +451,6 @@ nav {
   margin-top: 14px;
 }
 
-/* Mobile-only; the desktop hero keeps its own inline CTA. */
-.show-sticky-cta {
-  display: none;
-}
-
 .show-venue {
   max-width: 900px;
   margin: 0 auto;
@@ -602,11 +597,6 @@ footer {
     gap: 32px;
   }
 
-  /* The sticky bar carries the CTA on mobile, so drop the in-hero one. */
-  .show-hero-cta {
-    display: none;
-  }
-
   .show-bio {
     margin-top: 22px;
   }
@@ -660,32 +650,6 @@ footer {
 
   .show-gallery-item img {
     height: clamp(235px, 56vw, 360px);
-  }
-
-  .show-sticky-cta {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 90;
-    display: flex;
-    justify-content: center;
-    padding: 14px max(16px, env(safe-area-inset-left, 0px))
-      calc(14px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-right, 0px));
-    background: linear-gradient(to top, rgba(8, 7, 6, 0.98) 60%, rgba(8, 7, 6, 0));
-    transition: transform 0.35s ease, opacity 0.35s ease;
-  }
-
-  .show-sticky-cta .btn {
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-  }
-
-  .show-sticky-cta--hidden {
-    transform: translateY(130%);
-    opacity: 0;
-    pointer-events: none;
   }
 
   .footer-grid {
