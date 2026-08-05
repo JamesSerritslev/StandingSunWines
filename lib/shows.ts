@@ -45,6 +45,8 @@ export type Show = {
   artistImage: ShowImage
   /** Short line under the title in the hero */
   heroSubhead: string
+  /** Artist bio shown directly under the hero Get Tickets button */
+  bio?: string
   /** Main experience copy — each string is a paragraph */
   story: string[]
   /** Right-hand image beside the story copy */
@@ -87,6 +89,7 @@ export const SHAWN_MULLINS: Show = {
   },
   heroSubhead:
     "Experience an evening with the Grammy-nominated singer-songwriter, live at Standing Sun.",
+  bio: `From Atlanta's indie scene to international acclaim with 1998's Soul's Core and its Grammy-nominated No. 1 hit "Lullaby," followed by hits like "Beautiful Wreck," Olympics-featured "Shimmer," and his Zac Brown Band co-write "Toes." Two decades later he revisited that breakthrough record with Soul's Core Revival — new solo and full-band (Soul Carnival) recordings that reimagine the songs from scratch.`,
   story: [
     "Join us at Standing Sun Live for an intimate evening with Grammy-nominated artist Shawn Mullins as he works his way up the California coast.",
     "Standing Sun is a working winery in Buellton that transforms into a live music venue a few times a year for incredible artists like Shawn Mullins. Stainless steel tanks, oak barrels, and original murals become the backdrop, and the room is set up so you are never more than 30 to 40 feet from the stage.",
@@ -105,14 +108,24 @@ export const SHAWN_MULLINS: Show = {
     { label: "Parking", value: "Free onsite parking for guests" },
   ],
   gallery: [
-    { src: "/images/ssw/ssw-d14560398aa5afe3.jpg", alt: "Tables set for a Standing Sun Live show" },
-    { src: "/images/ssw/ssw-6604082a65f673c1.jpg", alt: "The winery floor arranged for a concert" },
     {
-      src: "/images/shows/standing-sun-stage.jpg",
-      alt: "The Standing Sun Wines stage set with guitars and monitors",
-      focus: "center 58%",
+      src: "/images/shows/standing-sun-live-concert-audience.jpg",
+      alt: "Audience seated for a live concert at Standing Sun Wines in Buellton",
     },
-    { src: "/images/ssw/ssw-b3797883eeb87b92.jpg", alt: "Guests seated at Standing Sun Wines" },
+    {
+      src: "/images/shows/standing-sun-live-band-barrel-room.jpg",
+      alt: "Live band performing on stage in the Standing Sun Wines barrel room",
+    },
+    {
+      src: "/images/shows/standing-sun-stage-ready-for-show.jpg",
+      alt: "Standing Sun Live stage ready with guitars, murals, and wine barrels",
+      focus: "center 55%",
+    },
+    {
+      src: "/images/shows/standing-sun-live-acoustic-performance.jpg",
+      alt: "Acoustic guitarist performing live at Standing Sun Wines",
+      focus: "center 60%",
+    },
   ],
   ticketUrl:
     "https://www.tickettailor.com/checkout/new-session/id/8816474/chk/2cbe412199f5b109f249848abb6ac306/?ref=website_widget",

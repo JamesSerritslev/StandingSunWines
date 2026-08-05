@@ -68,6 +68,7 @@ export function ShowLandingContent({ show }: Props) {
             <a href="#tickets" className="btn btn-primary show-hero-cta">
               Get Tickets
             </a>
+            {show.bio ? <p className="show-bio">{show.bio}</p> : null}
           </div>
           <div className="show-hero-portrait">
             <img src={show.artistImage.src} alt={show.artistImage.alt} />
@@ -90,6 +91,12 @@ export function ShowLandingContent({ show }: Props) {
         <div className="show-story-image">
           <img src={show.storyImage.src} alt={show.storyImage.alt} loading="lazy" />
         </div>
+      </section>
+
+      <section className="show-gallery-intro" aria-label="The venue">
+        <h2 className="section-title">
+          Inside the <em>Venue</em>
+        </h2>
       </section>
 
       <GalleryBand images={galleryTop} />

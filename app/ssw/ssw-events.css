@@ -281,6 +281,16 @@ nav {
   margin-top: 34px;
 }
 
+.show-bio {
+  margin-top: 28px;
+  max-width: 560px;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: var(--hammock);
+}
+
 /* Full-bleed split, matching the homepage about/winemaker sections */
 .show-story {
   display: grid;
@@ -363,6 +373,19 @@ nav {
   font-weight: 300;
   line-height: 1.8;
   color: var(--hammock);
+}
+
+.show-gallery-intro {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 88px 48px 34px;
+  text-align: center;
+}
+
+/* Padding owns the spacing here so the heading sits closer to the photos it
+   labels than to the section above it. */
+.show-gallery-intro .section-title {
+  margin-bottom: 0;
 }
 
 .show-gallery {
@@ -584,6 +607,10 @@ footer {
     display: none;
   }
 
+  .show-bio {
+    margin-top: 22px;
+  }
+
   .show-hero-portrait img {
     height: clamp(300px, 62vw, 420px);
     object-position: center 20%;
@@ -611,9 +638,15 @@ footer {
 
   .show-details,
   .show-tickets,
-  .show-venue {
+  .show-venue,
+  .show-gallery-intro {
     padding-left: max(20px, env(safe-area-inset-left, 0px));
     padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+
+  .show-gallery-intro {
+    padding-top: 60px;
+    padding-bottom: 26px;
   }
 
   .show-details-grid {
