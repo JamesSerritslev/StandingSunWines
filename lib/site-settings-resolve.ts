@@ -73,10 +73,10 @@ export const DEFAULT_NAV_LINKS: Omit<NavLinkInput, "_key">[] = [
   {
     key: "events",
     label: "Standing Sun Live",
-    href: "/events",
+    href: "/shawnmullins",
     kind: "internal",
     styleVariant: "default",
-    activePathPrefixes: ["/events"],
+    activePathPrefixes: ["/shawnmullins"],
   },
   {
     key: "private",
@@ -111,7 +111,7 @@ export const DEFAULT_FOOTER_LEFT: FooterLinkInput[] = [
 ]
 
 export const DEFAULT_FOOTER_RIGHT: FooterLinkInput[] = [
-  { label: "Standing Sun Live", href: "/events" },
+  { label: "Standing Sun Live", href: "/shawnmullins" },
   { label: "Private Events", href: "/private-events" },
   { label: "Contact", href: "/contact" },
   { label: "Visit", href: "/contact#visit" },
@@ -176,7 +176,7 @@ function pickStr(v: unknown, fallback: string): string {
 
 function migrateFooterHref(href: string): string {
   const trimmed = href.trim()
-  if (trimmed === "/#events") return "/events"
+  if (trimmed === "/#events" || trimmed === "/events") return "/shawnmullins"
   if (trimmed === "/#location") return "/contact#visit"
   return trimmed
 }
@@ -197,13 +197,19 @@ const LEGACY_NAV_KEYS = new Set(["about", "location", "newsletter", "gallery"])
 function migrateEventsNavLink(raw: Omit<NavLinkInput, "_key">): Omit<NavLinkInput, "_key"> {
   if (raw.key !== "events") return raw
   const href = raw.href?.trim() ?? ""
-  if (href === "/#events" || href.endsWith("#events") || raw.kind === "anchor") {
+  if (
+    href === "/#events" ||
+    href.endsWith("#events") ||
+    href === "/events" ||
+    href.startsWith("/events/") ||
+    raw.kind === "anchor"
+  ) {
     return {
       ...raw,
       label: raw.label?.trim() || "Standing Sun Live",
-      href: "/events",
+      href: "/shawnmullins",
       kind: "internal",
-      activePathPrefixes: ["/events"],
+      activePathPrefixes: ["/shawnmullins"],
     }
   }
   return raw

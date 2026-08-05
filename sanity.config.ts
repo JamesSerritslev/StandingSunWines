@@ -54,7 +54,7 @@ export default defineConfig({
             filter: `_type == "pageImages" && pageKey == "private-events"`,
           },
           {
-            route: "/events",
+            route: "/shawnmullins",
             filter: `_type == "siteSettings"`,
           },
         ]),
@@ -88,7 +88,7 @@ export default defineConfig({
             select: { title: "title", slug: "slug.current" },
             resolve: (doc) => ({
               locations: [
-                { title: (doc?.title as string) || "Event (legacy)", href: "/events" },
+                { title: (doc?.title as string) || "Event (legacy)", href: "/shawnmullins" },
               ],
             }),
           }),

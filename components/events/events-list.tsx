@@ -90,7 +90,7 @@ function EventCard({
 
       <div className="text-center md:text-right md:justify-self-end">
         {slug ? (
-          <Link href={`/events/${encodeURIComponent(slug)}`} className={detailsButtonClasses(true)}>
+          <Link href={`/shawnmullins`} className={detailsButtonClasses(true)}>
             {detailsLabel}
           </Link>
         ) : event.ticketUrl ? (

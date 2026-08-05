@@ -23,13 +23,13 @@ function fixLinks(html) {
     .replace(/href='index\.html'/g, "href='/'")
     .replace(/href="about\.html"/g, 'href="/#about"')
     .replace(/href="winery\.html"/g, 'href="/winery"')
-    .replace(/href="events\.html"/g, 'href="/events"')
+    .replace(/href="events\.html"/g, 'href="/shawnmullins"')
     .replace(/href="private-events\.html"/g, 'href="/private-events"')
     .replace(/href="contact\.html"/g, 'href="/contact"')
     .replace(/href="gallery\.html"/g, 'href="/#gallery"')
     .replace(/href="equipment\.html"/g, 'href="/winery#facility"')
-    .replace(/href="index\.html#events"/g, 'href="/events"')
-    .replace(/onclick="window\.location\.href='events\.html'"/g, 'onclick="window.location.href=\'/events\'"')
+    .replace(/href="index\.html#events"/g, 'href="/shawnmullins"')
+    .replace(/onclick="window\.location\.href='events\.html'"/g, 'onclick="window.location.href=\'/shawnmullins\'"')
     .replace(
       /<li>\s*<a[^>]*analogueroom[^>]*>[\s\S]*?<\/a>\s*<\/li>/gi,
       "",

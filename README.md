@@ -104,16 +104,16 @@ All forms use class `ssw-inquiry-form`. Legacy Web3Forms hidden fields (`subject
 
 ## Events & ticketing
 
-**Standing Sun Live** (`/events`) lists concerts and ticket sales. The site does **not** use Sanity for public event listings.
+**Standing Sun Live** (`/shawnmullins`) lists concerts and ticket sales. The site does **not** use Sanity for public event listings.
 
 | Phase | Source |
 |-------|--------|
-| **Now** | [Eventbrite](https://www.eventbrite.com/o/standing-sun-wines-121252721971) — linked from `/events` and the homepage events teaser |
-| **Next** | [Ticket Tailor](https://www.tickettailor.com/) box office embed on `/events` |
+| **Now** | [Eventbrite](https://www.eventbrite.com/o/standing-sun-wines-121252721971) — linked from `/shawnmullins` and the homepage events teaser |
+| **Next** | [Ticket Tailor](https://www.tickettailor.com/) box office embed on `/shawnmullins` |
 
 Set `NEXT_PUBLIC_TICKET_TAILOR_BOX_OFFICE_URL` to override the default Standing Sun Live box office URL. The embed lives in `components/events/TicketTailorEmbed.tsx` and matches Ticket Tailor's official inline widget attributes.
 
-Legacy `/events/[slug]` URLs redirect to `/events`. Sanity may still contain an `event` schema for studio experiments, but it is not wired to the public site.
+Legacy `/events` and `/events/[slug]` URLs redirect to `/shawnmullins`. Sanity may still contain an `event` schema for studio experiments, but it is not wired to the public site.
 
 ---
 

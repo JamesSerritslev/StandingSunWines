@@ -61,7 +61,7 @@ export const navLinkType = defineType({
       title: "Highlight active when path equals (optional)",
       type: "array",
       of: [{ type: "string" }],
-      description: 'Matches pathname exactly — e.g. "/", "/winery", "/private-events", "/contact".',
+      description: 'Matches pathname exactly — e.g. "/", "/winery", "/shawnmullins", "/private-events", "/contact".',
     }),
   ],
   preview: {

@@ -207,6 +207,7 @@ export function SswNav({ logo, items }: Props) {
       pathname === "/contact" ||
       pathname === "/private-events" ||
       pathname === "/winery" ||
+      pathname === "/shawnmullins" ||
       pathname === "/events" ||
       pathname.startsWith("/events/")
     if (!isInteriorPage) return

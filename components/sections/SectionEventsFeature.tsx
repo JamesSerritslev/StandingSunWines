@@ -40,7 +40,7 @@ export function SectionEventsFeature({ section, defaultEventbriteUrl }: Props) {
       <div className="events-layout">
         <div
           className="event-card"
-          onClick={() => (window.location.href = "/events")}
+          onClick={() => (window.location.href = "/shawnmullins")}
           style={{ cursor: "pointer" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
