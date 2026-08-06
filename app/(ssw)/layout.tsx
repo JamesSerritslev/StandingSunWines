@@ -19,6 +19,8 @@ export default async function SswMarketingLayout({
     "@type": "Winery",
     name: s.brandName,
     url: siteUrl,
+    logo: `${siteUrl}/icon-512.png`,
+    image: `${siteUrl}/icon-512.png`,
     description: s.schemaDescription,
     address: {
       "@type": "PostalAddress",

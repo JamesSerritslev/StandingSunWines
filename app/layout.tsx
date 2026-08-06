@@ -51,10 +51,17 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // Stable public/ paths only — never app/icon.* (Next hashes those and Google
+  // Search often ignores query-string favicon URLs).
   icons: {
-    icon: "/images/ssw/ssw-3a30683668704b66.png",
-    apple: "/images/ssw/ssw-3a30683668704b66.png",
+    icon: [
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
+  manifest: "/site.webmanifest",
 }
 
 export default async function RootLayout({
