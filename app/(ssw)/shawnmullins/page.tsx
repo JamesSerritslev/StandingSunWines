@@ -27,6 +27,7 @@ function eventJsonLd() {
     "@type": "MusicEvent",
     name: `${show.performer} Live at Standing Sun Wines`,
     startDate: show.startDateISO,
+    ...(show.endDateISO ? { endDate: show.endDateISO } : {}),
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     description: show.metaDescription,

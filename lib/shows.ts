@@ -32,6 +32,8 @@ export type Show = {
   timeLine: string
   /** ISO 8601 with offset, e.g. "2026-09-12T19:30:00-07:00". Required for Google's event rich results; omit and the JSON-LD is skipped. */
   startDateISO?: string
+  /** Optional end time for structured data */
+  endDateISO?: string
   /** Performer name for structured data */
   performer: string
   /** Full-bleed hero background — venue atmosphere, darkened behind the text */
@@ -73,11 +75,11 @@ export const SHAWN_MULLINS: Show = {
   eyebrow: "Standing Sun Live · Buellton, California",
   title: "Shawn",
   titleAccent: "Mullins",
-  // TODO: fill these in once the date is confirmed. Empty values are hidden on the
-  // page, and startDateISO is what unlocks the Google event rich result.
-  dateLine: "",
-  timeLine: "",
-  startDateISO: undefined,
+  // Wednesday, October 21, 2026 — Pacific Daylight Time
+  dateLine: "Wednesday, October 21, 2026",
+  timeLine: "Doors 6:00 PM · Show 7:00–10:00 PM",
+  startDateISO: "2026-10-21T19:00:00-07:00",
+  endDateISO: "2026-10-21T22:00:00-07:00",
   performer: "Shawn Mullins",
   heroImage: "/images/shows/standing-sun-stage.jpg",
   // Keeps the stage itself in frame — murals, barrel alcove, guitars, and the
@@ -100,6 +102,7 @@ export const SHAWN_MULLINS: Show = {
     alt: "Shawn Mullins with a vintage archtop guitar",
   },
   details: [
+    { label: "When", value: "Wednesday, October 21, 2026 · Doors 6 PM · Show 7–10 PM" },
     { label: "The Room", value: "4,000 sq ft working winery, no seat more than 30–40 feet from the stage" },
     { label: "Seating", value: "Front-row tables for up to six, plus theater-style rows behind" },
     { label: "Wine", value: "Standing Sun wines poured by the glass all evening" },
@@ -133,9 +136,9 @@ export const SHAWN_MULLINS: Show = {
   ticketsAccent: "Seat",
   ticketsIntro:
     "Tables and theater seating are limited. Pick your quantity below and check out securely.",
-  metaTitle: "Shawn Mullins Live at Standing Sun Wines · Buellton",
+  metaTitle: "Shawn Mullins Live at Standing Sun Wines · Oct 21, 2026",
   metaDescription:
-    "See Grammy-nominated singer-songwriter Shawn Mullins live at Standing Sun Wines in Buellton, California. An intimate winery concert in the Santa Ynez Valley with table and theater seating, wine by the glass, and a food truck on site.",
+    "See Grammy-nominated singer-songwriter Shawn Mullins live at Standing Sun Wines in Buellton on Wednesday, October 21, 2026. Doors 6 PM, show 7–10 PM. Intimate winery concert with table and theater seating, wine by the glass, and a food truck on site.",
   canonicalPath: "/shawnmullins",
   ogImage: "/images/shows/shawn-mullins-hero.png",
 }
