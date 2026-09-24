@@ -5,16 +5,14 @@ import type { SectionEventsFeature } from "@/lib/sanity/types"
 
 interface Props {
   section: SectionEventsFeature
-  defaultEventbriteUrl?: string
 }
 
-export function SectionEventsFeature({ section, defaultEventbriteUrl }: Props) {
+export function SectionEventsFeature({ section }: Props) {
   const {
     eyebrow,
     titleMain,
     titleEm,
     body,
-    eventbriteUrl,
     eventbriteLabel,
     featureImage,
   } = section
@@ -52,18 +50,11 @@ export function SectionEventsFeature({ section, defaultEventbriteUrl }: Props) {
         </div>
       </div>
 
-      {eventbriteUrl || defaultEventbriteUrl ? (
-        <div className="events-cta">
-          <a
-            href={(eventbriteUrl || defaultEventbriteUrl)!}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary"
-          >
-            {eventbriteLabel ?? "See Upcoming Events on Eventbrite"}
-          </a>
-        </div>
-      ) : null}
+      <div className="events-cta">
+        <a href="/shawnmullins" className="btn btn-primary">
+          {eventbriteLabel ?? "See Upcoming Events"}
+        </a>
+      </div>
     </section>
   )
 }

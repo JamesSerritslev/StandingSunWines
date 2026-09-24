@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 
 import { SswChrome } from "@/components/ssw/SswChrome"
 import { getResolvedSiteSettings } from "@/lib/sanity/queries"
+import { STANDING_SUN_OPENING_HOURS_SPEC } from "@/lib/site-location"
 
 export default async function SswMarketingLayout({
   children,
@@ -30,6 +31,7 @@ export default async function SswMarketingLayout({
       postalCode: s.schemaPostalCode,
       addressCountry: s.schemaAddressCountry,
     },
+    openingHoursSpecification: STANDING_SUN_OPENING_HOURS_SPEC,
   }
 
   return (

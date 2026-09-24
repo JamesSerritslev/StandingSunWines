@@ -1,5 +1,6 @@
 import Image from "next/image"
 
+import { STANDING_SUN_HOURS_SUMMARY } from "@/lib/site-location"
 import type { ResolvedSiteSettings } from "@/lib/site-settings-resolve"
 import { SswFooterLink } from "./SswFooterLink"
 
@@ -61,11 +62,27 @@ export function SswFooter({
               </span>
             ))}
           </p>
+          <p className="footer-hours">{STANDING_SUN_HOURS_SUMMARY}</p>
         </div>
       </div>
       <p className="footer-copy">
         © {year} {copyrightSuffix}
       </p>
+      <div className="footer-badge">
+        <a
+          href="https://uswineryatlas.com/california/buellton/?b=0099feff-c0fb-41f6-8017-f10c7fda8b06&src=site#standing-sun-wines"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://uswineryatlas.com/assets/badge-california-seal.png"
+            alt="Top Wineries in California — WineryAtlas"
+            width={180}
+            height={180}
+          />
+        </a>
+      </div>
     </footer>
   )
 }

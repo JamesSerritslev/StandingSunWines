@@ -9,6 +9,38 @@ export const STANDING_SUN_LOCATION = {
     "https://www.google.com/maps/search/?api=1&query=92+2nd+Street+Buellton+CA+93427",
 } as const
 
+/** Public tasting / visit hours (Pacific). Closed Tuesday & Wednesday. */
+export const STANDING_SUN_HOURS = [
+  { day: "Monday", hours: "11 AM – 5 PM", open: true },
+  { day: "Tuesday", hours: "Closed", open: false },
+  { day: "Wednesday", hours: "Closed", open: false },
+  { day: "Thursday", hours: "11 AM – 5 PM", open: true },
+  { day: "Friday", hours: "11 AM – 5 PM", open: true },
+  { day: "Saturday", hours: "11 AM – 5 PM", open: true },
+  { day: "Sunday", hours: "11 AM – 5 PM", open: true },
+] as const
+
+/** Compact line for footers / one-liners */
+export const STANDING_SUN_HOURS_SUMMARY =
+  "Thursday–Monday · 11 AM – 5 PM · Closed Tuesday & Wednesday"
+
+/**
+ * schema.org OpeningHoursSpecification for open days only.
+ * dayOfWeek uses schema.org URLs; times are local Pacific.
+ */
+export const STANDING_SUN_OPENING_HOURS_SPEC = [
+  "Monday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+].map((day) => ({
+  "@type": "OpeningHoursSpecification" as const,
+  dayOfWeek: `https://schema.org/${day}`,
+  opens: "11:00",
+  closes: "17:00",
+}))
+
 export function directionsUrlFromUser(lat: number, lng: number): string {
   const destination = encodeURIComponent(STANDING_SUN_LOCATION.mapsQuery)
   return `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${destination}`

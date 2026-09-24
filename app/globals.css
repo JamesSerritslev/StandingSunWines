@@ -923,6 +923,39 @@ body footer .footer-logo {
   height: auto;
 }
 
+body footer .footer-hours {
+  margin-top: 10px;
+  font-size: 10px;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  color: rgba(161, 144, 115, 0.75);
+}
+
+body footer .footer-badge {
+  display: flex;
+  justify-content: center;
+  padding: 28px 0 8px;
+}
+
+body footer .footer-badge a {
+  display: inline-block;
+  line-height: 0;
+  opacity: 0.88;
+  transition: opacity 0.2s ease;
+}
+
+body footer .footer-badge a:hover {
+  opacity: 1;
+}
+
+body footer .footer-badge img {
+  display: block;
+  width: 180px;
+  height: auto;
+  max-width: 100%;
+  border: 0;
+}
+
 /*
  * The logo artwork is padded unevenly: the mark sits at x65–275 of a 440px
  * canvas, leaving 2.5x more empty space on the right. Once the footer stacks

@@ -39,6 +39,12 @@
   .info-text a{color:var(--cream);text-decoration:none;border-bottom:1px solid rgba(182,86,39,0.3);padding-bottom:2px;transition:border-color 0.2s;}
   .info-text a:hover{border-bottom-color:var(--spanish);}
   .info-text-small{font-size:13px;font-weight:300;line-height:1.7;color:var(--hammock);}
+  .hours-list{list-style:none;margin:0;padding:0;max-width:280px;}
+  .hours-list li{display:flex;justify-content:space-between;gap:24px;padding:6px 0;border-bottom:1px solid rgba(195,179,152,0.12);}
+  .hours-list li:last-child{border-bottom:none;}
+  .hours-day{font-size:12px;letter-spacing:0.08em;color:var(--hammock);}
+  .hours-time{font-family:'Libre Baskerville',serif;font-size:14px;color:var(--cream);text-align:right;}
+  .hours-time--closed{color:var(--folder);font-style:italic;}
   .eyebrow{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--spanish-lt);margin-bottom:14px;}
   .section-title{font-family:'Libre Baskerville',serif;font-size:clamp(28px,3.6vw,42px);font-weight:400;line-height:1.1;margin-bottom:18px;color:var(--cream);}
   .section-title em{font-style:italic;color:var(--hammock);}
